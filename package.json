@@ -1,0 +1,13 @@
+{
+  "name": "diso-marketing",
+  "version": "1.0.0",
+  "description": "Static server for Diso Marketing pages",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node server.js"
+  },
+  "dependencies": {
+    "express": "^4.21.0"
+  }
+}
