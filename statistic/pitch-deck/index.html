@@ -1,0 +1,623 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Diso Commerce Suite — Pitch Deck</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/reveal.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/theme/white.css">
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
+
+  :root {
+    --blue: #1a56db;
+    --blue-dark: #1e3a5f;
+    --blue-light: #e8f0fe;
+    --orange: #f97316;
+    --orange-light: #fff7ed;
+    --green: #16a34a;
+    --green-light: #f0fdf4;
+    --red: #dc2626;
+    --gray: #6b7280;
+    --gray-light: #f3f4f6;
+    --dark: #111827;
+  }
+
+  .reveal {
+    font-family: 'Inter', system-ui, sans-serif;
+    font-size: 28px;
+    color: var(--dark);
+  }
+
+  .reveal h1, .reveal h2, .reveal h3 {
+    font-family: 'Inter', system-ui, sans-serif;
+    color: var(--blue-dark);
+    text-transform: none;
+    letter-spacing: -0.02em;
+    line-height: 1.2;
+  }
+
+  .reveal h1 { font-size: 2.8em; font-weight: 900; }
+  .reveal h2 { font-size: 1.6em; font-weight: 700; margin-bottom: 0.6em; }
+  .reveal h3 { font-size: 1.1em; font-weight: 600; }
+
+  .reveal p, .reveal li {
+    line-height: 1.5;
+    font-weight: 400;
+  }
+
+  .reveal .slide-number { font-size: 14px; color: var(--gray); }
+
+  /* ---- Layout helpers ---- */
+  .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; text-align: left; }
+  .grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 20px; text-align: left; }
+  .grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; text-align: left; }
+
+  /* ---- Cards ---- */
+  .card {
+    background: #fff;
+    border: 1px solid #e5e7eb;
+    border-radius: 12px;
+    padding: 24px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+    text-align: left;
+  }
+  .card h3 { margin: 0 0 8px; font-size: 0.85em; }
+  .card p { margin: 0; font-size: 0.7em; color: var(--gray); line-height: 1.5; }
+  .card .icon { font-size: 1.6em; margin-bottom: 10px; display: block; }
+
+  /* ---- Pain point cards ---- */
+  .pain-card {
+    background: #fef2f2;
+    border-left: 4px solid var(--red);
+    border-radius: 8px;
+    padding: 18px 20px;
+    text-align: left;
+    margin-bottom: 10px;
+  }
+  .pain-card h3 { color: var(--red); margin: 0 0 6px; font-size: 0.75em; }
+  .pain-card p { margin: 0; font-size: 0.6em; color: #555; }
+
+  /* ---- Stat cards ---- */
+  .stat-card {
+    background: var(--blue-light);
+    border-radius: 10px;
+    padding: 18px;
+    text-align: center;
+  }
+  .stat-card .num { font-size: 1.4em; font-weight: 800; color: var(--blue); display: block; }
+  .stat-card .label { font-size: 0.6em; color: var(--gray); margin-top: 4px; display: block; }
+
+  /* ---- Flow ---- */
+  .flow {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    flex-wrap: nowrap;
+  }
+  .flow-item {
+    background: linear-gradient(135deg, var(--blue), #2563eb);
+    color: #fff;
+    border-radius: 12px;
+    padding: 14px 12px;
+    text-align: center;
+    flex: 1;
+    min-width: 0;
+  }
+  .flow-item h3 { color: #fff; font-size: 0.65em; margin: 0 0 4px; }
+  .flow-item p { color: rgba(255,255,255,0.85); font-size: 0.5em; margin: 0; }
+  .flow-arrow { font-size: 1.3em; color: var(--blue); flex-shrink: 0; }
+
+  /* ---- Feature cards ---- */
+  .feat-card {
+    background: var(--blue-light);
+    border-radius: 10px;
+    padding: 16px;
+    text-align: left;
+  }
+  .feat-card h3 { font-size: 0.72em; margin: 0 0 4px; color: var(--blue-dark); }
+  .feat-card p { font-size: 0.58em; margin: 0; color: var(--gray); }
+
+  /* ---- Pillar header ---- */
+  .pillar-badge {
+    display: inline-block;
+    background: var(--blue);
+    color: #fff;
+    font-size: 0.55em;
+    font-weight: 600;
+    padding: 4px 14px;
+    border-radius: 20px;
+    margin-bottom: 12px;
+  }
+
+  /* ---- Logo wall ---- */
+  .logo-wall {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 20px;
+    margin: 20px 0;
+  }
+  .logo-chip {
+    background: var(--gray-light);
+    border-radius: 10px;
+    padding: 14px 24px;
+    font-weight: 600;
+    font-size: 0.75em;
+    color: var(--blue-dark);
+  }
+
+  /* ---- Comparison table ---- */
+  .cmp-table { width: 100%; border-collapse: separate; border-spacing: 0; font-size: 0.6em; }
+  .cmp-table th { background: var(--blue-dark); color: #fff; padding: 10px 12px; text-align: center; }
+  .cmp-table th:first-child { text-align: left; border-radius: 8px 0 0 0; }
+  .cmp-table th:last-child { border-radius: 0 8px 0 0; background: var(--blue); }
+  .cmp-table td { padding: 8px 12px; border-bottom: 1px solid #e5e7eb; }
+  .cmp-table td:last-child { background: #eef5ff; font-weight: 600; color: var(--blue); }
+  .cmp-table tr:last-child td:first-child { border-radius: 0 0 0 8px; }
+  .cmp-table tr:last-child td:last-child { border-radius: 0 0 8px 0; }
+
+  /* ---- Case study card ---- */
+  .case-card {
+    background: #fff;
+    border: 1px solid #e5e7eb;
+    border-radius: 12px;
+    padding: 22px;
+    text-align: left;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+  }
+  .case-card .flag { font-size: 0.55em; font-weight: 600; color: var(--blue); background: var(--blue-light); padding: 3px 10px; border-radius: 12px; display: inline-block; margin-bottom: 8px; }
+  .case-card h3 { font-size: 0.82em; margin: 0 0 8px; }
+  .case-card p { font-size: 0.6em; color: var(--gray); margin: 4px 0; line-height: 1.5; }
+  .case-card .highlight { font-size: 1.1em; font-weight: 800; color: var(--blue); }
+
+  /* ---- Timeline ---- */
+  .timeline { display: flex; gap: 12px; margin-top: 16px; }
+  .tl-item {
+    flex: 1;
+    border-radius: 12px;
+    padding: 18px 14px;
+    text-align: left;
+    position: relative;
+  }
+  .tl-item:nth-child(1) { background: #e8f0fe; }
+  .tl-item:nth-child(2) { background: #dbeafe; }
+  .tl-item:nth-child(3) { background: #bfdbfe; }
+  .tl-item:nth-child(4) { background: var(--blue); color: #fff; }
+  .tl-item:nth-child(4) h3 { color: #fff; }
+  .tl-item:nth-child(4) p { color: rgba(255,255,255,0.9); }
+  .tl-item h3 { font-size: 0.65em; margin: 0 0 6px; }
+  .tl-item p { font-size: 0.52em; margin: 0; line-height: 1.5; color: var(--blue-dark); }
+  .tl-item .tl-result { margin-top: 8px; font-weight: 700; font-size: 0.55em; }
+
+  /* ---- Steps ---- */
+  .steps { display: flex; gap: 20px; margin-top: 20px; }
+  .step {
+    flex: 1;
+    background: #fff;
+    border: 2px solid var(--blue);
+    border-radius: 14px;
+    padding: 24px 18px;
+    text-align: center;
+    position: relative;
+  }
+  .step .step-num {
+    background: var(--blue);
+    color: #fff;
+    width: 36px; height: 36px;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-weight: 800;
+    font-size: 0.8em;
+    margin: 0 auto 12px;
+  }
+  .step h3 { font-size: 0.8em; margin: 0 0 8px; }
+  .step p { font-size: 0.6em; color: var(--gray); margin: 0; }
+
+  /* ---- Key message ---- */
+  .key-msg {
+    margin-top: 20px;
+    padding: 14px 24px;
+    background: linear-gradient(135deg, var(--blue-light), #dbeafe);
+    border-left: 4px solid var(--blue);
+    border-radius: 0 10px 10px 0;
+    font-size: 0.72em;
+    font-weight: 500;
+    color: var(--blue-dark);
+    text-align: left;
+  }
+
+  /* ---- Cover ---- */
+  .cover-slide {
+    background: linear-gradient(135deg, #1e3a5f 0%, #1a56db 50%, #2563eb 100%);
+    color: #fff !important;
+  }
+  .cover-slide h1 { color: #fff !important; margin-bottom: 0.15em; }
+  .cover-slide p { color: rgba(255,255,255,0.85); }
+  .cover-slide .tagline {
+    font-size: 1.05em;
+    font-weight: 400;
+    max-width: 700px;
+    margin: 0 auto;
+    line-height: 1.6;
+  }
+
+  /* ---- Feature list (for backend slide) ---- */
+  .feat-list {
+    text-align: left;
+    padding: 16px 20px;
+    background: var(--blue-light);
+    border-radius: 10px;
+  }
+  .feat-list h3 { font-size: 0.72em; margin: 0 0 8px; color: var(--blue); }
+  .feat-list ul { margin: 0; padding-left: 18px; }
+  .feat-list li { font-size: 0.58em; margin-bottom: 4px; color: #444; }
+
+  /* ---- Footer ---- */
+  .slide-footer {
+    position: absolute;
+    bottom: 16px;
+    left: 40px;
+    right: 40px;
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.42em;
+    color: #aaa;
+  }
+</style>
+</head>
+<body>
+<div class="reveal">
+<div class="slides">
+
+<!-- ==================== SLIDE 1: COVER ==================== -->
+<section data-background="linear-gradient(135deg, #1e3a5f 0%, #1a56db 50%, #2563eb 100%)">
+  <div class="cover-slide">
+    <p style="font-size:0.6em;letter-spacing:4px;text-transform:uppercase;opacity:0.7;margin-bottom:20px;">Giải pháp kinh doanh online trọn bộ</p>
+    <h1>Diso Commerce Suite</h1>
+    <p class="tagline">Từ website bán hàng<br>đến đội ngũ bán hàng nghìn người</p>
+    <div style="margin-top:40px;display:flex;justify-content:center;gap:10px;">
+      <span style="background:rgba(255,255,255,0.15);padding:6px 16px;border-radius:20px;font-size:0.55em;">Website TMĐT</span>
+      <span style="color:rgba(255,255,255,0.4);">→</span>
+      <span style="background:rgba(255,255,255,0.15);padding:6px 16px;border-radius:20px;font-size:0.55em;">Affiliate</span>
+      <span style="color:rgba(255,255,255,0.4);">→</span>
+      <span style="background:rgba(255,255,255,0.15);padding:6px 16px;border-radius:20px;font-size:0.55em;">Vận hành</span>
+      <span style="color:rgba(255,255,255,0.4);">→</span>
+      <span style="background:rgba(255,255,255,0.15);padding:6px 16px;border-radius:20px;font-size:0.55em;">Reseller</span>
+      <span style="color:rgba(255,255,255,0.4);">→</span>
+      <span style="background:rgba(255,255,255,0.15);padding:6px 16px;border-radius:20px;font-size:0.55em;">Đại sứ</span>
+    </div>
+  </div>
+</section>
+
+<!-- ==================== SLIDE 2: VẤN ĐỀ ==================== -->
+<section>
+  <h2>Kinh doanh online nghe dễ — làm thì khó</h2>
+  <div class="grid-2">
+    <div class="pain-card">
+      <h3>🏗️ "Muốn bán online nhưng không biết bắt đầu từ đâu"</h3>
+      <p>Thuê dev làm website tốn 500 triệu – 2 tỷ, mất 6-12 tháng. Lên sàn thì phí 3-15% mỗi đơn, data khách không thuộc về mình.</p>
+    </div>
+    <div class="pain-card">
+      <h3>📉 "Có website rồi nhưng không ai vào mua"</h3>
+      <p>Chi phí quảng cáo Facebook/Google ngày càng đắt. Chạy ads xong thì hết tiền, hết khách.</p>
+    </div>
+    <div class="pain-card">
+      <h3>📊 "Đơn hàng nhiều lên, quản lý bằng Excel vỡ trận"</h3>
+      <p>Đối soát vận chuyển sai, tính hoa hồng nhầm, kế toán khóc. 100 đơn/ngày là bắt đầu rối.</p>
+    </div>
+    <div class="pain-card">
+      <h3>🚀 "Muốn mở rộng nhưng không có cách"</h3>
+      <p>Tuyển sales tốn lương cứng. Mở đại lý thì không kiểm soát được. Affiliate thì không biết build hệ thống.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ==================== SLIDE 3: THỊ TRƯỜNG ==================== -->
+<section>
+  <h2>Thị trường e-commerce & affiliate Việt Nam</h2>
+  <div class="grid-3">
+    <div class="stat-card">
+      <span class="num">~28 tỷ USD</span>
+      <span class="label">Thị trường TMĐT VN (2025)<br>Tăng trưởng ~20%/năm</span>
+    </div>
+    <div class="stat-card">
+      <span class="num">920.000+</span>
+      <span class="label">SMEs tại Việt Nam<br>98% tổng doanh nghiệp</span>
+    </div>
+    <div class="stat-card">
+      <span class="num">~1 tỷ USD</span>
+      <span class="label">Affiliate marketing VN<br>Tăng 30x so với 2022</span>
+    </div>
+    <div class="stat-card">
+      <span class="num">300.000+</span>
+      <span class="label">KOL, KOC, affiliate<br>đang bán hàng online</span>
+    </div>
+    <div class="stat-card">
+      <span class="num">5 tỷ USD</span>
+      <span class="label">Social commerce 2025<br>→ 10 tỷ USD vào 2030</span>
+    </div>
+    <div class="stat-card">
+      <span class="num">97% GMV</span>
+      <span class="label">Tập trung Shopee + TikTok Shop<br>DN phụ thuộc nặng vào sàn</span>
+    </div>
+  </div>
+  <div class="key-msg">Doanh nghiệp cần giải pháp trọn bộ — không phải ghép 10 công cụ rời rạc lại với nhau</div>
+</section>
+
+<!-- ==================== SLIDE 4: GIẢI PHÁP TỔNG QUAN ==================== -->
+<section>
+  <h2>Diso Commerce Suite — 1 nền tảng, 5 giải pháp</h2>
+  <div class="flow">
+    <div class="flow-item">
+      <h3>🌐 WEBSITE TMĐT</h3>
+      <p>Có chỗ bán hàng</p>
+    </div>
+    <span class="flow-arrow">→</span>
+    <div class="flow-item">
+      <h3>🔗 AFFILIATE</h3>
+      <p>Có khách mua hàng</p>
+    </div>
+    <span class="flow-arrow">→</span>
+    <div class="flow-item">
+      <h3>⚙️ VẬN HÀNH</h3>
+      <p>Chạy trơn tru</p>
+    </div>
+    <span class="flow-arrow">→</span>
+    <div class="flow-item">
+      <h3>🏪 RESELLER</h3>
+      <p>Mở rộng kênh bán</p>
+    </div>
+    <span class="flow-arrow">→</span>
+    <div class="flow-item">
+      <h3>⭐ ĐẠI SỨ</h3>
+      <p>Xây thương hiệu</p>
+    </div>
+  </div>
+  <div class="key-msg">Mua từng phần hoặc trọn bộ — bắt đầu từ đâu cũng được, mở rộng bất cứ lúc nào</div>
+</section>
+
+<!-- ==================== SLIDE 5: WEBSITE TMĐT ==================== -->
+<section>
+  <span class="pillar-badge">TRỤ CỘT 1</span>
+  <h2>Website bán hàng chuyên nghiệp — không cần biết code</h2>
+  <div class="grid-3">
+    <div class="feat-card"><h3>📦 Quản lý sản phẩm</h3><p>SKU, giá, biến thể, ảnh sản phẩm</p></div>
+    <div class="feat-card"><h3>🛒 Giỏ hàng & Thanh toán</h3><p>Mua hàng mượt mà, hỗ trợ COD & online</p></div>
+    <div class="feat-card"><h3>🏷️ Mã giảm giá & Flash Sale</h3><p>Tạo promotion tăng chuyển đổi</p></div>
+    <div class="feat-card"><h3>🎨 Website thương hiệu riêng</h3><p>Domain riêng, logo riêng, giao diện tùy chỉnh</p></div>
+    <div class="feat-card"><h3>📱 Tối ưu Mobile</h3><p>60%+ giao dịch TMĐT diễn ra trên điện thoại</p></div>
+    <div class="feat-card"><h3>🔍 Chuẩn SEO</h3><p>Khách tìm thấy bạn trên Google</p></div>
+  </div>
+  <div class="key-msg">Triển khai trong 2 tuần. Website 100% thương hiệu của bạn — không phải "gian hàng trên sàn"</div>
+</section>
+
+<!-- ==================== SLIDE 6: AFFILIATE ==================== -->
+<section>
+  <span class="pillar-badge">TRỤ CỘT 2</span>
+  <h2>Kéo khách về website — không tốn tiền quảng cáo</h2>
+  <div class="grid-3">
+    <div class="feat-card"><h3>🔗 Link Tracking</h3><p>Biết chính xác ai mang khách về, bao nhiêu click, bao nhiêu đơn</p></div>
+    <div class="feat-card"><h3>💰 Hoa hồng linh hoạt</h3><p>Theo sản phẩm, theo tier, theo campaign</p></div>
+    <div class="feat-card"><h3>📊 Dashboard cho Affiliate</h3><p>Tự theo dõi hiệu quả, thu nhập</p></div>
+    <div class="feat-card"><h3>🎯 Promotion Tools</h3><p>Banner, link, mã giảm giá riêng cho từng affiliate</p></div>
+    <div class="feat-card"><h3>👥 Phân nhóm & Targeting</h3><p>Gửi đúng campaign cho đúng affiliate</p></div>
+    <div class="feat-card"><h3>🛡️ Chống gian lận</h3><p>Tự động phát hiện click/đơn ảo</p></div>
+  </div>
+  <div class="key-msg">Biến blogger, KOL, và bất kỳ ai có mạng xã hội thành kênh bán hàng. Chỉ trả tiền khi có đơn.</div>
+</section>
+
+<!-- ==================== SLIDE 7: BACKEND VẬN HÀNH ==================== -->
+<section>
+  <span class="pillar-badge">TRỤ CỘT 3</span>
+  <h2>Từ đơn hàng đến giao hàng — tự động hóa toàn bộ</h2>
+  <div class="grid-2">
+    <div class="feat-list">
+      <h3>📦 Quản lý đơn hàng & Logistics</h3>
+      <ul>
+        <li>Quản lý đơn tập trung — 1 nơi xem tất cả</li>
+        <li>Tích hợp GHN, GHTK, Viettel Post, J&T — tạo vận đơn 1 click</li>
+        <li>Quản lý tồn kho — cảnh báo hết hàng tự động</li>
+        <li>Đổi trả hàng — quy trình chuyên nghiệp</li>
+      </ul>
+    </div>
+    <div class="feat-list">
+      <h3>💼 Tài chính & Quản trị</h3>
+      <ul>
+        <li>Đối soát tự động 4 loại: đơn hàng, affiliate, reseller, đại sứ</li>
+        <li>Chi trả hoa hồng tự động, tính thuế</li>
+        <li>CRM khách hàng — chăm sóc, tái mua</li>
+        <li>Analytics real-time & Admin portal phân quyền</li>
+      </ul>
+    </div>
+  </div>
+  <div class="key-msg">Vận hành như doanh nghiệp lớn — chi phí doanh nghiệp nhỏ</div>
+</section>
+
+<!-- ==================== SLIDE 8: RESELLER ==================== -->
+<section>
+  <span class="pillar-badge">TRỤ CỘT 4</span>
+  <h2>1.000 người bán hàng cho bạn — bạn chỉ cần quản lý</h2>
+  <div class="grid-3">
+    <div class="feat-card"><h3>🏪 Reseller Storefront</h3><p>Mỗi reseller có "shop" riêng trên platform</p></div>
+    <div class="feat-card"><h3>👥 Quản lý đội ngũ</h3><p>Duyệt, theo dõi, đánh giá reseller</p></div>
+    <div class="feat-card"><h3>💎 Hoa hồng đa cấp</h3><p>Thưởng theo doanh số, incentive linh hoạt</p></div>
+    <div class="feat-card"><h3>🔗 Mã giới thiệu</h3><p>Đội ngũ tự phát triển qua referral</p></div>
+    <div class="feat-card"><h3>📊 Dashboard cho Reseller</h3><p>Tự xem đơn, thu nhập, minh bạch</p></div>
+    <div class="feat-card"><h3>🎮 Gamification</h3><p>Bảng xếp hạng, nhiệm vụ, đổi quà</p></div>
+  </div>
+  <div class="key-msg">Không tốn lương cứng. Reseller bán được thì bạn mới trả hoa hồng. Scale không giới hạn.</div>
+</section>
+
+<!-- ==================== SLIDE 9: ĐẠI SỨ THƯƠNG HIỆU ==================== -->
+<section>
+  <span class="pillar-badge">TRỤ CỘT 5</span>
+  <h2>Content marketing hiệu quả — đo lường được từng đồng</h2>
+  <div class="grid-3">
+    <div class="feat-card"><h3>📝 Campaign content</h3><p>Tạo chiến dịch theo brief, điều kiện tham gia</p></div>
+    <div class="feat-card"><h3>🌐 7 mạng xã hội</h3><p>TikTok, YouTube, Facebook, Instagram, Threads, Shopee, Google</p></div>
+    <div class="feat-card"><h3>✅ Duyệt nội dung</h3><p>Kiểm tra chất lượng, hashtag, batch approve/reject</p></div>
+    <div class="feat-card"><h3>📈 Analytics chi tiết</h3><p>Views, likes, comments, engagement rate hàng ngày</p></div>
+    <div class="feat-card"><h3>🛡️ Chống gian lận</h3><p>Phát hiện fake views, fake followers tự động</p></div>
+    <div class="feat-card"><h3>🏆 Thưởng theo hiệu quả</h3><p>3 loại: theo thống kê, milestone, views</p></div>
+  </div>
+  <div class="key-msg">Đại sứ tạo content → Brand nhận diện → Khách tin tưởng → Doanh thu tăng. Vòng lặp tăng trưởng bền vững.</div>
+</section>
+
+<!-- ==================== SLIDE 10: SOCIAL PROOF ==================== -->
+<section>
+  <h2>Được tin dùng bởi các thương hiệu hàng đầu</h2>
+  <p style="font-size:0.65em;color:var(--gray);margin-bottom:10px;">Ngân hàng & Fintech</p>
+  <div class="logo-wall">
+    <span class="logo-chip">TPBank</span>
+    <span class="logo-chip">HDBank</span>
+    <span class="logo-chip">VPBank</span>
+    <span class="logo-chip">MBBank</span>
+    <span class="logo-chip">VNPay</span>
+  </div>
+  <p style="font-size:0.65em;color:var(--gray);margin-bottom:10px;">Brand & Entertainment</p>
+  <div class="logo-wall">
+    <span class="logo-chip">VNG</span>
+    <span class="logo-chip">Yody</span>
+    <span class="logo-chip">Anker</span>
+    <span class="logo-chip">Flamingo</span>
+    <span class="logo-chip">Turborg</span>
+    <span class="logo-chip">Wild Rift</span>
+  </div>
+  <div style="margin-top:20px;">
+    <p style="font-size:0.7em;font-weight:600;color:var(--blue-dark);"><strong>11+ thương hiệu</strong> · <strong>6 ngành</strong> · <strong>7 nền tảng social</strong></p>
+  </div>
+</section>
+
+<!-- ==================== SLIDE 11: CASE STUDIES ==================== -->
+<section>
+  <h2>Mô hình này đã được chứng minh</h2>
+  <div class="grid-3">
+    <div class="case-card">
+      <span class="flag">🇻🇳 Việt Nam</span>
+      <h3>Coolmate — D2C Thời trang nam</h3>
+      <p>Bán chủ yếu qua website riêng, không phụ thuộc sàn.</p>
+      <p>Doanh thu: <span class="highlight">139 tỷ VND</span>, tăng <strong>3.5x</strong></p>
+      <p>Sở hữu toàn bộ data khách hàng → remarketing hiệu quả.</p>
+    </div>
+    <div class="case-card">
+      <span class="flag">🇬🇧 Quốc tế</span>
+      <h3>Gymshark — Từ $500K đến £1 tỷ+</h3>
+      <p>Không bán trên Amazon. 100% D2C qua website riêng.</p>
+      <p>Ambassador trên Instagram → ROI <span class="highlight">6.6x</span></p>
+      <p>Từ startup → unicorn nhờ own-platform + ambassador.</p>
+    </div>
+    <div class="case-card">
+      <span class="flag">🇮🇳 Ấn Độ</span>
+      <h3>Meesho — Nền tảng Reseller</h3>
+      <p><span class="highlight">187 triệu</span> người dùng, reseller bán qua MXH.</p>
+      <p>IPO valuation: <span class="highlight">$600 triệu</span></p>
+      <p>Chứng minh: reseller network scale được cực lớn.</p>
+    </div>
+  </div>
+  <div class="key-msg">Own-platform + đội quân bán hàng = công thức tỷ đô. Diso giúp bạn áp dụng — ngay tại Việt Nam.</div>
+</section>
+
+<!-- ==================== SLIDE 12: TẦM NHÌN 3 NĂM ==================== -->
+<section>
+  <h2>Build xong, bạn được gì?</h2>
+  <div class="timeline">
+    <div class="tl-item">
+      <h3>Tháng 1-3</h3>
+      <p><strong>Xây nền móng</strong><br>Website riêng + thanh toán + vận chuyển tự động</p>
+      <p class="tl-result">→ Đơn hàng đầu tiên trên kênh riêng</p>
+    </div>
+    <div class="tl-item">
+      <h3>Tháng 3-6</h3>
+      <p><strong>Kích hoạt đội quân</strong><br>50-100 affiliate + 20-50 reseller có storefront riêng</p>
+      <p class="tl-result">→ Chi phí/đơn giảm 40-60%</p>
+    </div>
+    <div class="tl-item">
+      <h3>Tháng 6-12</h3>
+      <p><strong>Vòng lặp tăng trưởng</strong><br>200-500 affiliate + reseller. CRM 10.000+ khách</p>
+      <p class="tl-result">→ Kênh riêng = 30-50% doanh thu</p>
+    </div>
+    <div class="tl-item">
+      <h3>Năm 2-3</h3>
+      <p><strong>Nền tảng vững chắc</strong><br>1.000+ người bán. Database 50K-100K+ khách hàng</p>
+      <p class="tl-result">→ Kênh riêng 50-70% DT. Margin +15-30%</p>
+    </div>
+  </div>
+  <div class="key-msg" style="margin-top:24px;font-size:0.78em;"><strong>Đó không phải phần mềm. Đó là tài sản.</strong></div>
+</section>
+
+<!-- ==================== SLIDE 13: TẠI SAO CHỌN DISO ==================== -->
+<section>
+  <h2>Tại sao Diso Commerce Suite?</h2>
+  <table class="cmp-table">
+    <thead>
+      <tr>
+        <th></th>
+        <th>Tự Build</th>
+        <th>Bán trên Sàn</th>
+        <th>Diso Commerce Suite ✓</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr><td><strong>Chi phí</strong></td><td>1-2 tỷ VND</td><td>"Miễn phí" + 3-15%/đơn</td><td>Phí SaaS hàng tháng</td></tr>
+      <tr><td><strong>Thời gian</strong></td><td>6-12 tháng</td><td>Ngay</td><td>2-4 tuần</td></tr>
+      <tr><td><strong>Thương hiệu</strong></td><td>Của bạn</td><td>Của sàn</td><td>Của bạn (white-label)</td></tr>
+      <tr><td><strong>Data khách hàng</strong></td><td>Của bạn</td><td>Của sàn</td><td>Của bạn</td></tr>
+      <tr><td><strong>Affiliate + Reseller</strong></td><td>Tự build thêm</td><td>Không có</td><td>Built-in</td></tr>
+      <tr><td><strong>Đối soát</strong></td><td>Tự build</td><td>Sàn quyết định</td><td>4 loại tự động</td></tr>
+      <tr><td><strong>Rủi ro</strong></td><td>Team nghỉ = dừng</td><td>Sàn đổi policy = mất kênh</td><td>Diso maintain & upgrade</td></tr>
+    </tbody>
+  </table>
+  <div class="key-msg" style="margin-top:18px;">
+    Bán trên sàn = xây nhà trên đất thuê. &nbsp;Tự build = đắt và lâu.<br>
+    <strong>Diso = website riêng, data riêng, triển khai nhanh.</strong>
+  </div>
+</section>
+
+<!-- ==================== SLIDE 14: NEXT STEPS ==================== -->
+<section data-background="linear-gradient(135deg, #1e3a5f 0%, #1a56db 100%)">
+  <h2 style="color:#fff;">Bắt đầu chỉ với 3 bước</h2>
+  <div class="steps">
+    <div class="step" style="border-color:rgba(255,255,255,0.3);background:rgba(255,255,255,0.95);">
+      <div class="step-num">1</div>
+      <h3>Demo miễn phí</h3>
+      <p>Xem trực tiếp platform hoạt động, hỏi đáp cùng team Diso. <strong>30 phút.</strong></p>
+    </div>
+    <div class="step" style="border-color:rgba(255,255,255,0.3);background:rgba(255,255,255,0.95);">
+      <div class="step-num">2</div>
+      <h3>Pilot 1-2 tháng</h3>
+      <p>Chạy thử với 1 chiến dịch thực tế, đánh giá hiệu quả.</p>
+    </div>
+    <div class="step" style="border-color:rgba(255,255,255,0.3);background:rgba(255,255,255,0.95);">
+      <div class="step-num">3</div>
+      <h3>Go live</h3>
+      <p>Triển khai chính thức, đội ngũ Diso hỗ trợ onboarding toàn bộ.</p>
+    </div>
+  </div>
+  <div style="margin-top:40px;">
+    <a href="#" style="background:var(--orange);color:#fff;padding:16px 48px;border-radius:12px;font-size:1em;font-weight:700;text-decoration:none;display:inline-block;box-shadow:0 4px 14px rgba(249,115,22,0.4);">Đặt lịch demo ngay →</a>
+    <p style="color:rgba(255,255,255,0.6);font-size:0.6em;margin-top:12px;">Không cam kết · Không phí · Chỉ cần 30 phút</p>
+  </div>
+</section>
+
+</div><!-- /.slides -->
+</div><!-- /.reveal -->
+
+<script src="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/reveal.js"></script>
+<script>
+Reveal.initialize({
+  hash: true,
+  slideNumber: true,
+  width: 1280,
+  height: 720,
+  margin: 0.06,
+  transition: 'slide',
+  transitionSpeed: 'default',
+  center: true,
+  controls: true,
+  progress: true,
+});
+</script>
+</body>
+</html>
