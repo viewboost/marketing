@@ -1,0 +1,1747 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>So sánh giải pháp - Diso Commerce Suite</title>
+<meta name="description" content="So sánh chi tiết giữa Tự Build, Bán trên Sàn và Diso Commerce Suite. Tìm giải pháp kinh doanh online phù hợp nhất cho doanh nghiệp của bạn.">
+<link rel="icon" type="image/svg+xml" href="../favicon.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700;800&family=Inter:wght@400;500;600&subset=vietnamese&display=swap" rel="stylesheet">
+<style>
+/* ========================================
+   CSS RESET & BASE (matching landing page)
+   ======================================== */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+:root {
+  --primary: #1B365D;
+  --primary-light: #243f6b;
+  --secondary: #368CBF;
+  --secondary-light: #4da3d4;
+  --accent: #FF6F61;
+  --accent-hover: #ff5a4a;
+  --bg-white: #FFFFFF;
+  --bg-light: #F4F6F8;
+  --bg-dark: #0F1F33;
+  --text-dark: #263238;
+  --text-muted: #5A6B7B;
+  --text-light: #8A9AAA;
+  --border-light: #E2E8F0;
+  --shadow-sm: 0 2px 8px rgba(0,0,0,0.06);
+  --shadow-md: 0 4px 16px rgba(0,0,0,0.08);
+  --shadow-lg: 0 8px 24px rgba(0,0,0,0.12);
+  --shadow-xl: 0 16px 48px rgba(0,0,0,0.16);
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 16px;
+  --radius-xl: 24px;
+  --font-heading: 'Be Vietnam Pro', sans-serif;
+  --font-body: 'Inter', 'Be Vietnam Pro', sans-serif;
+  --container: 1200px;
+  --section-py: 96px;
+  --transition: 250ms cubic-bezier(0.4, 0, 0.2, 1);
+  --green: #2D9C6F;
+  --red: #E53935;
+}
+
+html {
+  scroll-behavior: smooth;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  font-family: var(--font-body);
+  font-size: 16px;
+  line-height: 1.6;
+  color: var(--text-dark);
+  background: var(--bg-white);
+  overflow-x: hidden;
+}
+
+img { max-width: 100%; display: block; }
+a { text-decoration: none; color: inherit; }
+
+.container {
+  max-width: var(--container);
+  margin: 0 auto;
+  padding: 0 24px;
+}
+
+/* ========================================
+   TYPOGRAPHY
+   ======================================== */
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-heading);
+  font-weight: 700;
+  line-height: 1.2;
+  color: var(--primary);
+}
+
+h1 { font-size: clamp(32px, 4vw, 52px); font-weight: 800; }
+h2 { font-size: clamp(28px, 3.5vw, 40px); }
+h3 { font-size: clamp(20px, 2.5vw, 24px); }
+
+.section-label {
+  display: inline-block;
+  font-family: var(--font-heading);
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--secondary);
+  margin-bottom: 16px;
+}
+
+.section-subtitle {
+  font-size: clamp(16px, 1.8vw, 20px);
+  color: var(--text-muted);
+  max-width: 640px;
+  margin: 16px auto 0;
+  line-height: 1.6;
+}
+
+.text-center { text-align: center; }
+
+/* ========================================
+   BUTTONS
+   ======================================== */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  font-family: var(--font-heading);
+  font-weight: 600;
+  font-size: 16px;
+  border: none;
+  border-radius: var(--radius-md);
+  padding: 16px 32px;
+  cursor: pointer;
+  transition: all var(--transition);
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.btn-primary {
+  background: var(--accent);
+  color: #fff;
+  box-shadow: 0 4px 16px rgba(255, 111, 97, 0.3);
+}
+
+.btn-primary:hover {
+  background: var(--accent-hover);
+  transform: scale(1.05);
+  box-shadow: 0 6px 24px rgba(255, 111, 97, 0.4);
+}
+
+.btn-secondary {
+  background: transparent;
+  color: var(--primary);
+  border: 2px solid var(--border-light);
+}
+
+.btn-secondary:hover {
+  border-color: var(--secondary);
+  color: var(--secondary);
+}
+
+.btn-lg {
+  padding: 20px 40px;
+  font-size: 18px;
+  border-radius: var(--radius-lg);
+}
+
+/* ========================================
+   NAVIGATION
+   ======================================== */
+.nav {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1000;
+  padding: 0 24px;
+  transition: all 300ms ease;
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-bottom: 1px solid rgba(226, 232, 240, 0.5);
+}
+
+.nav-inner {
+  max-width: var(--container);
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 72px;
+}
+
+.nav-logo {
+  font-family: var(--font-heading);
+  font-weight: 800;
+  font-size: 24px;
+  color: var(--primary);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.nav-logo .logo-mark {
+  width: 36px;
+  height: 36px;
+  background: linear-gradient(135deg, var(--secondary), var(--primary));
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  font-size: 18px;
+  font-weight: 800;
+}
+
+.nav-links {
+  display: flex;
+  align-items: center;
+  gap: 32px;
+  list-style: none;
+}
+
+.nav-links a {
+  font-family: var(--font-heading);
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--text-muted);
+  transition: color var(--transition);
+}
+
+.nav-links a:hover { color: var(--primary); }
+
+.nav-links a.active {
+  color: var(--primary);
+  font-weight: 600;
+  position: relative;
+}
+
+.nav-links a.active::after {
+  content: '';
+  position: absolute;
+  bottom: -4px;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: var(--secondary);
+  border-radius: 1px;
+}
+
+.nav-cta {
+  font-size: 14px !important;
+  padding: 10px 24px !important;
+  background: var(--primary) !important;
+  color: #fff !important;
+  box-shadow: 0 2px 8px rgba(27, 54, 93, 0.25) !important;
+}
+.nav-cta:hover {
+  background: var(--primary-light) !important;
+  box-shadow: 0 4px 16px rgba(27, 54, 93, 0.35) !important;
+}
+
+.nav-mobile-btn {
+  display: none;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 8px;
+}
+
+@media (max-width: 768px) {
+  .nav-links { display: none; }
+  .nav-mobile-btn { display: block; }
+  .nav-links.open {
+    display: flex;
+    flex-direction: column;
+    position: absolute;
+    top: 72px;
+    left: 0;
+    right: 0;
+    background: rgba(255,255,255,0.98);
+    backdrop-filter: blur(12px);
+    padding: 24px;
+    gap: 20px;
+    border-bottom: 1px solid var(--border-light);
+  }
+}
+
+/* ========================================
+   BREADCRUMB
+   ======================================== */
+.breadcrumb {
+  padding: 16px 0;
+  font-size: 13px;
+  color: var(--text-muted);
+}
+
+.breadcrumb a {
+  color: var(--secondary);
+  transition: color var(--transition);
+}
+
+.breadcrumb a:hover { color: var(--primary); }
+
+.breadcrumb span { margin: 0 8px; opacity: 0.5; }
+
+/* ========================================
+   HERO (COMPACT)
+   ======================================== */
+.hero-compact {
+  padding: 120px 0 64px;
+  background: var(--bg-light);
+  position: relative;
+  overflow: hidden;
+}
+
+.hero-compact .hero-bg {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+}
+
+.hero-gradient {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(120px);
+  opacity: 0.1;
+  animation: float 20s ease-in-out infinite;
+}
+
+.hero-gradient-1 {
+  width: 600px;
+  height: 600px;
+  top: -200px;
+  right: -100px;
+  background: var(--secondary);
+}
+
+.hero-gradient-2 {
+  width: 400px;
+  height: 400px;
+  bottom: -100px;
+  left: -100px;
+  background: var(--accent);
+  animation-delay: -7s;
+}
+
+@keyframes float {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  33% { transform: translate(30px, -20px) scale(1.05); }
+  66% { transform: translate(-20px, 20px) scale(0.95); }
+}
+
+.hero-compact .container {
+  position: relative;
+  z-index: 1;
+}
+
+.hero-compact h1 {
+  margin-bottom: 16px;
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.hero-compact .hero-subtitle {
+  font-size: clamp(16px, 1.8vw, 20px);
+  color: var(--text-muted);
+  max-width: 680px;
+  margin: 0 auto;
+  line-height: 1.7;
+}
+
+.hero-options {
+  display: flex;
+  justify-content: center;
+  gap: 16px;
+  margin-top: 40px;
+  flex-wrap: wrap;
+}
+
+.hero-option {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 24px;
+  background: var(--bg-white);
+  border-radius: 100px;
+  font-family: var(--font-heading);
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text-dark);
+  box-shadow: var(--shadow-sm);
+}
+
+.hero-option .option-icon {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
+}
+
+.hero-option:nth-child(1) .option-icon { background: rgba(255,111,97,0.1); }
+.hero-option:nth-child(2) .option-icon { background: rgba(54,140,191,0.1); }
+.hero-option:nth-child(3) .option-icon { background: rgba(45,156,111,0.1); }
+
+/* ========================================
+   COMPARISON TABLES
+   ======================================== */
+.comparison-section {
+  padding: var(--section-py) 0;
+}
+
+.comparison-section.bg-light { background: var(--bg-light); }
+.comparison-section.bg-white { background: var(--bg-white); }
+
+.table-wrap {
+  margin-top: 48px;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-md);
+}
+
+.table-wrap::-webkit-scrollbar {
+  height: 6px;
+}
+.table-wrap::-webkit-scrollbar-track {
+  background: var(--bg-light);
+  border-radius: 3px;
+}
+.table-wrap::-webkit-scrollbar-thumb {
+  background: var(--border-light);
+  border-radius: 3px;
+}
+
+.comp-table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  min-width: 680px;
+  background: var(--bg-white);
+}
+
+.comp-table th,
+.comp-table td {
+  padding: 16px 20px;
+  text-align: left;
+  font-size: 14px;
+  border-bottom: 1px solid var(--border-light);
+  vertical-align: top;
+}
+
+.comp-table thead th {
+  font-family: var(--font-heading);
+  font-weight: 700;
+  font-size: 14px;
+  padding: 18px 20px;
+  background: var(--bg-light);
+  color: var(--text-dark);
+  position: sticky;
+  top: 0;
+  z-index: 2;
+  white-space: nowrap;
+}
+
+.comp-table thead th:first-child {
+  border-radius: var(--radius-lg) 0 0 0;
+  min-width: 180px;
+}
+
+.comp-table thead th:last-child {
+  border-radius: 0 var(--radius-lg) 0 0;
+}
+
+.comp-table tbody tr:last-child td { border-bottom: none; }
+.comp-table tbody tr:last-child td:first-child { border-radius: 0 0 0 var(--radius-lg); }
+.comp-table tbody tr:last-child td:last-child { border-radius: 0 0 var(--radius-lg) 0; }
+
+.comp-table tbody tr {
+  transition: background var(--transition);
+}
+
+.comp-table tbody tr:hover td {
+  background: rgba(54, 140, 191, 0.02);
+}
+.comp-table tbody tr:hover td.col-diso {
+  background: rgba(27, 54, 93, 0.06);
+}
+
+.comp-table td:first-child {
+  font-family: var(--font-heading);
+  font-weight: 600;
+  color: var(--primary);
+  font-size: 13px;
+}
+
+/* Highlight Diso column */
+.col-diso {
+  position: relative;
+}
+
+.comp-table thead .col-diso {
+  background: var(--primary) !important;
+  color: #fff !important;
+}
+
+.comp-table tbody .col-diso {
+  background: rgba(27, 54, 93, 0.03);
+  font-weight: 500;
+}
+
+/* Summary row */
+.comp-table .row-summary td {
+  font-family: var(--font-heading);
+  font-weight: 700;
+  font-size: 14px;
+  background: var(--bg-light);
+  color: var(--primary);
+  border-top: 2px solid var(--border-light);
+}
+
+.comp-table .row-summary td.col-diso {
+  background: rgba(27, 54, 93, 0.08);
+  color: var(--primary);
+}
+
+/* Check / Cross icons */
+.check {
+  color: var(--green);
+  font-weight: 600;
+}
+
+.cross {
+  color: var(--red);
+  font-weight: 600;
+}
+
+.check-icon, .cross-icon {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.check-icon::before {
+  content: '';
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: rgba(45, 156, 111, 0.1);
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%232D9C6F' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='20 6 9 17 4 12'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: center;
+  flex-shrink: 0;
+}
+
+.cross-icon::before {
+  content: '';
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: rgba(229, 57, 53, 0.1);
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='10' viewBox='0 0 24 24' fill='none' stroke='%23E53935' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cline x1='18' y1='6' x2='6' y2='18'/%3E%3Cline x1='6' y1='6' x2='18' y2='18'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: center;
+  flex-shrink: 0;
+}
+
+.neutral {
+  color: var(--text-muted);
+}
+
+/* Column header labels */
+.col-label {
+  display: block;
+  font-size: 11px;
+  font-weight: 500;
+  opacity: 0.7;
+  margin-top: 2px;
+}
+
+.col-diso .col-label {
+  opacity: 0.85;
+}
+
+/* ========================================
+   STICKY TAB BAR
+   ======================================== */
+.tab-bar {
+  position: sticky;
+  top: 72px;
+  z-index: 900;
+  background: rgba(255,255,255,0.92);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--border-light);
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  transition: transform 300ms ease, opacity 300ms ease;
+}
+
+.tab-bar.hidden {
+  transform: translateY(-100%);
+  opacity: 0;
+  pointer-events: none;
+}
+
+.tab-bar::-webkit-scrollbar { height: 0; }
+
+.tab-bar-inner {
+  max-width: var(--container);
+  margin: 0 auto;
+  padding: 0 24px;
+  display: flex;
+  gap: 0;
+  min-width: max-content;
+}
+
+.tab-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 14px 20px;
+  font-family: var(--font-heading);
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--text-muted);
+  text-decoration: none;
+  white-space: nowrap;
+  border-bottom: 2px solid transparent;
+  transition: all var(--transition);
+  cursor: pointer;
+}
+
+.tab-item:hover {
+  color: var(--primary);
+  background: rgba(27, 54, 93, 0.03);
+}
+
+.tab-item.active {
+  color: var(--primary);
+  font-weight: 600;
+  border-bottom-color: var(--secondary);
+}
+
+.tab-icon {
+  width: 28px;
+  height: 28px;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.tab-icon.t1 { background: rgba(27, 54, 93, 0.08); color: var(--primary); }
+.tab-icon.t2 { background: rgba(54, 140, 191, 0.08); color: var(--secondary); }
+.tab-icon.t3 { background: rgba(45, 156, 111, 0.08); color: var(--green); }
+.tab-icon.t4 { background: rgba(155, 89, 182, 0.08); color: #9B59B6; }
+.tab-icon.t5 { background: rgba(255, 111, 97, 0.08); color: var(--accent); }
+
+@media (max-width: 768px) {
+  .tab-item { padding: 12px 16px; font-size: 12px; }
+  .tab-icon { width: 24px; height: 24px; }
+  .tab-icon svg { width: 14px; height: 14px; }
+}
+
+/* ========================================
+   PILLAR DETAIL SECTIONS (open, no accordion)
+   ======================================== */
+.pillars-section {
+  padding: 0;
+  background: var(--bg-white);
+}
+
+.pillar-detail {
+  padding: 64px 0;
+  border-bottom: 1px solid var(--border-light);
+  scroll-margin-top: 130px;
+}
+
+.pillar-detail:nth-child(even) {
+  background: var(--bg-light);
+}
+
+.pillar-detail:last-child {
+  border-bottom: none;
+}
+
+.pillar-header {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 32px;
+}
+
+.pillar-icon-lg {
+  width: 48px;
+  height: 48px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.pillar-icon-lg.p1 { background: rgba(27, 54, 93, 0.08); color: var(--primary); }
+.pillar-icon-lg.p2 { background: rgba(54, 140, 191, 0.08); color: var(--secondary); }
+.pillar-icon-lg.p3 { background: rgba(45, 156, 111, 0.08); color: var(--green); }
+.pillar-icon-lg.p4 { background: rgba(155, 89, 182, 0.08); color: #9B59B6; }
+.pillar-icon-lg.p5 { background: rgba(255, 111, 97, 0.08); color: var(--accent); }
+
+.pillar-header-text h3 {
+  font-size: 22px;
+  margin-bottom: 4px;
+}
+
+.pillar-header-text .pillar-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--secondary);
+  transition: all var(--transition);
+}
+
+.pillar-header-text .pillar-link:hover {
+  color: var(--primary);
+  gap: 8px;
+}
+
+/* ========================================
+   COST SUMMARY CARDS
+   ======================================== */
+.cost-section {
+  padding: var(--section-py) 0;
+  background: var(--bg-light);
+}
+
+.cost-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+  margin-top: 48px;
+}
+
+.cost-card {
+  background: var(--bg-white);
+  border-radius: var(--radius-lg);
+  padding: 32px 28px;
+  box-shadow: var(--shadow-sm);
+  transition: all var(--transition);
+  position: relative;
+  overflow: hidden;
+}
+
+.cost-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+}
+
+.cost-card.card-build::before { background: var(--accent); }
+.cost-card.card-marketplace::before { background: var(--secondary); }
+.cost-card.card-diso::before { background: linear-gradient(90deg, var(--primary), var(--secondary)); }
+
+.cost-card.card-diso {
+  border: 2px solid rgba(54, 140, 191, 0.2);
+  box-shadow: var(--shadow-md);
+}
+
+.cost-card:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-lg);
+}
+
+.cost-card-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 24px;
+}
+
+.cost-card-icon {
+  width: 40px;
+  height: 40px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.card-build .cost-card-icon { background: rgba(255, 111, 97, 0.1); color: var(--accent); }
+.card-marketplace .cost-card-icon { background: rgba(54, 140, 191, 0.1); color: var(--secondary); }
+.card-diso .cost-card-icon { background: rgba(27, 54, 93, 0.1); color: var(--primary); }
+
+.cost-card-title {
+  font-family: var(--font-heading);
+  font-weight: 700;
+  font-size: 18px;
+  color: var(--primary);
+}
+
+.cost-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  padding: 14px 0;
+  border-bottom: 1px solid var(--border-light);
+  gap: 12px;
+}
+
+.cost-item:last-child { border-bottom: none; }
+
+.cost-label {
+  font-size: 13px;
+  color: var(--text-muted);
+  flex-shrink: 0;
+}
+
+.cost-value {
+  font-family: var(--font-heading);
+  font-weight: 600;
+  font-size: 14px;
+  color: var(--text-dark);
+  text-align: right;
+}
+
+.cost-card.card-diso .cost-value {
+  color: var(--primary);
+}
+
+.cost-badge {
+  display: inline-block;
+  padding: 4px 12px;
+  border-radius: 100px;
+  font-size: 11px;
+  font-weight: 600;
+  font-family: var(--font-heading);
+  margin-top: 16px;
+}
+
+.cost-badge.badge-warning {
+  background: rgba(255, 111, 97, 0.1);
+  color: var(--accent);
+}
+
+.cost-badge.badge-info {
+  background: rgba(54, 140, 191, 0.1);
+  color: var(--secondary);
+}
+
+.cost-badge.badge-success {
+  background: rgba(45, 156, 111, 0.1);
+  color: var(--green);
+}
+
+@media (max-width: 960px) { .cost-grid { grid-template-columns: 1fr; max-width: 480px; margin-left: auto; margin-right: auto; } }
+
+/* ========================================
+   DECISION QUESTIONS
+   ======================================== */
+.decisions-section {
+  padding: var(--section-py) 0;
+  background: var(--bg-white);
+}
+
+.decisions-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+  margin-top: 48px;
+}
+
+.decision-card {
+  background: var(--bg-light);
+  border-radius: var(--radius-lg);
+  padding: 32px 28px;
+  position: relative;
+  transition: all var(--transition);
+  border: 1px solid transparent;
+}
+
+.decision-card:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-md);
+  border-color: rgba(54, 140, 191, 0.15);
+  background: var(--bg-white);
+}
+
+.decision-number {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--secondary), var(--primary));
+  color: #fff;
+  font-family: var(--font-heading);
+  font-weight: 800;
+  font-size: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 20px;
+}
+
+.decision-card h3 {
+  font-size: 17px;
+  margin-bottom: 16px;
+  color: var(--text-dark);
+  line-height: 1.4;
+}
+
+.decision-answer {
+  font-size: 14px;
+  color: var(--text-muted);
+  line-height: 1.7;
+  padding-top: 16px;
+  border-top: 1px solid var(--border-light);
+}
+
+.decision-answer strong {
+  color: var(--primary);
+}
+
+@media (max-width: 768px) { .decisions-grid { grid-template-columns: 1fr; } }
+
+/* ========================================
+   KEY MESSAGES
+   ======================================== */
+.messages-section {
+  padding: var(--section-py) 0;
+  background: var(--bg-light);
+}
+
+.messages-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+  margin-top: 48px;
+}
+
+.message-card {
+  padding: 32px 28px;
+  border-radius: var(--radius-lg);
+  position: relative;
+  transition: all var(--transition);
+}
+
+.message-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 28px;
+  right: 28px;
+  height: 3px;
+  border-radius: 2px;
+}
+
+.message-card:nth-child(1) { background: var(--bg-white); }
+.message-card:nth-child(1)::before { background: var(--accent); }
+.message-card:nth-child(2) { background: var(--bg-white); }
+.message-card:nth-child(2)::before { background: var(--text-muted); }
+.message-card:nth-child(3) { background: var(--bg-white); border: 2px solid rgba(54,140,191,0.15); }
+.message-card:nth-child(3)::before { background: linear-gradient(90deg, var(--primary), var(--secondary)); }
+
+.message-card:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-md);
+}
+
+.message-quote {
+  font-family: var(--font-heading);
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--primary);
+  line-height: 1.4;
+  margin-bottom: 16px;
+}
+
+.message-detail {
+  font-size: 14px;
+  color: var(--text-muted);
+  line-height: 1.7;
+}
+
+@media (max-width: 768px) { .messages-grid { grid-template-columns: 1fr; } }
+
+/* ========================================
+   CTA SECTION
+   ======================================== */
+.cta-section {
+  padding: var(--section-py) 0;
+  background: var(--bg-white);
+}
+
+.cta-box {
+  text-align: center;
+  padding: 64px 48px;
+  background: linear-gradient(135deg, rgba(27,54,93,0.03), rgba(54,140,191,0.06));
+  border-radius: var(--radius-xl);
+  border: 1px solid rgba(54, 140, 191, 0.1);
+}
+
+.cta-box h2 {
+  font-size: clamp(24px, 3vw, 36px);
+  margin-bottom: 12px;
+}
+
+.cta-box p {
+  color: var(--text-muted);
+  font-size: 17px;
+  margin-bottom: 36px;
+  line-height: 1.7;
+}
+
+.cta-box .cta-sub {
+  font-size: 13px;
+  color: var(--text-light);
+  margin-top: 16px;
+  margin-bottom: 0;
+}
+
+@media (max-width: 560px) {
+  .cta-box { padding: 48px 24px; }
+}
+
+/* ========================================
+   BACK LINK
+   ======================================== */
+.back-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--font-heading);
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--secondary);
+  transition: all var(--transition);
+  margin-top: 24px;
+}
+
+.back-link:hover {
+  color: var(--primary);
+  gap: 12px;
+}
+
+/* ========================================
+   FOOTER
+   ======================================== */
+.footer {
+  padding: 48px 0 32px;
+  background: var(--bg-dark);
+  color: rgba(255,255,255,0.6);
+}
+
+.footer-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+
+.footer-logo {
+  font-family: var(--font-heading);
+  font-weight: 800;
+  font-size: 20px;
+  color: #fff;
+}
+
+.footer-text { font-size: 14px; }
+
+/* ========================================
+   SCROLL ANIMATIONS
+   ======================================== */
+.reveal {
+  opacity: 0;
+  transform: translateY(32px);
+  transition: opacity 0.7s cubic-bezier(0.4, 0, 0.2, 1),
+              transform 0.7s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.reveal.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.reveal-delay-1 { transition-delay: 50ms; }
+.reveal-delay-2 { transition-delay: 100ms; }
+.reveal-delay-3 { transition-delay: 150ms; }
+.reveal-delay-4 { transition-delay: 200ms; }
+.reveal-delay-5 { transition-delay: 250ms; }
+
+/* ========================================
+   MOBILE SCROLL HINT
+   ======================================== */
+.scroll-hint {
+  display: none;
+  text-align: right;
+  font-size: 12px;
+  color: var(--text-light);
+  margin-bottom: 8px;
+  padding-right: 4px;
+}
+
+@media (max-width: 768px) {
+  .scroll-hint { display: block; }
+}
+
+/* ========================================
+   REDUCED MOTION
+   ======================================== */
+@media (prefers-reduced-motion: reduce) {
+  .hero-gradient { animation: none; }
+  .reveal { transition: opacity 0.3s ease; transform: none; }
+  html { scroll-behavior: auto; }
+}
+</style>
+</head>
+<body>
+
+<!-- ============ NAVIGATION ============ -->
+<nav class="nav" id="nav" role="navigation" aria-label="Main navigation">
+  <div class="nav-inner">
+    <a href="../" class="nav-logo" aria-label="Diso Commerce Suite">
+      <span class="logo-mark">D</span>
+      Diso
+    </a>
+    <ul class="nav-links" id="navLinks">
+      <li><a href="../">Tổng quan</a></li>
+      <li><a href="../#solution">5 Trụ cột</a></li>
+      <li><a href="../#proof">Khách hàng</a></li>
+      <li><a class="active">So sánh</a></li>
+      <li><a href="https://calendar.app.google/2PrCTZy9JW2UKfsW7" target="_blank" rel="noopener" class="btn btn-primary nav-cta">Demo miễn phí</a></li>
+    </ul>
+    <button class="nav-mobile-btn" id="navToggle" aria-label="Toggle navigation" aria-expanded="false">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--primary)" stroke-width="2" stroke-linecap="round">
+        <line x1="3" y1="6" x2="21" y2="6"/>
+        <line x1="3" y1="12" x2="21" y2="12"/>
+        <line x1="3" y1="18" x2="21" y2="18"/>
+      </svg>
+    </button>
+  </div>
+</nav>
+
+<!-- ============ HERO (COMPACT) ============ -->
+<section class="hero-compact">
+  <div class="hero-bg">
+    <div class="hero-gradient hero-gradient-1"></div>
+    <div class="hero-gradient hero-gradient-2"></div>
+  </div>
+  <div class="container">
+    <nav class="breadcrumb reveal" aria-label="Breadcrumb">
+      <a href="../">Trang chủ</a>
+      <span>/</span>
+      So sánh giải pháp
+    </nav>
+    <div class="text-center" style="margin-top: 32px;">
+      <span class="section-label reveal">So sánh</span>
+      <h1 class="reveal">So sánh giải pháp</h1>
+      <p class="hero-subtitle reveal" style="text-align:center;">3 lựa chọn phổ biến khi kinh doanh online. Xem chi tiết để tìm giải pháp phù hợp nhất cho doanh nghiệp của bạn.</p>
+      <div class="hero-options reveal">
+        <div class="hero-option">
+          <div class="option-icon">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><path d="M14 2v6h6"/></svg>
+          </div>
+          Tự Build
+        </div>
+        <div class="hero-option">
+          <div class="option-icon">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/></svg>
+          </div>
+          Bán trên Sàn
+        </div>
+        <div class="hero-option">
+          <div class="option-icon">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg>
+          </div>
+          Diso Commerce Suite
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ OVERVIEW COMPARISON TABLE ============ -->
+<section class="comparison-section bg-light" id="overview">
+  <div class="container">
+    <div class="text-center">
+      <span class="section-label reveal">Tổng quan</span>
+      <h2 class="reveal">Bảng so sánh tổng quan</h2>
+      <p class="section-subtitle reveal">7 tiêu chí quan trọng nhất khi lựa chọn giải pháp kinh doanh online</p>
+    </div>
+    <div class="reveal">
+      <div class="scroll-hint">Vuốt sang phải để xem thêm &rarr;</div>
+      <div class="table-wrap">
+        <table class="comp-table">
+          <thead>
+            <tr>
+              <th>Tiêu chí</th>
+              <th>Tự Build <span class="col-label">(thuê dev)</span></th>
+              <th>Bán trên Sàn <span class="col-label">(Shopee/Lazada/TikTok)</span></th>
+              <th class="col-diso">Diso Commerce Suite <span class="col-label">SaaS Platform</span></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Chi phí ban đầu</td>
+              <td>500 triệu — 2 tỷ VND</td>
+              <td>"Miễn phí"</td>
+              <td class="col-diso"><strong>Phí SaaS hàng tháng</strong></td>
+            </tr>
+            <tr>
+              <td>Chi phí vận hành</td>
+              <td>Lương team dev 50-100tr/tháng</td>
+              <td>3-15% phí hoa hồng mỗi đơn</td>
+              <td class="col-diso"><strong>Cố định, dự đoán được</strong></td>
+            </tr>
+            <tr>
+              <td>Thời gian triển khai</td>
+              <td>6-12 tháng</td>
+              <td><span class="check">Ngay lập tức</span></td>
+              <td class="col-diso"><strong>2-4 tuần</strong></td>
+            </tr>
+            <tr>
+              <td>Thương hiệu</td>
+              <td><span class="check-icon">100% của bạn</span></td>
+              <td><span class="cross-icon">Của sàn (logo sàn, template sàn)</span></td>
+              <td class="col-diso"><span class="check-icon"><strong>100% của bạn (white-label)</strong></span></td>
+            </tr>
+            <tr>
+              <td>Domain riêng</td>
+              <td><span class="check-icon">Có</span></td>
+              <td><span class="cross-icon">shopee.vn/shop/...</span></td>
+              <td class="col-diso"><span class="check-icon"><strong>yourbrand.com</strong></span></td>
+            </tr>
+            <tr>
+              <td>Data khách hàng</td>
+              <td><span class="check-icon">Của bạn</span></td>
+              <td><span class="cross-icon">Của sàn</span></td>
+              <td class="col-diso"><span class="check-icon"><strong>Của bạn</strong></span></td>
+            </tr>
+            <tr>
+              <td>SEO & Google Search</td>
+              <td><span class="check-icon">Tự làm</span></td>
+              <td><span class="cross-icon">Traffic thuộc sàn</span></td>
+              <td class="col-diso"><span class="check-icon"><strong>Chuẩn SEO built-in</strong></span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <div class="text-center reveal" style="margin-top:32px;">
+      <a href="../#solution" class="back-link">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+        Tìm hiểu thêm về 5 trụ cột trên trang chủ
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ============ STICKY TAB BAR ============ -->
+<div class="tab-bar" id="tabBar">
+  <div class="tab-bar-inner">
+    <a class="tab-item active" href="#pillar-1">
+      <div class="tab-icon t1"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/></svg></div>
+      Website TMĐT
+    </a>
+    <a class="tab-item" href="#pillar-2">
+      <div class="tab-icon t2"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M16 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="8.5" cy="7" r="4"/><path d="M20 8v6M23 11h-6"/></svg></div>
+      Affiliate
+    </a>
+    <a class="tab-item" href="#pillar-3">
+      <div class="tab-icon t3"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg></div>
+      Vận hành
+    </a>
+    <a class="tab-item" href="#pillar-4">
+      <div class="tab-icon t4"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="3"/><path d="M12 1v4M12 19v4M4.22 4.22l2.83 2.83M16.95 16.95l2.83 2.83M1 12h4M19 12h4M4.22 19.78l2.83-2.83M16.95 7.05l2.83-2.83"/></svg></div>
+      Reseller
+    </a>
+    <a class="tab-item" href="#pillar-5">
+      <div class="tab-icon t5"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M21 11.5a8.38 8.38 0 01-.9 3.8 8.5 8.5 0 01-7.6 4.7 8.38 8.38 0 01-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 01-.9-3.8 8.5 8.5 0 014.7-7.6 8.38 8.38 0 013.8-.9h.5a8.48 8.48 0 018 8v.5z"/></svg></div>
+      Đại sứ
+    </a>
+  </div>
+</div>
+
+<!-- ============ 5 PILLAR DETAIL SECTIONS (ALL OPEN) ============ -->
+<section class="pillars-section" id="pillars">
+
+  <!-- PILLAR 1 -->
+  <div class="pillar-detail" id="pillar-1">
+    <div class="container">
+      <div class="pillar-header reveal">
+        <div class="pillar-icon-lg p1"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/></svg></div>
+        <div class="pillar-header-text">
+          <h3>1. Website Thương mại điện tử</h3>
+          <a href="../#features" class="pillar-link">Xem trên trang chủ <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7M17 7H7M17 7v10"/></svg></a>
+        </div>
+      </div>
+      <div class="reveal">
+        <div class="scroll-hint">Vuốt sang phải để xem thêm &rarr;</div>
+        <div class="table-wrap">
+          <table class="comp-table">
+            <thead><tr><th>Tính năng</th><th>Tự Build</th><th>Bán trên Sàn</th><th class="col-diso">Diso</th></tr></thead>
+            <tbody>
+              <tr><td>Quản lý sản phẩm (SKU, biến thể, giá)</td><td><span class="check-icon">Tự code</span></td><td><span class="check-icon">Có sẵn</span></td><td class="col-diso"><span class="check-icon"><strong>Có sẵn</strong></span></td></tr>
+              <tr><td>Giỏ hàng & thanh toán</td><td><span class="check-icon">Tự tích hợp</span></td><td><span class="check-icon">Có sẵn</span></td><td class="col-diso"><span class="check-icon"><strong>Có sẵn (COD + online)</strong></span></td></tr>
+              <tr><td>Giao diện tùy chỉnh</td><td><span class="check-icon">Tự do</span></td><td><span class="cross-icon">Template sàn</span></td><td class="col-diso"><span class="check-icon"><strong>White-label, tùy chỉnh</strong></span></td></tr>
+              <tr><td>Mã giảm giá & Flash Sale</td><td class="neutral">Tự code thêm</td><td><span class="check-icon">Có sẵn</span></td><td class="col-diso"><span class="check-icon"><strong>Có sẵn</strong></span></td></tr>
+              <tr><td>Tối ưu Mobile</td><td class="neutral">Tùy team dev</td><td><span class="check-icon">App sàn</span></td><td class="col-diso"><span class="check-icon"><strong>Responsive built-in</strong></span></td></tr>
+              <tr><td>SEO</td><td class="neutral">Tùy team dev</td><td><span class="cross-icon">Không kiểm soát</span></td><td class="col-diso"><span class="check-icon"><strong>Chuẩn SEO</strong></span></td></tr>
+              <tr class="row-summary"><td>Tổng thời gian</td><td>6-12 tháng</td><td>Ngay</td><td class="col-diso"><strong>2 tuần</strong></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PILLAR 2 -->
+  <div class="pillar-detail" id="pillar-2">
+    <div class="container">
+      <div class="pillar-header reveal">
+        <div class="pillar-icon-lg p2"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M16 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="8.5" cy="7" r="4"/><path d="M20 8v6M23 11h-6"/></svg></div>
+        <div class="pillar-header-text">
+          <h3>2. Affiliate Marketing</h3>
+          <a href="../#features" class="pillar-link">Xem trên trang chủ <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7M17 7H7M17 7v10"/></svg></a>
+        </div>
+      </div>
+      <div class="reveal">
+        <div class="scroll-hint">Vuốt sang phải để xem thêm &rarr;</div>
+        <div class="table-wrap">
+          <table class="comp-table">
+            <thead><tr><th>Tính năng</th><th>Tự Build</th><th>Bán trên Sàn</th><th class="col-diso">Diso</th></tr></thead>
+            <tbody>
+              <tr><td>Link tracking (click, đơn hàng)</td><td class="neutral">Tự code hoặc mua tool</td><td><span class="cross-icon">Không có</span></td><td class="col-diso"><span class="check-icon"><strong>Built-in</strong></span></td></tr>
+              <tr><td>Cấu hình hoa hồng linh hoạt</td><td class="neutral">Tự code</td><td><span class="cross-icon">Không có</span></td><td class="col-diso"><span class="check-icon"><strong>Theo sản phẩm, tier, campaign</strong></span></td></tr>
+              <tr><td>Dashboard cho affiliate</td><td class="neutral">Tự code</td><td><span class="cross-icon">Không có</span></td><td class="col-diso"><span class="check-icon"><strong>Affiliate tự theo dõi</strong></span></td></tr>
+              <tr><td>Promotion tools (banner, mã riêng)</td><td class="neutral">Tự code</td><td><span class="cross-icon">Không có</span></td><td class="col-diso"><span class="check-icon"><strong>Có sẵn</strong></span></td></tr>
+              <tr><td>Phân nhóm & targeting</td><td class="neutral">Tự code</td><td><span class="cross-icon">Không có</span></td><td class="col-diso"><span class="check-icon"><strong>Gửi đúng campaign đúng người</strong></span></td></tr>
+              <tr><td>Chống gian lận click/đơn ảo</td><td class="neutral">Tự code (rất phức tạp)</td><td><span class="cross-icon">Không có</span></td><td class="col-diso"><span class="check-icon"><strong>Tự động phát hiện</strong></span></td></tr>
+              <tr class="row-summary"><td>Tổng thời gian</td><td>3-6 tháng thêm</td><td>Không có</td><td class="col-diso"><strong>Có sẵn</strong></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PILLAR 3 -->
+  <div class="pillar-detail" id="pillar-3">
+    <div class="container">
+      <div class="pillar-header reveal">
+        <div class="pillar-icon-lg p3"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg></div>
+        <div class="pillar-header-text">
+          <h3>3. Backend vận hành</h3>
+          <a href="../#features" class="pillar-link">Xem trên trang chủ <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7M17 7H7M17 7v10"/></svg></a>
+        </div>
+      </div>
+      <div class="reveal">
+        <div class="scroll-hint">Vuốt sang phải để xem thêm &rarr;</div>
+        <div class="table-wrap">
+          <table class="comp-table">
+            <thead><tr><th>Tính năng</th><th>Tự Build</th><th>Bán trên Sàn</th><th class="col-diso">Diso</th></tr></thead>
+            <tbody>
+              <tr><td>Quản lý đơn hàng tập trung</td><td class="neutral">Tự code</td><td><span class="check-icon">Của sàn</span></td><td class="col-diso"><span class="check-icon"><strong>1 nơi xem tất cả</strong></span></td></tr>
+              <tr><td>Tích hợp vận chuyển (GHN, GHTK, J&T, Viettel Post)</td><td class="neutral">Tự tích hợp từng API</td><td><span class="check-icon">Sàn lo</span></td><td class="col-diso"><span class="check-icon"><strong>Tạo vận đơn 1 click</strong></span></td></tr>
+              <tr><td>Quản lý tồn kho</td><td class="neutral">Tự code</td><td class="neutral">Cơ bản</td><td class="col-diso"><span class="check-icon"><strong>Cảnh báo hết hàng tự động</strong></span></td></tr>
+              <tr><td>Đối soát đơn hàng</td><td class="neutral">Tự code</td><td class="neutral">Sàn quyết định</td><td class="col-diso"><span class="check-icon"><strong>Tự động</strong></span></td></tr>
+              <tr><td>Đối soát hoa hồng affiliate</td><td class="neutral">Tự code</td><td><span class="cross-icon">Không có</span></td><td class="col-diso"><span class="check-icon"><strong>Tự động</strong></span></td></tr>
+              <tr><td>Đối soát hoa hồng reseller</td><td class="neutral">Tự code</td><td><span class="cross-icon">Không có</span></td><td class="col-diso"><span class="check-icon"><strong>Tự động</strong></span></td></tr>
+              <tr><td>Đối soát đại sứ thương hiệu</td><td class="neutral">Tự code</td><td><span class="cross-icon">Không có</span></td><td class="col-diso"><span class="check-icon"><strong>Tự động</strong></span></td></tr>
+              <tr><td>CRM khách hàng</td><td class="neutral">Tự code hoặc mua tool</td><td><span class="cross-icon">Data của sàn</span></td><td class="col-diso"><span class="check-icon"><strong>Chăm sóc, tái mua</strong></span></td></tr>
+              <tr><td>Analytics real-time</td><td class="neutral">Tự code</td><td class="neutral">Cơ bản</td><td class="col-diso"><span class="check-icon"><strong>Doanh thu, đơn hàng, hiệu quả</strong></span></td></tr>
+              <tr><td>Phân quyền admin</td><td class="neutral">Tự code</td><td><span class="cross-icon">Hạn chế</span></td><td class="col-diso"><span class="check-icon"><strong>Root / Admin / Collaborator</strong></span></td></tr>
+              <tr class="row-summary"><td>Tổng: 4 loại đối soát</td><td>Tự build từng cái</td><td>Chỉ có 1 (của sàn)</td><td class="col-diso"><strong>4 loại tự động</strong></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PILLAR 4 -->
+  <div class="pillar-detail" id="pillar-4">
+    <div class="container">
+      <div class="pillar-header reveal">
+        <div class="pillar-icon-lg p4"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="3"/><path d="M12 1v4M12 19v4M4.22 4.22l2.83 2.83M16.95 16.95l2.83 2.83M1 12h4M19 12h4M4.22 19.78l2.83-2.83M16.95 7.05l2.83-2.83"/></svg></div>
+        <div class="pillar-header-text">
+          <h3>4. Reseller Network</h3>
+          <a href="../#features" class="pillar-link">Xem trên trang chủ <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7M17 7H7M17 7v10"/></svg></a>
+        </div>
+      </div>
+      <div class="reveal">
+        <div class="scroll-hint">Vuốt sang phải để xem thêm &rarr;</div>
+        <div class="table-wrap">
+          <table class="comp-table">
+            <thead><tr><th>Tính năng</th><th>Tự Build</th><th>Bán trên Sàn</th><th class="col-diso">Diso</th></tr></thead>
+            <tbody>
+              <tr><td>Reseller storefront riêng</td><td class="neutral">Tự code</td><td><span class="cross-icon">Không có</span></td><td class="col-diso"><span class="check-icon"><strong>Mỗi reseller có "shop" riêng</strong></span></td></tr>
+              <tr><td>Quản lý đội ngũ reseller</td><td class="neutral">Tự code</td><td><span class="cross-icon">Không có</span></td><td class="col-diso"><span class="check-icon"><strong>Duyệt, theo dõi, đánh giá</strong></span></td></tr>
+              <tr><td>Hoa hồng đa cấp</td><td class="neutral">Tự code (phức tạp)</td><td><span class="cross-icon">Không có</span></td><td class="col-diso"><span class="check-icon"><strong>Theo doanh số, incentive linh hoạt</strong></span></td></tr>
+              <tr><td>Mã giới thiệu & referral</td><td class="neutral">Tự code</td><td><span class="cross-icon">Không có</span></td><td class="col-diso"><span class="check-icon"><strong>Đội ngũ tự phát triển</strong></span></td></tr>
+              <tr><td>Dashboard cho reseller</td><td class="neutral">Tự code</td><td><span class="cross-icon">Không có</span></td><td class="col-diso"><span class="check-icon"><strong>Tự xem đơn, thu nhập</strong></span></td></tr>
+              <tr><td>Gamification (xếp hạng, nhiệm vụ)</td><td class="neutral">Tự code (rất phức tạp)</td><td><span class="cross-icon">Không có</span></td><td class="col-diso"><span class="check-icon"><strong>Bảng xếp hạng, đổi quà</strong></span></td></tr>
+              <tr class="row-summary"><td>Tổng thời gian</td><td>4-8 tháng thêm</td><td>Không có</td><td class="col-diso"><strong>Có sẵn</strong></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PILLAR 5 -->
+  <div class="pillar-detail" id="pillar-5">
+    <div class="container">
+      <div class="pillar-header reveal">
+        <div class="pillar-icon-lg p5"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M21 11.5a8.38 8.38 0 01-.9 3.8 8.5 8.5 0 01-7.6 4.7 8.38 8.38 0 01-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 01-.9-3.8 8.5 8.5 0 014.7-7.6 8.38 8.38 0 013.8-.9h.5a8.48 8.48 0 018 8v.5z"/></svg></div>
+        <div class="pillar-header-text">
+          <h3>5. Đại sứ Thương hiệu</h3>
+          <a href="../#features" class="pillar-link">Xem trên trang chủ <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7M17 7H7M17 7v10"/></svg></a>
+        </div>
+      </div>
+      <div class="reveal">
+        <div class="scroll-hint">Vuốt sang phải để xem thêm &rarr;</div>
+        <div class="table-wrap">
+          <table class="comp-table">
+            <thead><tr><th>Tính năng</th><th>Tự Build</th><th>Bán trên Sàn</th><th class="col-diso">Diso</th></tr></thead>
+            <tbody>
+              <tr><td>Campaign content marketing</td><td class="neutral">Tự code</td><td><span class="cross-icon">Không có</span></td><td class="col-diso"><span class="check-icon"><strong>Tạo chiến dịch theo brief</strong></span></td></tr>
+              <tr><td>7 nền tảng social</td><td class="neutral">Tự tích hợp từng API</td><td><span class="cross-icon">Không có</span></td><td class="col-diso"><span class="check-icon"><strong>TikTok, YouTube, FB, IG, Threads, Shopee, Google</strong></span></td></tr>
+              <tr><td>Duyệt nội dung & hashtag</td><td class="neutral">Tự code</td><td><span class="cross-icon">Không có</span></td><td class="col-diso"><span class="check-icon"><strong>Batch approve/reject</strong></span></td></tr>
+              <tr><td>Analytics (views, likes, engagement)</td><td class="neutral">Tự crawl data</td><td><span class="cross-icon">Không có</span></td><td class="col-diso"><span class="check-icon"><strong>Cập nhật hàng ngày</strong></span></td></tr>
+              <tr><td>Chống gian lận (fake views/followers)</td><td class="neutral">Tự code (cực khó)</td><td><span class="cross-icon">Không có</span></td><td class="col-diso"><span class="check-icon"><strong>Tự động phát hiện</strong></span></td></tr>
+              <tr><td>Thưởng theo hiệu quả</td><td class="neutral">Tự code</td><td><span class="cross-icon">Không có</span></td><td class="col-diso"><span class="check-icon"><strong>3 loại: thống kê, milestone, views</strong></span></td></tr>
+              <tr class="row-summary"><td>Tổng thời gian</td><td>6-12 tháng thêm</td><td>Không có</td><td class="col-diso"><strong>Có sẵn</strong></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</section>
+
+<!-- ============ COST & TIME SUMMARY ============ -->
+<section class="cost-section" id="cost">
+  <div class="container">
+    <div class="text-center">
+      <span class="section-label reveal">Chi phí & Thời gian</span>
+      <h2 class="reveal">Tổng kết chi phí & thời gian</h2>
+      <p class="section-subtitle reveal">So sánh tổng chi phí sở hữu (TCO) qua các phương án</p>
+    </div>
+    <div class="cost-grid">
+
+      <!-- Card: Tự Build -->
+      <div class="cost-card card-build reveal reveal-delay-1">
+        <div class="cost-card-header">
+          <div class="cost-card-icon">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><path d="M14 2v6h6"/></svg>
+          </div>
+          <div class="cost-card-title">Tự Build</div>
+        </div>
+        <div class="cost-item">
+          <span class="cost-label">Chi phí năm 1</span>
+          <span class="cost-value">1-3 tỷ VND</span>
+        </div>
+        <div class="cost-item">
+          <span class="cost-label">Chi phí năm 2+</span>
+          <span class="cost-value">600tr-1.2 tỷ/năm</span>
+        </div>
+        <div class="cost-item">
+          <span class="cost-label">Thời gian đủ 5 module</span>
+          <span class="cost-value">18-36 tháng</span>
+        </div>
+        <div class="cost-item">
+          <span class="cost-label">Rủi ro lớn nhất</span>
+          <span class="cost-value">Team nghỉ = dự án dừng</span>
+        </div>
+        <div class="cost-item">
+          <span class="cost-label">Scale</span>
+          <span class="cost-value">Tốn thêm dev khi scale</span>
+        </div>
+        <span class="cost-badge badge-warning">Chi phí cao, rủi ro lớn</span>
+      </div>
+
+      <!-- Card: Bán trên Sàn -->
+      <div class="cost-card card-marketplace reveal reveal-delay-2">
+        <div class="cost-card-header">
+          <div class="cost-card-icon">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/></svg>
+          </div>
+          <div class="cost-card-title">Bán trên Sàn</div>
+        </div>
+        <div class="cost-item">
+          <span class="cost-label">Chi phí năm 1</span>
+          <span class="cost-value">3-15% x doanh thu</span>
+        </div>
+        <div class="cost-item">
+          <span class="cost-label">Chi phí năm 2+</span>
+          <span class="cost-value">3-15% (tăng theo scale)</span>
+        </div>
+        <div class="cost-item">
+          <span class="cost-label">Thời gian đủ 5 module</span>
+          <span class="cost-value">Không bao giờ</span>
+        </div>
+        <div class="cost-item">
+          <span class="cost-label">Rủi ro lớn nhất</span>
+          <span class="cost-value">Sàn đổi policy = mất kênh</span>
+        </div>
+        <div class="cost-item">
+          <span class="cost-label">Scale</span>
+          <span class="cost-value">Bị giới hạn bởi sàn</span>
+        </div>
+        <span class="cost-badge badge-info">Phụ thuộc nền tảng</span>
+      </div>
+
+      <!-- Card: Diso -->
+      <div class="cost-card card-diso reveal reveal-delay-3">
+        <div class="cost-card-header">
+          <div class="cost-card-icon">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg>
+          </div>
+          <div class="cost-card-title">Diso Commerce Suite</div>
+        </div>
+        <div class="cost-item">
+          <span class="cost-label">Chi phí năm 1</span>
+          <span class="cost-value">Phí SaaS cố định</span>
+        </div>
+        <div class="cost-item">
+          <span class="cost-label">Chi phí năm 2+</span>
+          <span class="cost-value">Phí SaaS cố định</span>
+        </div>
+        <div class="cost-item">
+          <span class="cost-label">Thời gian đủ 5 module</span>
+          <span class="cost-value">2-4 tuần</span>
+        </div>
+        <div class="cost-item">
+          <span class="cost-label">Rủi ro lớn nhất</span>
+          <span class="cost-value">Diso maintain & upgrade</span>
+        </div>
+        <div class="cost-item">
+          <span class="cost-label">Scale</span>
+          <span class="cost-value">Không giới hạn</span>
+        </div>
+        <span class="cost-badge badge-success">Nhanh, ổn định, dự đoán được</span>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ============ 3 DECISION QUESTIONS ============ -->
+<section class="decisions-section" id="decisions">
+  <div class="container">
+    <div class="text-center">
+      <span class="section-label reveal">Quyết định</span>
+      <h2 class="reveal">3 câu hỏi giúp bạn quyết định</h2>
+    </div>
+    <div class="decisions-grid">
+      <div class="decision-card reveal reveal-delay-1">
+        <div class="decision-number">1</div>
+        <h3>Bạn muốn xây thương hiệu riêng hay "gian hàng trên sàn"?</h3>
+        <div class="decision-answer">
+          Nếu thương hiệu riêng: <strong>Diso</strong> hoặc Tự Build. Sàn không phải lựa chọn.
+        </div>
+      </div>
+      <div class="decision-card reveal reveal-delay-2">
+        <div class="decision-number">2</div>
+        <h3>Bạn có budget 1-2 tỷ và team dev 5-10 người?</h3>
+        <div class="decision-answer">
+          Nếu có: Tự Build là option. Nếu không: <strong>Diso</strong> là lựa chọn duy nhất.
+        </div>
+      </div>
+      <div class="decision-card reveal reveal-delay-3">
+        <div class="decision-number">3</div>
+        <h3>Bạn cần affiliate + reseller + đại sứ thương hiệu?</h3>
+        <div class="decision-answer">
+          Tự Build thêm 12-24 tháng nữa. Bán trên Sàn không có. <strong>Diso có sẵn ngay.</strong>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ KEY MESSAGES ============ -->
+<section class="messages-section" id="messages">
+  <div class="container">
+    <div class="text-center">
+      <span class="section-label reveal">Tóm tắt</span>
+      <h2 class="reveal">Điều bạn cần nhớ</h2>
+    </div>
+    <div class="messages-grid">
+      <div class="message-card reveal reveal-delay-1">
+        <div class="message-quote">Bán trên sàn = xây nhà trên đất thuê.</div>
+        <div class="message-detail">Sàn đổi phí, đổi thuật toán, đổi policy &mdash; bạn không kiểm soát được.</div>
+      </div>
+      <div class="message-card reveal reveal-delay-2">
+        <div class="message-quote">Tự build = đắt, lâu, và rủi ro cao.</div>
+        <div class="message-detail">1-2 tỷ cho website. Thêm 1-2 tỷ cho affiliate + reseller + ambassador.</div>
+      </div>
+      <div class="message-card reveal reveal-delay-3">
+        <div class="message-quote">Diso = website riêng, data riêng, triển khai nhanh.</div>
+        <div class="message-detail">5 giải pháp trọn bộ trong 2-4 tuần. Đã triển khai cho 12+ thương hiệu hàng đầu.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ CTA ============ -->
+<section class="cta-section" id="cta">
+  <div class="container">
+    <div class="cta-box reveal">
+      <h2>Đặt lịch demo miễn phí &mdash; 30 phút</h2>
+      <p>Xem trực tiếp 5 module hoạt động. Không cam kết. Không phí.</p>
+      <a href="https://calendar.app.google/2PrCTZy9JW2UKfsW7" target="_blank" rel="noopener" class="btn btn-primary btn-lg">
+        Đặt lịch demo ngay
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+      </a>
+      <p class="cta-sub">Hoặc <a href="../" style="color:var(--secondary);font-weight:500;">quay lại trang chủ</a> để tìm hiểu thêm</p>
+    </div>
+  </div>
+</section>
+
+<!-- ============ FOOTER ============ -->
+<footer class="footer">
+  <div class="container">
+    <div class="footer-inner">
+      <div class="footer-logo">Diso</div>
+      <div class="footer-text">&copy; 2026 Diso. Giải pháp kinh doanh online trọn bộ.</div>
+    </div>
+  </div>
+</footer>
+
+<!-- ============ JAVASCRIPT ============ -->
+<script>
+(function() {
+  'use strict';
+
+  // Mobile nav toggle
+  var navToggle = document.getElementById('navToggle');
+  var navLinks = document.getElementById('navLinks');
+
+  navToggle.addEventListener('click', function() {
+    var isOpen = navLinks.classList.toggle('open');
+    navToggle.setAttribute('aria-expanded', isOpen);
+  });
+
+  navLinks.querySelectorAll('a').forEach(function(link) {
+    link.addEventListener('click', function() {
+      navLinks.classList.remove('open');
+      navToggle.setAttribute('aria-expanded', 'false');
+    });
+  });
+
+  // Scroll reveal with Intersection Observer
+  var revealElements = document.querySelectorAll('.reveal');
+
+  if ('IntersectionObserver' in window) {
+    var observer = new IntersectionObserver(function(entries) {
+      entries.forEach(function(entry) {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+          observer.unobserve(entry.target);
+        }
+      });
+    }, {
+      threshold: 0.1,
+      rootMargin: '0px 0px -40px 0px'
+    });
+
+    revealElements.forEach(function(el) {
+      observer.observe(el);
+    });
+  } else {
+    revealElements.forEach(function(el) {
+      el.classList.add('visible');
+    });
+  }
+
+  // Sticky tab bar — highlight active tab + hide when outside pillars
+  var tabBar = document.getElementById('tabBar');
+  var tabItems = document.querySelectorAll('.tab-item');
+  var pillarSections = document.querySelectorAll('.pillar-detail');
+  var pillarsContainer = document.getElementById('pillars');
+
+  if (pillarSections.length && tabItems.length && pillarsContainer) {
+    // Highlight active pillar tab
+    var tabObserver = new IntersectionObserver(function(entries) {
+      entries.forEach(function(entry) {
+        if (entry.isIntersecting) {
+          var id = entry.target.id;
+          tabItems.forEach(function(tab) {
+            tab.classList.toggle('active', tab.getAttribute('href') === '#' + id);
+          });
+          var activeTab = document.querySelector('.tab-item.active');
+          if (activeTab) {
+            activeTab.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+          }
+        }
+      });
+    }, {
+      threshold: 0.15,
+      rootMargin: '-140px 0px -50% 0px'
+    });
+
+    pillarSections.forEach(function(section) {
+      tabObserver.observe(section);
+    });
+
+    // Show/hide tab bar based on pillars section visibility
+    var barObserver = new IntersectionObserver(function(entries) {
+      entries.forEach(function(entry) {
+        tabBar.classList.toggle('hidden', !entry.isIntersecting);
+      });
+    }, {
+      threshold: 0,
+      rootMargin: '-72px 0px 0px 0px'
+    });
+
+    barObserver.observe(pillarsContainer);
+  }
+
+  // Smooth scroll for anchor links on this page
+  document.querySelectorAll('a[href^="#"]').forEach(function(anchor) {
+    anchor.addEventListener('click', function(e) {
+      var href = this.getAttribute('href');
+      if (href === '#') return;
+      e.preventDefault();
+      var target = document.querySelector(href);
+      if (target) {
+        var nav = document.getElementById('nav');
+        var offset = nav.offsetHeight + 16;
+        var top = target.getBoundingClientRect().top + window.scrollY - offset;
+        window.scrollTo({ top: top, behavior: 'smooth' });
+      }
+    });
+  });
+
+})();
+</script>
+</body>
+</html>
