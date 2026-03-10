@@ -131,7 +131,7 @@ jobs:
   # SSH Deploy to Server
   deploy-to-server:
     needs: [prepare, build]
-    if: always() && !cancelled() && needs.build.result == 'success' && github.ref_name != 'release'
+    if: always() && !cancelled() && needs.build.result == 'success' && github.ref_name == 'release'
     runs-on: ubuntu-latest
     steps:
       - name: Deploy via SSH
@@ -154,7 +154,7 @@ jobs:
 
   # Summary job
   summary:
-    needs: [prepare, build]
+    needs: [prepare, build, deploy-to-server]
     if: always()
     runs-on: ${{ inputs.runner }}
     steps:
