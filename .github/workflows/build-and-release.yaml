@@ -1,0 +1,177 @@
+name: 🚀 [Release] Build image
+
+run-name: 🚀 [Release][${{ inputs.version }}] Building marketing image
+
+on:
+  workflow_dispatch:
+    inputs:
+      runner:
+        description: "Choose runner"
+        required: false
+        default: "ubuntu-latest"
+        type: choice
+        options:
+          - self-hosted
+          - ubuntu-latest
+      version:
+        description: "Input version for release"
+        required: false
+        default: "latest"
+        type: string
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+  actions: read
+
+env:
+  HARBOR_REGISTRY: ${{ secrets.HARBOR_REGISTRY }}
+  HARBOR_USERNAME: ${{ secrets.HARBOR_USERNAME }}
+  HARBOR_PASSWORD: ${{ secrets.HARBOR_PASSWORD }}
+  PROJECT_NAME: marketing
+  DOCKER_BUILDKIT: 1
+  BUILDKIT_PROGRESS: plain
+
+jobs:
+  # Set version string
+  prepare:
+    runs-on: ${{ inputs.runner }}
+    if: github.ref_name == 'release'
+    outputs:
+      version: ${{ steps.set_version.outputs.version }}
+      env_name: ${{ steps.env.outputs.env_name }}
+      env_name_upper: ${{ steps.env.outputs.env_name_upper }}
+    steps:
+      - name: Generate version string
+        id: set_version
+        run: |
+          if [ "${{ github.event.inputs.version }}" = "latest" ]; then
+            VERSION="v$(date +'%Y-%m-%d-%H-%M')"
+          else
+            VERSION="${{ github.event.inputs.version }}"
+          fi
+          echo "version=$VERSION" >> $GITHUB_OUTPUT
+
+      - name: Set environment name
+        id: env
+        run: |
+          if [[ "${{ github.ref_name }}" == "develop" ]]; then
+            echo "env_name=develop" >> $GITHUB_OUTPUT
+            echo "env_name_upper=DEVELOP" >> $GITHUB_OUTPUT
+          elif [[ "${{ github.ref_name }}" == "release" ]]; then
+            echo "env_name=release" >> $GITHUB_OUTPUT
+            echo "env_name_upper=RELEASE" >> $GITHUB_OUTPUT
+          else
+            echo "env_name=develop" >> $GITHUB_OUTPUT
+            echo "env_name_upper=DEVELOP" >> $GITHUB_OUTPUT
+          fi
+
+  # Build Marketing Service
+  build:
+    needs: prepare
+    runs-on: ${{ inputs.runner }}
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Configure Docker daemon for insecure registry
+        run: |
+          if [ -f /etc/docker/daemon.json ] && sudo grep -q "${{ env.HARBOR_REGISTRY }}" /etc/docker/daemon.json 2>/dev/null; then
+            echo "✅ Docker daemon config for Harbor registry already exists, skipping configuration"
+          else
+            sudo mkdir -p /etc/docker
+            echo '{
+              "insecure-registries": ["${{ env.HARBOR_REGISTRY }}"],
+              "registry-mirrors": []
+            }' | sudo tee /etc/docker/daemon.json
+
+            sudo systemctl restart docker
+            sleep 10
+          fi
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+        with:
+          driver-opts: |
+            image=moby/buildkit:latest
+          config-inline: |
+            [registry."${{ env.HARBOR_REGISTRY }}"]
+              http = false
+              insecure = true
+              skip-verify = true
+
+      - name: Test Harbor Registry Connection
+        run: |
+          echo "Testing connection to Harbor registry..."
+          curl -k -I https://${{ env.HARBOR_REGISTRY }}/api/v2.0/systeminfo || echo "HTTPS failed, trying HTTP..."
+          curl -I http://${{ env.HARBOR_REGISTRY }}/api/v2.0/systeminfo || echo "HTTP also failed"
+
+      - name: Login to Harbor Registry
+        uses: docker/login-action@v3
+        with:
+          registry: ${{ env.HARBOR_REGISTRY }}
+          username: ${{ env.HARBOR_USERNAME }}
+          password: ${{ env.HARBOR_PASSWORD }}
+
+      - name: Build and push Docker image
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          file: ./Dockerfile
+          push: true
+          tags: ${{ env.HARBOR_REGISTRY }}/${{ env.PROJECT_NAME }}/landing-page-${{ needs.prepare.outputs.env_name }}:${{ inputs.version }}
+          cache-from: type=registry,ref=${{ env.HARBOR_REGISTRY }}/${{ env.PROJECT_NAME }}/landing-page-${{ steps.env.outputs.env_name }}:buildcache
+          cache-to: type=registry,ref=${{ env.HARBOR_REGISTRY }}/${{ env.PROJECT_NAME }}/landing-page-${{ steps.env.outputs.env_name }}:buildcache,mode=max
+          platforms: linux/amd64
+          buildkitd-flags: --allow-insecure-entitlement security.insecure --allow-insecure-entitlement network.host
+
+  # SSH Deploy to Server
+  deploy-to-server:
+    needs: [prepare, build]
+    if: always() && !cancelled() && needs.build.result == 'success' && github.ref_name != 'release'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Deploy via SSH
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets[format('SSH_HOST_{0}', needs.prepare.outputs.env_name_upper)] }}
+          username: ${{ secrets[format('SSH_USERNAME_{0}', needs.prepare.outputs.env_name_upper)] }}
+          key: ${{ secrets[format('SSH_PRIVATE_KEY_{0}', needs.prepare.outputs.env_name_upper)] }}
+          port: 22
+          timeout: 10m
+          script: |
+            echo "🚀 Starting auto deployment"
+            echo "📍 Environment: ${{ needs.prepare.outputs.env_name }}"
+            echo "🔧 Trigger: ${{ github.event_name }}"
+            echo "📦 Branch: ${{ github.ref_name }}"
+
+            echo "🔄 Deploying Marketing Service..."
+            cd $HOME/home/techcombank/maketing && docker-compose pull && docker-compose up -d
+            echo "✅ Auto deployment completed successfully"
+
+  # Summary job
+  summary:
+    needs: [prepare, build]
+    if: always()
+    runs-on: ${{ inputs.runner }}
+    steps:
+      - name: Build Summary
+        run: |
+          echo "## 📋 Build Summary" >> $GITHUB_STEP_SUMMARY
+          echo "**Branch:** ${{ github.ref_name }}" >> $GITHUB_STEP_SUMMARY
+          echo "**Commit:** ${{ github.sha }}" >> $GITHUB_STEP_SUMMARY
+          echo "**Author:** ${{ github.actor }}" >> $GITHUB_STEP_SUMMARY
+          echo "**Version:** ${{ inputs.version }}" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "### Build Result:" >> $GITHUB_STEP_SUMMARY
+
+          if [[ "${{ needs.build.result }}" == "success" ]]; then
+            echo "- ✅ Marketing - Build Success" >> $GITHUB_STEP_SUMMARY
+          elif [[ "${{ needs.build.result }}" == "skipped" ]]; then
+            echo "- ⏭️ Marketing - Skipped" >> $GITHUB_STEP_SUMMARY
+          else
+            echo "- ❌ Marketing - Build Failed" >> $GITHUB_STEP_SUMMARY
+          fi
