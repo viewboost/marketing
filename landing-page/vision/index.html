@@ -1,0 +1,2255 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tầm nhìn — Xây tài sản với Diso Commerce Suite</title>
+<meta name="description" content="Đừng mua phần mềm — Hãy xây tài sản. Từ gian hàng trên sàn đến nền tảng ecommerce doanh thu 1.000 tỷ. Diso giúp bạn sở hữu nền tảng kinh doanh vĩnh viễn.">
+<link rel="icon" type="image/svg+xml" href="../favicon.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400&family=Inter:wght@400;500;600&subset=vietnamese&display=swap" rel="stylesheet">
+<style>
+/* ========================================
+   CSS RESET & BASE
+   ======================================== */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+:root {
+  --primary: #1B365D;
+  --primary-light: #243f6b;
+  --secondary: #368CBF;
+  --secondary-light: #4da3d4;
+  --accent: #FF6F61;
+  --accent-hover: #ff5a4a;
+  --accent-warm: #F59E0B;
+  --bg-white: #FFFFFF;
+  --bg-light: #F4F6F8;
+  --bg-dark: #0F1F33;
+  --bg-warning: #FFF7ED;
+  --text-dark: #263238;
+  --text-muted: #5A6B7B;
+  --text-light: #8A9AAA;
+  --border-light: #E2E8F0;
+  --green: #2D9C6F;
+  --green-light: #ECFDF5;
+  --red: #E53935;
+  --orange: #EA6C00;
+  --shadow-sm: 0 2px 8px rgba(0,0,0,0.06);
+  --shadow-md: 0 4px 16px rgba(0,0,0,0.08);
+  --shadow-lg: 0 8px 24px rgba(0,0,0,0.12);
+  --shadow-xl: 0 16px 48px rgba(0,0,0,0.16);
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 16px;
+  --radius-xl: 24px;
+  --font-heading: 'Be Vietnam Pro', sans-serif;
+  --font-body: 'Inter', 'Be Vietnam Pro', sans-serif;
+  --container: 1200px;
+  --section-py: 96px;
+  --transition: 250ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+html {
+  scroll-behavior: smooth;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  font-family: var(--font-body);
+  font-size: 16px;
+  line-height: 1.6;
+  color: var(--text-dark);
+  background: var(--bg-white);
+  overflow-x: hidden;
+}
+
+img { max-width: 100%; display: block; }
+a { text-decoration: none; color: inherit; }
+ul { list-style: none; }
+
+.container {
+  max-width: var(--container);
+  margin: 0 auto;
+  padding: 0 24px;
+}
+
+/* ========================================
+   TYPOGRAPHY
+   ======================================== */
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-heading);
+  font-weight: 700;
+  line-height: 1.2;
+  color: var(--primary);
+}
+
+h1 { font-size: clamp(36px, 5vw, 64px); font-weight: 800; }
+h2 { font-size: clamp(28px, 3.5vw, 44px); }
+h3 { font-size: clamp(20px, 2.5vw, 26px); }
+
+.section-label {
+  display: inline-block;
+  font-family: var(--font-heading);
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--secondary);
+  margin-bottom: 16px;
+}
+
+.section-subtitle {
+  font-size: clamp(17px, 1.8vw, 21px);
+  color: var(--text-muted);
+  max-width: 680px;
+  margin: 20px auto 0;
+  line-height: 1.65;
+}
+
+.text-center { text-align: center; }
+
+/* ========================================
+   BUTTONS
+   ======================================== */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  font-family: var(--font-heading);
+  font-weight: 600;
+  font-size: 16px;
+  border: none;
+  border-radius: var(--radius-md);
+  padding: 16px 32px;
+  cursor: pointer;
+  transition: all var(--transition);
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.btn-primary {
+  background: var(--accent);
+  color: #fff;
+  box-shadow: 0 4px 16px rgba(255, 111, 97, 0.3);
+}
+
+.btn-primary:hover {
+  background: var(--accent-hover);
+  transform: scale(1.05);
+  box-shadow: 0 6px 24px rgba(255, 111, 97, 0.45);
+}
+
+.btn-outline-white {
+  background: transparent;
+  color: #fff;
+  border: 2px solid rgba(255,255,255,0.4);
+}
+
+.btn-outline-white:hover {
+  background: rgba(255,255,255,0.12);
+  border-color: rgba(255,255,255,0.75);
+}
+
+.btn-lg {
+  padding: 22px 48px;
+  font-size: 18px;
+  border-radius: var(--radius-lg);
+}
+
+/* ========================================
+   NAVIGATION
+   ======================================== */
+.nav {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1000;
+  padding: 0 24px;
+  transition: all 300ms ease;
+  background: rgba(255,255,255,0.85);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-bottom: 1px solid rgba(226,232,240,0.5);
+}
+
+.nav.scrolled {
+  background: rgba(255,255,255,0.97);
+  border-bottom-color: var(--border-light);
+  box-shadow: var(--shadow-sm);
+}
+
+.nav-inner {
+  max-width: var(--container);
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 72px;
+}
+
+.nav-logo {
+  font-family: var(--font-heading);
+  font-weight: 800;
+  font-size: 24px;
+  color: var(--primary);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.nav-logo .logo-mark {
+  width: 36px;
+  height: 36px;
+  background: linear-gradient(135deg, var(--secondary), var(--primary));
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  font-size: 18px;
+  font-weight: 800;
+}
+
+.nav-links {
+  display: flex;
+  align-items: center;
+  gap: 32px;
+  list-style: none;
+}
+
+.nav-links a {
+  font-family: var(--font-heading);
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--text-muted);
+  transition: color var(--transition);
+}
+
+.nav-links a:hover { color: var(--primary); }
+
+.nav-cta {
+  font-size: 14px !important;
+  padding: 10px 24px !important;
+  background: var(--primary) !important;
+  color: #fff !important;
+  box-shadow: 0 2px 8px rgba(27,54,93,0.25) !important;
+}
+
+.nav-cta:hover {
+  background: var(--primary-light) !important;
+  box-shadow: 0 4px 16px rgba(27,54,93,0.35) !important;
+  transform: none !important;
+}
+
+.nav-mobile-btn {
+  display: none;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 8px;
+  color: var(--primary);
+}
+
+@media (max-width: 768px) {
+  .nav-links { display: none; }
+  .nav-mobile-btn { display: block; }
+  .nav-links.open {
+    display: flex;
+    flex-direction: column;
+    position: absolute;
+    top: 72px;
+    left: 0;
+    right: 0;
+    background: rgba(255,255,255,0.98);
+    backdrop-filter: blur(12px);
+    padding: 24px;
+    gap: 20px;
+    border-bottom: 1px solid var(--border-light);
+    box-shadow: var(--shadow-md);
+  }
+}
+
+/* ========================================
+   BREADCRUMB
+   ======================================== */
+.breadcrumb {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 13px;
+  color: var(--text-muted);
+  margin-bottom: 32px;
+}
+
+.breadcrumb a {
+  color: var(--secondary);
+  transition: color var(--transition);
+}
+
+.breadcrumb a:hover { color: var(--primary); }
+
+.breadcrumb-sep {
+  margin: 0 4px;
+  opacity: 0.4;
+}
+
+/* ========================================
+   REVEAL ANIMATIONS
+   ======================================== */
+.reveal {
+  opacity: 0;
+  transform: translateY(32px);
+  transition: opacity 600ms ease, transform 600ms ease;
+}
+
+.reveal.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.reveal-delay-1 { transition-delay: 100ms; }
+.reveal-delay-2 { transition-delay: 200ms; }
+.reveal-delay-3 { transition-delay: 300ms; }
+.reveal-delay-4 { transition-delay: 400ms; }
+.reveal-delay-5 { transition-delay: 500ms; }
+
+/* ========================================
+   HERO — VISION
+   ======================================== */
+.hero-vision {
+  padding: 140px 0 100px;
+  background: var(--bg-light);
+  position: relative;
+  overflow: hidden;
+}
+
+.hero-vision::before {
+  content: '';
+  position: absolute;
+  top: -200px;
+  right: -200px;
+  width: 700px;
+  height: 700px;
+  background: radial-gradient(circle, rgba(54,140,191,0.08) 0%, transparent 70%);
+  pointer-events: none;
+}
+
+.hero-vision::after {
+  content: '';
+  position: absolute;
+  bottom: -100px;
+  left: -100px;
+  width: 500px;
+  height: 500px;
+  background: radial-gradient(circle, rgba(27,54,93,0.05) 0%, transparent 70%);
+  pointer-events: none;
+}
+
+.hero-vision .container {
+  position: relative;
+  z-index: 1;
+  max-width: 900px;
+}
+
+.hero-vision h1 {
+  font-size: clamp(40px, 5.5vw, 72px);
+  font-weight: 800;
+  line-height: 1.1;
+  margin-bottom: 24px;
+  background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.hero-tagline {
+  font-family: var(--font-heading);
+  font-size: clamp(18px, 2.2vw, 26px);
+  font-weight: 500;
+  color: var(--text-muted);
+  margin-bottom: 48px;
+  line-height: 1.4;
+}
+
+.hero-quote {
+  background: #fff;
+  border-left: 4px solid var(--secondary);
+  border-radius: var(--radius-md);
+  padding: 32px 40px;
+  box-shadow: var(--shadow-md);
+  max-width: 760px;
+  position: relative;
+}
+
+.hero-quote::before {
+  content: '';
+  position: absolute;
+  top: -2px;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, var(--secondary), var(--primary));
+  border-radius: var(--radius-md) var(--radius-md) 0 0;
+  opacity: 0;
+}
+
+.quote-icon {
+  width: 40px;
+  height: 40px;
+  background: linear-gradient(135deg, var(--secondary-light), var(--secondary));
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 20px;
+}
+
+.hero-quote p {
+  font-size: clamp(16px, 1.6vw, 20px);
+  line-height: 1.7;
+  color: var(--text-dark);
+  font-style: italic;
+}
+
+.hero-quote strong {
+  color: var(--primary);
+  font-style: normal;
+}
+
+/* ========================================
+   SELLING VS BUILDING
+   ======================================== */
+.compare-section {
+  padding: var(--section-py) 0;
+  background: var(--bg-white);
+}
+
+.compare-table-wrap {
+  overflow-x: auto;
+  margin-top: 56px;
+  border-radius: var(--radius-xl);
+  box-shadow: var(--shadow-lg);
+  border: 1px solid var(--border-light);
+}
+
+.compare-table {
+  width: 100%;
+  border-collapse: collapse;
+  min-width: 600px;
+}
+
+.compare-table th {
+  padding: 24px 32px;
+  font-family: var(--font-heading);
+  font-size: 16px;
+  font-weight: 700;
+  text-align: left;
+}
+
+.compare-table th:first-child {
+  background: var(--bg-light);
+  color: var(--text-muted);
+  font-size: 13px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  width: 20%;
+}
+
+.compare-table th.col-san {
+  background: #FEF2F2;
+  color: var(--red);
+  width: 40%;
+}
+
+.compare-table th.col-diso {
+  background: linear-gradient(135deg, var(--primary), var(--primary-light));
+  color: #fff;
+  width: 40%;
+}
+
+.compare-table th.col-diso .col-badge {
+  display: inline-block;
+  background: rgba(255,255,255,0.2);
+  border-radius: 20px;
+  padding: 2px 12px;
+  font-size: 12px;
+  font-weight: 500;
+  margin-left: 8px;
+}
+
+.compare-table td {
+  padding: 20px 32px;
+  font-size: 15px;
+  border-top: 1px solid var(--border-light);
+  vertical-align: top;
+  line-height: 1.55;
+}
+
+.compare-table td:first-child {
+  font-family: var(--font-heading);
+  font-size: 13px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: var(--text-muted);
+  background: var(--bg-light);
+}
+
+.compare-table td.col-san {
+  background: #FFFBFB;
+  color: var(--text-muted);
+}
+
+.compare-table td.col-san .bad-point {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  color: var(--red);
+  font-weight: 500;
+}
+
+.compare-table td.col-diso {
+  background: #F0F7FF;
+}
+
+.compare-table td.col-diso .good-point {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  color: var(--primary);
+  font-weight: 600;
+}
+
+.compare-table td.col-diso .good-point svg {
+  flex-shrink: 0;
+  margin-top: 2px;
+  color: var(--green);
+}
+
+.compare-table td.col-san .bad-point svg {
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+.compare-table tr:hover td { filter: brightness(0.98); }
+
+/* ========================================
+   TIMELINE — 3-YEAR JOURNEY
+   ======================================== */
+.timeline-section {
+  padding: var(--section-py) 0;
+  background: var(--bg-light);
+  position: relative;
+  overflow: hidden;
+}
+
+.timeline-section::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: linear-gradient(90deg, var(--secondary), var(--primary), var(--accent));
+}
+
+.timeline-intro {
+  margin-bottom: 80px;
+}
+
+.timeline {
+  position: relative;
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.timeline-line {
+  position: absolute;
+  left: 50%;
+  top: 0;
+  bottom: 0;
+  width: 3px;
+  background: linear-gradient(180deg, var(--secondary) 0%, var(--primary) 50%, var(--accent) 100%);
+  transform: translateX(-50%);
+  border-radius: 2px;
+}
+
+.timeline-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 48px;
+  margin-bottom: 64px;
+  position: relative;
+}
+
+.timeline-item:nth-child(odd) {
+  flex-direction: row;
+  padding-right: calc(50% + 40px);
+}
+
+.timeline-item:nth-child(even) {
+  flex-direction: row-reverse;
+  padding-left: calc(50% + 40px);
+}
+
+.timeline-node {
+  position: absolute;
+  left: 50%;
+  top: 24px;
+  transform: translateX(-50%);
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2;
+  box-shadow: 0 0 0 6px var(--bg-light), var(--shadow-md);
+}
+
+.timeline-node.phase-1 { background: linear-gradient(135deg, #368CBF, #1B365D); }
+.timeline-node.phase-2 { background: linear-gradient(135deg, #2D9C6F, #1B6B4A); }
+.timeline-node.phase-3 { background: linear-gradient(135deg, #F59E0B, #EA6C00); }
+.timeline-node.phase-4 { background: linear-gradient(135deg, #FF6F61, #D4003D); }
+
+.timeline-card {
+  background: #fff;
+  border-radius: var(--radius-xl);
+  padding: 36px;
+  box-shadow: var(--shadow-md);
+  border: 1px solid var(--border-light);
+  transition: box-shadow var(--transition), transform var(--transition);
+  width: 100%;
+}
+
+.timeline-card:hover {
+  box-shadow: var(--shadow-lg);
+  transform: translateY(-4px);
+}
+
+.timeline-phase-label {
+  font-family: var(--font-heading);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  margin-bottom: 12px;
+}
+
+.phase-1 .timeline-phase-label { color: var(--secondary); }
+.phase-2-label { color: var(--green); }
+.phase-3-label { color: var(--orange); }
+.phase-4-label { color: var(--accent); }
+
+.timeline-card h3 {
+  font-size: 20px;
+  margin-bottom: 16px;
+}
+
+.timeline-metrics {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 20px;
+}
+
+.metric-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 14px;
+  border-radius: 100px;
+  font-family: var(--font-heading);
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.metric-chip.blue { background: #EFF6FF; color: var(--primary); }
+.metric-chip.green { background: var(--green-light); color: #1B6B4A; }
+.metric-chip.orange { background: #FFF7ED; color: var(--orange); }
+.metric-chip.red { background: #FFF0EE; color: var(--accent); }
+
+.timeline-deliverables {
+  margin-top: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.timeline-deliverable {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 14px;
+  color: var(--text-muted);
+}
+
+.timeline-deliverable svg {
+  flex-shrink: 0;
+  color: var(--green);
+}
+
+@media (max-width: 768px) {
+  .timeline-line { left: 28px; }
+
+  .timeline-item {
+    flex-direction: column !important;
+    padding: 0 0 0 72px !important;
+    margin-bottom: 40px;
+  }
+
+  .timeline-node {
+    left: 28px;
+    top: 16px;
+    width: 40px;
+    height: 40px;
+  }
+
+  .timeline-card { padding: 24px; }
+}
+
+/* ========================================
+   5 ASSETS
+   ======================================== */
+.assets-section {
+  padding: var(--section-py) 0;
+  background: var(--bg-white);
+}
+
+.assets-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 28px;
+  margin-top: 56px;
+}
+
+.asset-card {
+  background: var(--bg-light);
+  border-radius: var(--radius-xl);
+  padding: 40px 36px;
+  border: 1px solid transparent;
+  transition: all var(--transition);
+  position: relative;
+  overflow: hidden;
+}
+
+.asset-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, var(--secondary), var(--primary));
+  opacity: 0;
+  transition: opacity var(--transition);
+}
+
+.asset-card:hover {
+  border-color: var(--border-light);
+  box-shadow: var(--shadow-lg);
+  transform: translateY(-6px);
+  background: #fff;
+}
+
+.asset-card:hover::before {
+  opacity: 1;
+}
+
+.asset-number {
+  font-family: var(--font-heading);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--secondary);
+  margin-bottom: 20px;
+}
+
+.asset-icon {
+  width: 56px;
+  height: 56px;
+  border-radius: var(--radius-md);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 24px;
+}
+
+.asset-icon.blue { background: linear-gradient(135deg, #EFF6FF, #DBEAFE); color: var(--secondary); }
+.asset-icon.green { background: linear-gradient(135deg, #ECFDF5, #D1FAE5); color: var(--green); }
+.asset-icon.orange { background: linear-gradient(135deg, #FFF7ED, #FED7AA); color: var(--orange); }
+.asset-icon.purple { background: linear-gradient(135deg, #F5F3FF, #EDE9FE); color: #7C3AED; }
+.asset-icon.teal { background: linear-gradient(135deg, #F0FDFA, #CCFBF1); color: #0F766E; }
+
+.asset-card h3 {
+  font-size: 19px;
+  margin-bottom: 12px;
+}
+
+.asset-card p {
+  font-size: 14px;
+  color: var(--text-muted);
+  line-height: 1.6;
+  margin-bottom: 20px;
+}
+
+.asset-roi {
+  display: inline-block;
+  background: linear-gradient(135deg, var(--primary), var(--primary-light));
+  color: #fff;
+  border-radius: var(--radius-sm);
+  padding: 8px 16px;
+  font-family: var(--font-heading);
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.assets-grid .asset-card:nth-child(4),
+.assets-grid .asset-card:nth-child(5) {
+  grid-column: span 1;
+}
+
+@media (max-width: 1024px) {
+  .assets-grid { grid-template-columns: repeat(2, 1fr); }
+}
+
+@media (max-width: 600px) {
+  .assets-grid { grid-template-columns: 1fr; }
+  .asset-card { padding: 28px 24px; }
+}
+
+/* ========================================
+   RISK SECTION
+   ======================================== */
+.risk-section {
+  padding: var(--section-py) 0;
+  background: #FFF8F0;
+  position: relative;
+  overflow: hidden;
+  border-top: 3px solid #F59E0B;
+  border-bottom: 3px solid #F59E0B;
+}
+
+.risk-section::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23F59E0B' fill-opacity='0.04'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+  pointer-events: none;
+}
+
+.risk-section .container { position: relative; z-index: 1; }
+
+.risk-headline {
+  font-family: var(--font-heading);
+  font-size: clamp(26px, 3vw, 40px);
+  font-weight: 800;
+  color: var(--primary);
+  margin-bottom: 12px;
+}
+
+.risk-subhead {
+  font-size: 18px;
+  color: var(--orange);
+  font-weight: 600;
+  margin-bottom: 48px;
+}
+
+.risk-events {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+  margin-bottom: 56px;
+}
+
+.risk-event {
+  background: #fff;
+  border-radius: var(--radius-lg);
+  padding: 32px;
+  border-left: 4px solid var(--orange);
+  box-shadow: var(--shadow-sm);
+}
+
+.risk-event-icon {
+  width: 44px;
+  height: 44px;
+  background: #FFF7ED;
+  border-radius: var(--radius-md);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 20px;
+  color: var(--orange);
+}
+
+.risk-event h4 {
+  font-size: 16px;
+  color: var(--primary);
+  margin-bottom: 8px;
+}
+
+.risk-event-year {
+  display: inline-block;
+  background: #FFF7ED;
+  color: var(--orange);
+  border-radius: 100px;
+  padding: 2px 10px;
+  font-family: var(--font-heading);
+  font-size: 12px;
+  font-weight: 600;
+  margin-bottom: 12px;
+}
+
+.risk-event p {
+  font-size: 14px;
+  color: var(--text-muted);
+  line-height: 1.6;
+}
+
+.risk-conclusion {
+  background: linear-gradient(135deg, var(--primary), var(--primary-light));
+  border-radius: var(--radius-xl);
+  padding: 40px 48px;
+  text-align: center;
+}
+
+.risk-conclusion p {
+  font-family: var(--font-heading);
+  font-size: clamp(18px, 2vw, 24px);
+  font-weight: 700;
+  color: #fff;
+  line-height: 1.5;
+}
+
+.risk-conclusion strong {
+  color: #FBBF24;
+}
+
+@media (max-width: 768px) {
+  .risk-events { grid-template-columns: 1fr; gap: 16px; }
+  .risk-conclusion { padding: 28px 24px; }
+}
+
+/* ========================================
+   CASE STUDIES MINI
+   ======================================== */
+.case-section {
+  padding: var(--section-py) 0;
+  background: var(--bg-light);
+}
+
+.case-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+  margin-top: 56px;
+}
+
+.case-card {
+  background: #fff;
+  border-radius: var(--radius-xl);
+  padding: 36px;
+  box-shadow: var(--shadow-md);
+  border: 1px solid var(--border-light);
+  transition: all var(--transition);
+}
+
+.case-card:hover {
+  box-shadow: var(--shadow-lg);
+  transform: translateY(-4px);
+}
+
+.case-flag {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--bg-light);
+  border-radius: 100px;
+  padding: 6px 14px;
+  font-family: var(--font-heading);
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text-muted);
+  margin-bottom: 20px;
+}
+
+.case-card h3 {
+  font-size: 22px;
+  margin-bottom: 8px;
+}
+
+.case-stat-big {
+  font-family: var(--font-heading);
+  font-size: clamp(28px, 3vw, 36px);
+  font-weight: 800;
+  color: var(--primary);
+  margin-bottom: 4px;
+  line-height: 1;
+}
+
+.case-stat-label {
+  font-size: 14px;
+  color: var(--text-muted);
+  margin-bottom: 24px;
+}
+
+.case-highlights {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.case-highlight {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+  color: var(--text-muted);
+}
+
+.case-highlight svg { flex-shrink: 0; color: var(--green); }
+
+.case-model {
+  display: inline-block;
+  margin-top: 20px;
+  background: var(--green-light);
+  color: #1B6B4A;
+  border-radius: 100px;
+  padding: 4px 14px;
+  font-family: var(--font-heading);
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.case-cta-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 48px;
+  color: var(--secondary);
+  font-family: var(--font-heading);
+  font-size: 15px;
+  font-weight: 600;
+  transition: all var(--transition);
+}
+
+.case-cta-link:hover {
+  color: var(--primary);
+  gap: 10px;
+}
+
+@media (max-width: 900px) {
+  .case-grid { grid-template-columns: 1fr; }
+}
+
+/* ========================================
+   DECISION TABLE
+   ======================================== */
+.decision-section {
+  padding: var(--section-py) 0;
+  background: var(--bg-white);
+}
+
+.decision-table-wrap {
+  overflow-x: auto;
+  margin-top: 56px;
+  border-radius: var(--radius-xl);
+  box-shadow: var(--shadow-lg);
+  border: 1px solid var(--border-light);
+}
+
+.decision-table {
+  width: 100%;
+  border-collapse: collapse;
+  min-width: 580px;
+}
+
+.decision-table th {
+  padding: 20px 28px;
+  font-family: var(--font-heading);
+  font-size: 15px;
+  font-weight: 700;
+  text-align: left;
+}
+
+.decision-table th:first-child {
+  background: var(--bg-light);
+  color: var(--text-muted);
+  font-size: 13px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  width: 25%;
+}
+
+.decision-table th.col-san {
+  background: #FEF2F2;
+  color: var(--red);
+  width: 37.5%;
+}
+
+.decision-table th.col-diso {
+  background: linear-gradient(135deg, var(--primary), var(--primary-light));
+  color: #fff;
+  width: 37.5%;
+}
+
+.decision-table td {
+  padding: 18px 28px;
+  font-size: 14px;
+  border-top: 1px solid var(--border-light);
+  vertical-align: middle;
+  line-height: 1.5;
+}
+
+.decision-table td:first-child {
+  font-family: var(--font-heading);
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-muted);
+  background: var(--bg-light);
+}
+
+.decision-table td.col-san {
+  background: #FFFBFB;
+  color: var(--text-muted);
+}
+
+.decision-table td.col-diso {
+  background: #F0F7FF;
+  color: var(--primary);
+  font-weight: 600;
+}
+
+.val-bad {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--red);
+  font-weight: 500;
+}
+
+.val-good {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--green);
+  font-weight: 600;
+}
+
+/* ========================================
+   VISION STATEMENT
+   ======================================== */
+.vision-statement {
+  padding: calc(var(--section-py) * 1.2) 0;
+  background: linear-gradient(160deg, var(--bg-dark) 0%, #0A1628 50%, #06101F 100%);
+  position: relative;
+  overflow: hidden;
+}
+
+.vision-statement::before {
+  content: '';
+  position: absolute;
+  top: -300px;
+  right: -300px;
+  width: 800px;
+  height: 800px;
+  background: radial-gradient(circle, rgba(54,140,191,0.12) 0%, transparent 60%);
+  pointer-events: none;
+}
+
+.vision-statement::after {
+  content: '';
+  position: absolute;
+  bottom: -200px;
+  left: -200px;
+  width: 600px;
+  height: 600px;
+  background: radial-gradient(circle, rgba(255,111,97,0.08) 0%, transparent 60%);
+  pointer-events: none;
+}
+
+.vision-inner {
+  position: relative;
+  z-index: 1;
+  max-width: 820px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.vision-eyebrow {
+  display: inline-block;
+  background: rgba(54,140,191,0.2);
+  border: 1px solid rgba(54,140,191,0.3);
+  color: var(--secondary-light);
+  border-radius: 100px;
+  padding: 6px 20px;
+  font-family: var(--font-heading);
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  margin-bottom: 40px;
+}
+
+.vision-quote-large {
+  font-family: var(--font-heading);
+  font-size: clamp(22px, 3vw, 36px);
+  font-weight: 700;
+  color: #fff;
+  line-height: 1.45;
+  margin-bottom: 48px;
+  text-align: left;
+}
+
+.vision-quote-large em {
+  color: #FBBF24;
+  font-style: normal;
+}
+
+.vision-bullets {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  margin-bottom: 56px;
+  text-align: left;
+}
+
+.vision-bullet {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 18px 24px;
+  background: rgba(255,255,255,0.05);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: var(--radius-md);
+  transition: background var(--transition);
+}
+
+.vision-bullet:hover {
+  background: rgba(255,255,255,0.09);
+}
+
+.vision-bullet-icon {
+  width: 40px;
+  height: 40px;
+  border-radius: var(--radius-sm);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.vision-bullet-icon.blue { background: rgba(54,140,191,0.2); color: var(--secondary-light); }
+.vision-bullet-icon.green { background: rgba(45,156,111,0.2); color: #6EE7B7; }
+.vision-bullet-icon.orange { background: rgba(251,191,36,0.15); color: #FBBF24; }
+.vision-bullet-icon.red { background: rgba(255,111,97,0.15); color: var(--accent); }
+.vision-bullet-icon.purple { background: rgba(167,139,250,0.15); color: #A78BFA; }
+
+.vision-bullet-text {
+  font-size: 16px;
+  color: rgba(255,255,255,0.85);
+  font-weight: 500;
+  line-height: 1.4;
+}
+
+.vision-bullet-text strong {
+  color: #fff;
+  font-weight: 700;
+}
+
+.vision-tagline {
+  font-family: var(--font-heading);
+  font-size: clamp(20px, 2.5vw, 30px);
+  font-weight: 800;
+  color: #fff;
+  padding-top: 40px;
+  border-top: 1px solid rgba(255,255,255,0.1);
+  text-align: center;
+}
+
+.vision-tagline em {
+  color: #FBBF24;
+  font-style: normal;
+}
+
+/* ========================================
+   CTA SECTION
+   ======================================== */
+.cta-section {
+  padding: calc(var(--section-py) * 0.9) 0;
+  background: var(--bg-dark);
+  position: relative;
+  overflow: hidden;
+}
+
+.cta-glow {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 600px;
+  height: 300px;
+  background: radial-gradient(ellipse, rgba(255,111,97,0.15) 0%, transparent 70%);
+  pointer-events: none;
+}
+
+.cta-inner {
+  position: relative;
+  z-index: 1;
+  text-align: center;
+}
+
+.cta-inner h2 {
+  color: #fff;
+  font-size: clamp(28px, 3.5vw, 44px);
+  margin-bottom: 16px;
+}
+
+.cta-inner p {
+  font-size: 18px;
+  color: rgba(255,255,255,0.65);
+  margin-bottom: 40px;
+  max-width: 500px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.cta-trust {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 32px;
+  margin-top: 32px;
+  flex-wrap: wrap;
+}
+
+.cta-trust-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+  color: rgba(255,255,255,0.6);
+  font-family: var(--font-heading);
+  font-weight: 500;
+}
+
+.cta-trust-item svg { color: var(--green); }
+
+/* ========================================
+   FOOTER
+   ======================================== */
+.footer {
+  background: #080F1A;
+  padding: 40px 0;
+  border-top: 1px solid rgba(255,255,255,0.06);
+}
+
+.footer-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+
+.footer-logo {
+  font-family: var(--font-heading);
+  font-weight: 800;
+  font-size: 20px;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.footer-logo .logo-mark {
+  width: 32px;
+  height: 32px;
+  background: linear-gradient(135deg, var(--secondary), var(--primary));
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  font-size: 16px;
+  font-weight: 800;
+}
+
+.footer-links {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  flex-wrap: wrap;
+}
+
+.footer-links a {
+  font-family: var(--font-heading);
+  font-size: 14px;
+  color: rgba(255,255,255,0.5);
+  transition: color var(--transition);
+}
+
+.footer-links a:hover { color: rgba(255,255,255,0.85); }
+
+.footer-copy {
+  font-size: 13px;
+  color: rgba(255,255,255,0.3);
+  font-family: var(--font-heading);
+}
+
+@media (max-width: 768px) {
+  .footer-inner { flex-direction: column; text-align: center; }
+  .footer-links { justify-content: center; }
+}
+</style>
+</head>
+<body>
+
+<!-- ========================================
+     NAVIGATION
+     ======================================== -->
+<nav class="nav" id="nav">
+  <div class="nav-inner">
+    <a href="../" class="nav-logo"><span class="logo-mark">D</span> Diso</a>
+    <ul class="nav-links" id="navLinks">
+      <li><a href="../">Trang chủ</a></li>
+      <li><a href="../#solution">Giải pháp</a></li>
+      <li><a href="../#proof">Khách hàng</a></li>
+      <li><a href="../comparison/">So sánh</a></li>
+      <li><a href="https://calendar.app.google/2PrCTZy9JW2UKfsW7" target="_blank" rel="noopener" class="btn btn-primary nav-cta">Đặt lịch demo</a></li>
+    </ul>
+    <button class="nav-mobile-btn" id="navToggle" aria-label="Toggle navigation">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12h18M3 6h18M3 18h18"/></svg>
+    </button>
+  </div>
+</nav>
+
+<!-- ========================================
+     HERO — VISION
+     ======================================== -->
+<section class="hero-vision">
+  <div class="container">
+    <div class="breadcrumb reveal">
+      <a href="../">Trang chủ</a>
+      <span class="breadcrumb-sep">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+      </span>
+      <span>Tầm nhìn</span>
+    </div>
+
+    <div class="reveal reveal-delay-1">
+      <span class="section-label">Build xong, bạn được gì?</span>
+    </div>
+
+    <h1 class="reveal reveal-delay-2">Đừng mua phần mềm<br>Hãy xây tài sản</h1>
+
+    <p class="hero-tagline reveal reveal-delay-3">
+      Từ "gian hàng trên sàn" đến nền tảng ecom<br>doanh thu <strong style="color: var(--primary);">1.000 tỷ</strong>
+    </p>
+
+    <div class="hero-quote reveal reveal-delay-4">
+      <div class="quote-icon">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5">
+          <path d="M3 21c3 0 7-1 7-8V5c0-1.25-.756-2.017-2-2H4c-1.25 0-2 .75-2 1.972V11c0 1.25.75 2 2 2 1 0 1 0 1 1v1c0 1-1 2-2 2s-1 .008-1 1.031V20c0 1 0 1 1 1z"/>
+          <path d="M15 21c3 0 7-1 7-8V5c0-1.25-.757-2.017-2-2h-4c-1.25 0-2 .75-2 1.972V11c0 1.25.75 2 2 2h.75c0 2.25.25 4-2.75 4v3c0 1 0 1 1 1z"/>
+        </svg>
+      </div>
+      <p>Shopee, TikTok Shop là kênh bán hàng. <strong>Diso giúp bạn xây nền tảng kinh doanh</strong> — tài sản thuộc về bạn mãi mãi. Khi sàn tăng phí, đổi thuật toán, hay đóng cửa, nền tảng của bạn vẫn tiếp tục vận hành.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ========================================
+     SELLING VS BUILDING
+     ======================================== -->
+<section class="compare-section" id="compare">
+  <div class="container">
+    <div class="text-center reveal">
+      <span class="section-label">Sự thật không được nói</span>
+      <h2>Bán hàng vs. Xây nền tảng</h2>
+      <p class="section-subtitle">Sau 3 năm, kết quả của hai con đường khác nhau hoàn toàn.</p>
+    </div>
+
+    <div class="compare-table-wrap reveal reveal-delay-2">
+      <table class="compare-table">
+        <thead>
+          <tr>
+            <th></th>
+            <th class="col-san">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="display:inline;margin-right:8px;vertical-align:middle"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg>
+              Bán hàng trên sàn
+            </th>
+            <th class="col-diso">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="display:inline;margin-right:8px;vertical-align:middle"><polyline points="20 6 9 17 4 12"/></svg>
+              Xây nền tảng riêng với Diso
+              <span class="col-badge">Recommended</span>
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Doanh thu</td>
+            <td class="col-san">
+              <div class="bad-point">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg>
+                Phụ thuộc hoàn toàn vào thuật toán sàn, cạnh tranh giá liên tục, margin ngày càng mỏng
+              </div>
+            </td>
+            <td class="col-diso">
+              <div class="good-point">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+                30–50% doanh thu từ kênh riêng sau 12 tháng — không trả phí sàn, margin cao hơn 15–25%
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td>Data</td>
+            <td class="col-san">
+              <div class="bad-point">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg>
+                Sàn giữ toàn bộ data khách hàng. Bạn không biết ai đã mua, không liên lạc lại được
+              </div>
+            </td>
+            <td class="col-diso">
+              <div class="good-point">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+                Sở hữu 100% database: SĐT, email, hành vi mua, lịch sử đơn hàng — tài sản thuộc về bạn
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td>Khách cũ</td>
+            <td class="col-san">
+              <div class="bad-point">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg>
+                Mỗi lần bán lại phải chạy ads mới. Không có kênh remarketing trực tiếp
+              </div>
+            </td>
+            <td class="col-diso">
+              <div class="good-point">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+                CRM tích hợp: gửi campaign đến 50K khách cũ, tỷ lệ tái mua 20–35%, chi phí gần bằng 0
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td>Quyền kiểm soát</td>
+            <td class="col-san">
+              <div class="bad-point">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg>
+                Sàn có thể tắt shop, đổi chính sách, tăng phí bất kỳ lúc nào — bạn không có lựa chọn
+              </div>
+            </td>
+            <td class="col-diso">
+              <div class="good-point">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+                Toàn quyền kiểm soát: giá, chính sách, trải nghiệm khách hàng, thương hiệu — vĩnh viễn
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td>Chi phí</td>
+            <td class="col-san">
+              <div class="bad-point">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg>
+                Phí sàn 3–12% + ads + flash sale discount + logistics phí phụ. Tổng thường &gt;20%/đơn
+              </div>
+            </td>
+            <td class="col-diso">
+              <div class="good-point">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+                Phí cố định Diso + hoa hồng affiliate (trả khi có đơn). Không ads, không flash sale bắt buộc
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<!-- ========================================
+     3-YEAR JOURNEY TIMELINE
+     ======================================== -->
+<section class="timeline-section" id="roadmap">
+  <div class="container">
+    <div class="timeline-intro text-center reveal">
+      <span class="section-label">Lộ trình 3 năm</span>
+      <h2>Từ ngày đầu đến nền tảng 1.000 tỷ</h2>
+      <p class="section-subtitle">Mỗi giai đoạn xây một tầng — tầng nọ chống đỡ tầng kia. Sau 3 năm, bạn có một cỗ máy kinh doanh không thể bị copy.</p>
+    </div>
+
+    <div class="timeline">
+      <div class="timeline-line"></div>
+
+      <!-- Phase 1 -->
+      <div class="timeline-item reveal">
+        <div class="timeline-node phase-1">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/></svg>
+        </div>
+        <div class="timeline-card">
+          <div class="timeline-phase-label" style="color: var(--secondary);">Giai đoạn 1</div>
+          <h3>Tháng 1–3: Xây nền móng</h3>
+          <p style="font-size:15px;color:var(--text-muted);margin:12px 0 0;">Thiết lập toàn bộ hạ tầng kỹ thuật. Website chạy, thanh toán thông, vận chuyển kết nối — ready cho đơn hàng đầu tiên.</p>
+          <div class="timeline-deliverables">
+            <div class="timeline-deliverable">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+              Website thương mại điện tử riêng, domain cá nhân
+            </div>
+            <div class="timeline-deliverable">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+              Tích hợp thanh toán (VNPAY, Momo, chuyển khoản)
+            </div>
+            <div class="timeline-deliverable">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+              Kết nối vận chuyển tự động (GHN, GHTK, J&T)
+            </div>
+            <div class="timeline-deliverable">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+              Database khách hàng đầu tiên từ đơn hàng thực
+            </div>
+          </div>
+          <div class="timeline-metrics">
+            <span class="metric-chip blue">Website live</span>
+            <span class="metric-chip blue">Thanh toán tự động</span>
+            <span class="metric-chip blue">Database bắt đầu tích lũy</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Phase 2 -->
+      <div class="timeline-item reveal reveal-delay-1">
+        <div class="timeline-node phase-2">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+        </div>
+        <div class="timeline-card">
+          <div class="timeline-phase-label" style="color: var(--green);">Giai đoạn 2</div>
+          <h3>Tháng 3–6: Kích hoạt đội quân</h3>
+          <p style="font-size:15px;color:var(--text-muted);margin:12px 0 0;">Tuyển dụng và activate lực lượng bán hàng. Đối soát tự động — không cần kế toán thủ công.</p>
+          <div class="timeline-deliverables">
+            <div class="timeline-deliverable">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+              50–100 affiliate hoạt động, có link tracking riêng
+            </div>
+            <div class="timeline-deliverable">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+              20–50 reseller đặt hàng số lượng, giá sỉ
+            </div>
+            <div class="timeline-deliverable">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+              Đối soát hoa hồng tự động cuối tháng, zero thủ công
+            </div>
+            <div class="timeline-deliverable">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+              Dashboard real-time: doanh số theo từng người bán
+            </div>
+          </div>
+          <div class="timeline-metrics">
+            <span class="metric-chip green">50–100 affiliate</span>
+            <span class="metric-chip green">20–50 reseller</span>
+            <span class="metric-chip green">Đối soát 100% tự động</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Phase 3 -->
+      <div class="timeline-item reveal reveal-delay-2">
+        <div class="timeline-node phase-3">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+        </div>
+        <div class="timeline-card">
+          <div class="timeline-phase-label" style="color: var(--orange);">Giai đoạn 3</div>
+          <h3>Tháng 6–12: Vòng lặp tăng trưởng</h3>
+          <p style="font-size:15px;color:var(--text-muted);margin:12px 0 0;">Cỗ máy bán hàng tự vận hành. Doanh thu từ kênh riêng tăng tốc — không cần tăng chi phí ads.</p>
+          <div class="timeline-deliverables">
+            <div class="timeline-deliverable">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+              200–500 affiliate + reseller hoạt động song song
+            </div>
+            <div class="timeline-deliverable">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+              Chương trình đại sứ thương hiệu: top performer
+            </div>
+            <div class="timeline-deliverable">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+              CRM 10.000+ khách hàng, chiến dịch tái mua hàng tuần
+            </div>
+            <div class="timeline-deliverable">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+              30–50% doanh thu đến từ kênh riêng, không phụ thuộc sàn
+            </div>
+          </div>
+          <div class="timeline-metrics">
+            <span class="metric-chip orange">200–500 người bán</span>
+            <span class="metric-chip orange">CRM 10K+ khách</span>
+            <span class="metric-chip orange">30–50% kênh riêng</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Phase 4 -->
+      <div class="timeline-item reveal reveal-delay-3">
+        <div class="timeline-node phase-4">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+        </div>
+        <div class="timeline-card">
+          <div class="timeline-phase-label" style="color: var(--accent);">Giai đoạn 4</div>
+          <h3>Năm 2–3: Nền tảng vững chắc</h3>
+          <p style="font-size:15px;color:var(--text-muted);margin:12px 0 0;">Không còn là "seller". Bạn là chủ một nền tảng thương mại điện tử — tài sản định giá hàng chục tỷ.</p>
+          <div class="timeline-deliverables">
+            <div class="timeline-deliverable">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+              1.000+ người bán hàng: affiliate, reseller, đại sứ
+            </div>
+            <div class="timeline-deliverable">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+              50.000–100.000 database khách hàng sở hữu 100%
+            </div>
+            <div class="timeline-deliverable">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+              50–70% doanh thu từ kênh riêng, thương hiệu độc lập
+            </div>
+            <div class="timeline-deliverable">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+              SEO tích lũy, traffic organic, content ecosystem tồn tại lâu dài
+            </div>
+          </div>
+          <div class="timeline-metrics">
+            <span class="metric-chip red">1.000+ người bán</span>
+            <span class="metric-chip red">50–100K database</span>
+            <span class="metric-chip red">50–70% kênh riêng</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ========================================
+     5 TÀI SẢN BẠN SỞ HỮU
+     ======================================== -->
+<section class="assets-section" id="assets">
+  <div class="container">
+    <div class="text-center reveal">
+      <span class="section-label">Kết quả sau 3 năm</span>
+      <h2>5 tài sản bạn thực sự sở hữu</h2>
+      <p class="section-subtitle">Không phải tính năng phần mềm — đây là những tài sản thật, định giá được, không ai lấy đi được.</p>
+    </div>
+
+    <div class="assets-grid">
+
+      <div class="asset-card reveal reveal-delay-1">
+        <div class="asset-number">Tài sản 01</div>
+        <div class="asset-icon blue">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"/><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/></svg>
+        </div>
+        <h3>Database khách hàng</h3>
+        <p>Mỗi đơn hàng là một bản ghi: SĐT, email, địa chỉ, lịch sử mua, hành vi. Sau 3 năm bạn có 50–100K khách hàng thật — không ai lấy đi được.</p>
+        <div class="asset-roi">10K khách × 20% tái mua × 500K = 1 tỷ/năm miễn phí</div>
+      </div>
+
+      <div class="asset-card reveal reveal-delay-2">
+        <div class="asset-number">Tài sản 02</div>
+        <div class="asset-icon green">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+        </div>
+        <h3>Đội quân 1.000 người bán hàng</h3>
+        <p>Ba lớp: Affiliate (tiếp thị liên kết), Reseller (đặt hàng sỉ), Đại sứ (influencer gắn bó). Không lương cứng — chỉ trả khi có đơn thực.</p>
+        <div class="asset-roi">1.000 người × 1 đơn/tháng = 1.000 đơn thêm mỗi tháng</div>
+      </div>
+
+      <div class="asset-card reveal reveal-delay-3">
+        <div class="asset-number">Tài sản 03</div>
+        <div class="asset-icon orange">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+        </div>
+        <h3>Thương hiệu riêng</h3>
+        <p>Domain, SEO tích lũy theo tháng, traffic organic không tốn tiền. Thương hiệu trên sàn = thương hiệu của sàn. Thương hiệu trên website riêng = tài sản của bạn.</p>
+        <div class="asset-roi">SEO tích lũy 3 năm = traffic organic không giới hạn</div>
+      </div>
+
+      <div class="asset-card reveal reveal-delay-4">
+        <div class="asset-number">Tài sản 04</div>
+        <div class="asset-icon purple">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14.5 10c-.83 0-1.5-.67-1.5-1.5v-5c0-.83.67-1.5 1.5-1.5s1.5.67 1.5 1.5v5c0 .83-.67 1.5-1.5 1.5z"/><path d="M20.5 10H19V8.5c0-.83.67-1.5 1.5-1.5s1.5.67 1.5 1.5-.67 1.5-1.5 1.5z"/><path d="M9.5 14c.83 0 1.5.67 1.5 1.5v5c0 .83-.67 1.5-1.5 1.5S8 21.33 8 20.5v-5c0-.83.67-1.5 1.5-1.5z"/><path d="M3.5 14H5v1.5c0 .83-.67 1.5-1.5 1.5S2 16.33 2 15.5 2.67 14 3.5 14z"/><path d="M14 14.5c0-.83.67-1.5 1.5-1.5h5c.83 0 1.5.67 1.5 1.5s-.67 1.5-1.5 1.5h-5c-.83 0-1.5-.67-1.5-1.5z"/><path d="M15.5 19H14v1.5c0 .83.67 1.5 1.5 1.5s1.5-.67 1.5-1.5-.67-1.5-1.5-1.5z"/><path d="M10 9.5C10 8.67 9.33 8 8.5 8h-5C2.67 8 2 8.67 2 9.5S2.67 11 3.5 11h5c.83 0 1.5-.67 1.5-1.5z"/><path d="M8.5 5H10V3.5C10 2.67 9.33 2 8.5 2S7 2.67 7 3.5 7.67 5 8.5 5z"/></svg>
+        </div>
+        <h3>Content marketing ecosystem</h3>
+        <p>Hàng trăm bài đăng trên 7 nền tảng — từ affiliate, reseller, đại sứ. Content tồn tại mãi, tiếp tục kéo traffic và đơn hàng dù bạn ngủ.</p>
+        <div class="asset-roi">500 creator × 2 bài/tháng = 1.000 nội dung mỗi tháng</div>
+      </div>
+
+      <div class="asset-card reveal reveal-delay-5">
+        <div class="asset-number">Tài sản 05</div>
+        <div class="asset-icon teal">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+        </div>
+        <h3>Độc lập khỏi nền tảng</h3>
+        <p>Sàn tăng phí? Thuật toán đổi? Chính sách thay? Không ảnh hưởng. Kênh riêng của bạn vận hành độc lập — đây mới là tài sản thực sự.</p>
+        <div class="asset-roi">Zero dependency = zero risk từ quyết định của bên thứ ba</div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ========================================
+     RỦI RO NẾU KHÔNG LÀM
+     ======================================== -->
+<section class="risk-section" id="risk">
+  <div class="container">
+    <div class="reveal">
+      <span class="section-label" style="color: var(--orange);">Cảnh báo thực tế</span>
+      <div class="risk-headline">Bán trên sàn = xây nhà trên đất thuê</div>
+      <div class="risk-subhead">3 sự kiện thật đã xảy ra — và sẽ xảy ra lại</div>
+    </div>
+
+    <div class="risk-events reveal reveal-delay-1">
+      <div class="risk-event">
+        <div class="risk-event-icon">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+        </div>
+        <div class="risk-event-year">2024</div>
+        <h4>Shopee tăng phí — 7.000+ seller rời nền tảng</h4>
+        <p>Khi Shopee điều chỉnh cơ cấu phí, hàng nghìn seller bị kẹt: không có kênh nào khác, không có data khách hàng, không có lựa chọn nào để chuyển sang.</p>
+      </div>
+
+      <div class="risk-event">
+        <div class="risk-event-icon">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+        </div>
+        <div class="risk-event-year">2023–2024</div>
+        <h4>TikTok đổi thuật toán — 50–70% traffic bốc hơi</h4>
+        <p>Một quyết định nội bộ của TikTok có thể xóa sạch toàn bộ organic reach. Seller không warning, không đền bù, không có cách lấy lại traffic đã mất.</p>
+      </div>
+
+      <div class="risk-event">
+        <div class="risk-event-icon">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+        </div>
+        <div class="risk-event-year">Chính sách hiện tại</div>
+        <h4>Sàn giữ data khách hàng — 3 năm bán = 0 data</h4>
+        <p>Theo điều khoản của các sàn TMĐT lớn: data khách hàng thuộc về sàn. Bạn có thể bán 3 năm, 10.000 đơn hàng — và không sở hữu một số điện thoại nào.</p>
+      </div>
+    </div>
+
+    <div class="risk-conclusion reveal reveal-delay-2">
+      <p>
+        <strong>Mỗi ngày không xây nền tảng riêng</strong> = mỗi ngày đang <strong style="color: #FBBF24;">mất khách hàng</strong> vào tay sàn.<br>
+        Họ đang dùng dữ liệu từ đơn hàng của bạn để bán sản phẩm cho đối thủ của bạn.
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- ========================================
+     CASE STUDY NHANH
+     ======================================== -->
+<section class="case-section" id="cases">
+  <div class="container">
+    <div class="text-center reveal">
+      <span class="section-label">Bằng chứng thực tế</span>
+      <h2>Những người đã làm được</h2>
+      <p class="section-subtitle">Không phải lý thuyết. Những con số này đến từ doanh nghiệp đã xây nền tảng riêng thành công.</p>
+    </div>
+
+    <div class="case-grid">
+
+      <div class="case-card reveal reveal-delay-1">
+        <div class="case-flag">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+          Việt Nam
+        </div>
+        <h3>Coolmate</h3>
+        <div class="case-stat-big">139 tỷ</div>
+        <div class="case-stat-label">Doanh thu VND — D2C thuần túy</div>
+        <div class="case-highlights">
+          <div class="case-highlight">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+            Tăng trưởng 3.5x Year-over-Year
+          </div>
+          <div class="case-highlight">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+            Website riêng là kênh bán hàng chính
+          </div>
+          <div class="case-highlight">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+            Database khách hàng sở hữu 100%
+          </div>
+          <div class="case-highlight">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+            Không phụ thuộc vào sàn TMĐT
+          </div>
+        </div>
+        <span class="case-model">D2C Model</span>
+      </div>
+
+      <div class="case-card reveal reveal-delay-2">
+        <div class="case-flag">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+          Vương quốc Anh
+        </div>
+        <h3>Gymshark</h3>
+        <div class="case-stat-big">£1B+</div>
+        <div class="case-stat-label">Định giá — từ $500K vốn ban đầu</div>
+        <div class="case-highlights">
+          <div class="case-highlight">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+            ROI 6.6x trên influencer marketing
+          </div>
+          <div class="case-highlight">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+            100% D2C — không bán qua bên thứ ba
+          </div>
+          <div class="case-highlight">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+            Ambassador program là động lực tăng trưởng chính
+          </div>
+          <div class="case-highlight">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+            Brand định giá hàng tỷ pound độc lập
+          </div>
+        </div>
+        <span class="case-model">D2C + Ambassador</span>
+      </div>
+
+      <div class="case-card reveal reveal-delay-3">
+        <div class="case-flag">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+          Ấn Độ
+        </div>
+        <h3>Meesho</h3>
+        <div class="case-stat-big">$600M</div>
+        <div class="case-stat-label">Định giá IPO — từ mô hình reseller</div>
+        <div class="case-highlights">
+          <div class="case-highlight">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+            187 triệu người dùng toàn cầu
+          </div>
+          <div class="case-highlight">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+            13+ triệu reseller bán hàng kiếm thu nhập
+          </div>
+          <div class="case-highlight">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+            Mô hình: reseller chia sẻ, platform giao hàng
+          </div>
+          <div class="case-highlight">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+            Zero quảng cáo — 100% word-of-mouth qua reseller
+          </div>
+        </div>
+        <span class="case-model">Reseller Model</span>
+      </div>
+
+    </div>
+
+    <div class="text-center reveal">
+      <a href="../case-studies/" class="case-cta-link">
+        Xem đầy đủ case studies và phân tích chi tiết
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ========================================
+     BẢNG SO SÁNH QUYẾT ĐỊNH
+     ======================================== -->
+<section class="decision-section" id="decision">
+  <div class="container">
+    <div class="text-center reveal">
+      <span class="section-label">Bảng quyết định</span>
+      <h2>Nhìn về đích — không phải về hôm nay</h2>
+      <p class="section-subtitle">Đây là câu hỏi bạn sẽ tự hỏi sau 3 năm. Câu trả lời phụ thuộc vào quyết định bạn đưa ra ngay hôm nay.</p>
+    </div>
+
+    <div class="decision-table-wrap reveal reveal-delay-2">
+      <table class="decision-table">
+        <thead>
+          <tr>
+            <th></th>
+            <th class="col-san">Bán trên Sàn</th>
+            <th class="col-diso">Xây nền tảng riêng</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Chi phí / đơn</td>
+            <td class="col-san"><span class="val-bad"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg> 15–25% phí + logistics phụ</span></td>
+            <td class="col-diso"><span class="val-good"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg> 5–10% hoa hồng affiliate (trả khi có đơn)</span></td>
+          </tr>
+          <tr>
+            <td>Tỷ lệ tái mua</td>
+            <td class="col-san"><span class="val-bad"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg> 5–8% (phụ thuộc thuật toán sàn)</span></td>
+            <td class="col-diso"><span class="val-good"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg> 20–35% (CRM remarketing trực tiếp)</span></td>
+          </tr>
+          <tr>
+            <td>Giá trị brand</td>
+            <td class="col-san"><span class="val-bad"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg> Thấp — bị lẫn với hàng ngàn shop khác</span></td>
+            <td class="col-diso"><span class="val-good"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg> Cao — domain, SEO, identity riêng biệt</span></td>
+          </tr>
+          <tr>
+            <td>Data sau 3 năm</td>
+            <td class="col-san"><span class="val-bad"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg> 0 — sàn giữ toàn bộ</span></td>
+            <td class="col-diso"><span class="val-good"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg> 50–100K khách hàng sở hữu 100%</span></td>
+          </tr>
+          <tr>
+            <td>Rủi ro</td>
+            <td class="col-san"><span class="val-bad"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg> Cao — phụ thuộc vào 1-2 platform</span></td>
+            <td class="col-diso"><span class="val-good"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg> Thấp — đa kênh, không phụ thuộc bên thứ ba</span></td>
+          </tr>
+          <tr>
+            <td>Định giá exit</td>
+            <td class="col-san"><span class="val-bad"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg> Thấp — không có tài sản kỹ thuật số</span></td>
+            <td class="col-diso"><span class="val-good"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg> Cao — brand, database, kênh bán = tài sản định giá được</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<!-- ========================================
+     VISION STATEMENT
+     ======================================== -->
+<section class="vision-statement" id="vision">
+  <div class="container">
+    <div class="vision-inner">
+
+      <div class="vision-eyebrow reveal">Tầm nhìn 3 năm</div>
+
+      <div class="vision-quote-large reveal reveal-delay-1">
+        "Sau 2–3 năm với Diso, bạn không còn là<br>
+        <em>'seller trên sàn'</em>. Bạn là chủ một<br>
+        nền tảng thương mại điện tử."
+      </div>
+
+      <div class="vision-bullets reveal reveal-delay-2">
+
+        <div class="vision-bullet">
+          <div class="vision-bullet-icon blue">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+          </div>
+          <div class="vision-bullet-text">
+            <strong>Website riêng</strong> với thương hiệu, domain, SEO tích lũy — tài sản kỹ thuật số không thể bị tắt bởi bất kỳ sàn nào
+          </div>
+        </div>
+
+        <div class="vision-bullet">
+          <div class="vision-bullet-icon green">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+          </div>
+          <div class="vision-bullet-text">
+            <strong>1.000+ người bán hàng</strong>: affiliate, reseller, đại sứ — không lương cứng, chỉ trả khi có đơn thực
+          </div>
+        </div>
+
+        <div class="vision-bullet">
+          <div class="vision-bullet-icon orange">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"/><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/></svg>
+          </div>
+          <div class="vision-bullet-text">
+            <strong>50K+ database khách hàng</strong> thực sở hữu 100%: SĐT, email, hành vi mua — không ai lấy đi được
+          </div>
+        </div>
+
+        <div class="vision-bullet">
+          <div class="vision-bullet-icon red">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14.5 10c-.83 0-1.5-.67-1.5-1.5v-5c0-.83.67-1.5 1.5-1.5s1.5.67 1.5 1.5v5c0 .83-.67 1.5-1.5 1.5z"/><path d="M20.5 10H19V8.5c0-.83.67-1.5 1.5-1.5s1.5.67 1.5 1.5-.67 1.5-1.5 1.5z"/><path d="M9.5 14c.83 0 1.5.67 1.5 1.5v5c0 .83-.67 1.5-1.5 1.5S8 21.33 8 20.5v-5c0-.83.67-1.5 1.5-1.5z"/><path d="M3.5 14H5v1.5c0 .83-.67 1.5-1.5 1.5S2 16.33 2 15.5 2.67 14 3.5 14z"/><path d="M14 14.5c0-.83.67-1.5 1.5-1.5h5c.83 0 1.5.67 1.5 1.5s-.67 1.5-1.5 1.5h-5c-.83 0-1.5-.67-1.5-1.5z"/><path d="M15.5 19H14v1.5c0 .83.67 1.5 1.5 1.5s1.5-.67 1.5-1.5-.67-1.5-1.5-1.5z"/><path d="M10 9.5C10 8.67 9.33 8 8.5 8h-5C2.67 8 2 8.67 2 9.5S2.67 11 3.5 11h5c.83 0 1.5-.67 1.5-1.5z"/><path d="M8.5 5H10V3.5C10 2.67 9.33 2 8.5 2S7 2.67 7 3.5 7.67 5 8.5 5z"/></svg>
+          </div>
+          <div class="vision-bullet-text">
+            <strong>Content ecosystem trên 7 nền tảng</strong> — hàng trăm bài đăng từ đội quân người bán, traffic organic không giới hạn
+          </div>
+        </div>
+
+        <div class="vision-bullet">
+          <div class="vision-bullet-icon purple">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+          </div>
+          <div class="vision-bullet-text">
+            <strong>Độc lập hoàn toàn</strong> — sàn tăng phí, đổi thuật toán, hay đóng cửa: nền tảng của bạn không bị ảnh hưởng
+          </div>
+        </div>
+
+      </div>
+
+      <div class="vision-tagline reveal reveal-delay-3">
+        Đó không phải phần mềm.<br>
+        Đó là <em>tài sản.</em>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ========================================
+     CTA SECTION
+     ======================================== -->
+<section class="cta-section" id="demo">
+  <div class="cta-glow"></div>
+  <div class="container">
+    <div class="cta-inner reveal">
+      <span class="section-label" style="color: rgba(255,255,255,0.5);">Bắt đầu xây tài sản</span>
+      <h2>Đặt lịch demo — Xem nền tảng hoạt động trong 30 phút</h2>
+      <p>Xem thực tế toàn bộ hệ thống: affiliate, reseller, CRM, dashboard — với dữ liệu giả lập từ ngành của bạn.</p>
+
+      <a href="https://calendar.app.google/2PrCTZy9JW2UKfsW7" target="_blank" rel="noopener" class="btn btn-primary btn-lg">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+        Đặt lịch demo ngay
+      </a>
+
+      <div class="cta-trust">
+        <div class="cta-trust-item">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+          Miễn phí, không ràng buộc
+        </div>
+        <div class="cta-trust-item">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+          Demo với data ngành của bạn
+        </div>
+        <div class="cta-trust-item">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+          Tư vấn lộ trình 3 năm 1-1
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ========================================
+     FOOTER
+     ======================================== -->
+<footer class="footer">
+  <div class="container">
+    <div class="footer-inner">
+      <a href="../" class="footer-logo">
+        <span class="logo-mark">D</span>
+        Diso
+      </a>
+
+      <div class="footer-links">
+        <a href="../">Trang chủ</a>
+        <a href="../comparison/">So sánh</a>
+        <a href="../case-studies/">Case Studies</a>
+        <a href="https://calendar.app.google/2PrCTZy9JW2UKfsW7" target="_blank" rel="noopener">Đặt lịch demo</a>
+      </div>
+
+      <p class="footer-copy">&copy; 2024 Diso Commerce Suite. All rights reserved.</p>
+    </div>
+  </div>
+</footer>
+
+<!-- ========================================
+     JAVASCRIPT
+     ======================================== -->
+<script>
+(function() {
+  'use strict';
+
+  // ---- NAV SCROLL EFFECT ----
+  var nav = document.getElementById('nav');
+  function onScroll() {
+    if (window.scrollY > 20) {
+      nav.classList.add('scrolled');
+    } else {
+      nav.classList.remove('scrolled');
+    }
+  }
+  window.addEventListener('scroll', onScroll, { passive: true });
+  onScroll();
+
+  // ---- MOBILE MENU TOGGLE ----
+  var navToggle = document.getElementById('navToggle');
+  var navLinks = document.getElementById('navLinks');
+  navToggle.addEventListener('click', function() {
+    var isOpen = navLinks.classList.toggle('open');
+    navToggle.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+  });
+
+  navLinks.querySelectorAll('a').forEach(function(link) {
+    link.addEventListener('click', function() {
+      navLinks.classList.remove('open');
+      navToggle.setAttribute('aria-expanded', 'false');
+    });
+  });
+
+  // ---- SMOOTH SCROLL FOR ANCHOR LINKS ----
+  document.querySelectorAll('a[href^="#"]').forEach(function(anchor) {
+    anchor.addEventListener('click', function(e) {
+      var target = document.querySelector(this.getAttribute('href'));
+      if (target) {
+        e.preventDefault();
+        var navHeight = nav.offsetHeight;
+        var targetTop = target.getBoundingClientRect().top + window.scrollY - navHeight - 16;
+        window.scrollTo({ top: targetTop, behavior: 'smooth' });
+      }
+    });
+  });
+
+  // ---- REVEAL ANIMATION (IntersectionObserver) ----
+  var revealElements = document.querySelectorAll('.reveal');
+
+  if ('IntersectionObserver' in window) {
+    var observer = new IntersectionObserver(function(entries) {
+      entries.forEach(function(entry) {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+          observer.unobserve(entry.target);
+        }
+      });
+    }, {
+      threshold: 0.08,
+      rootMargin: '0px 0px -48px 0px'
+    });
+
+    revealElements.forEach(function(el) {
+      observer.observe(el);
+    });
+  } else {
+    revealElements.forEach(function(el) {
+      el.classList.add('visible');
+    });
+  }
+
+  // ---- TIMELINE ITEMS: stagger animation ----
+  var timelineItems = document.querySelectorAll('.timeline-item');
+  if ('IntersectionObserver' in window) {
+    var tlObserver = new IntersectionObserver(function(entries) {
+      entries.forEach(function(entry, i) {
+        if (entry.isIntersecting) {
+          setTimeout(function() {
+            entry.target.style.opacity = '1';
+            entry.target.style.transform = 'translateY(0)';
+          }, 0);
+          tlObserver.unobserve(entry.target);
+        }
+      });
+    }, {
+      threshold: 0.1,
+      rootMargin: '0px 0px -32px 0px'
+    });
+
+    timelineItems.forEach(function(item) {
+      item.style.opacity = '0';
+      item.style.transform = 'translateY(40px)';
+      item.style.transition = 'opacity 600ms ease, transform 600ms ease';
+      tlObserver.observe(item);
+    });
+  }
+
+})();
+</script>
+</body>
+</html>
