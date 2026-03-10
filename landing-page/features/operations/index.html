@@ -1,0 +1,2312 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Backend Vận hành - Diso Commerce Suite</title>
+<meta name="description" content="Từ đơn hàng đến giao hàng — tự động hóa toàn bộ. Quản lý đơn hàng tập trung, tích hợp 4 hãng vận chuyển, đối soát tự động 4 loại, CRM và analytics real-time.">
+<link rel="icon" type="image/svg+xml" href="../../favicon.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400&family=Inter:wght@400;500;600&subset=vietnamese&display=swap" rel="stylesheet">
+<style>
+/* ========================================
+   CSS RESET & BASE
+   ======================================== */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+:root {
+  --primary: #1B365D;
+  --primary-light: #243f6b;
+  --secondary: #368CBF;
+  --secondary-light: #4da3d4;
+  --accent: #FF6F61;
+  --accent-hover: #ff5a4a;
+  --bg-white: #FFFFFF;
+  --bg-light: #F4F6F8;
+  --bg-dark: #0F1F33;
+  --text-dark: #263238;
+  --text-muted: #5A6B7B;
+  --text-light: #8A9AAA;
+  --border-light: #E2E8F0;
+  --green: #2D9C6F;
+  --green-light: #3ab882;
+  --red: #E53935;
+  --shadow-sm: 0 2px 8px rgba(0,0,0,0.06);
+  --shadow-md: 0 4px 16px rgba(0,0,0,0.08);
+  --shadow-lg: 0 8px 24px rgba(0,0,0,0.12);
+  --shadow-xl: 0 16px 48px rgba(0,0,0,0.16);
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 16px;
+  --radius-xl: 24px;
+  --font-heading: 'Be Vietnam Pro', sans-serif;
+  --font-body: 'Inter', 'Be Vietnam Pro', sans-serif;
+  --container: 1200px;
+  --section-py: 96px;
+  --transition: 250ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+html {
+  scroll-behavior: smooth;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  font-family: var(--font-body);
+  font-size: 16px;
+  line-height: 1.6;
+  color: var(--text-dark);
+  background: var(--bg-white);
+  overflow-x: hidden;
+}
+
+img { max-width: 100%; display: block; }
+a { text-decoration: none; color: inherit; }
+ul { list-style: none; }
+
+.container {
+  max-width: var(--container);
+  margin: 0 auto;
+  padding: 0 24px;
+}
+
+/* ========================================
+   TYPOGRAPHY
+   ======================================== */
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-heading);
+  font-weight: 700;
+  line-height: 1.2;
+  color: var(--primary);
+}
+
+h1 { font-size: clamp(32px, 4vw, 52px); font-weight: 800; }
+h2 { font-size: clamp(28px, 3.5vw, 40px); }
+h3 { font-size: clamp(20px, 2.5vw, 24px); }
+
+.section-label {
+  display: inline-block;
+  font-family: var(--font-heading);
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--green);
+  margin-bottom: 16px;
+}
+
+.section-subtitle {
+  font-size: clamp(16px, 1.8vw, 20px);
+  color: var(--text-muted);
+  max-width: 640px;
+  margin: 16px auto 0;
+  line-height: 1.6;
+}
+
+.text-center { text-align: center; }
+
+/* ========================================
+   BUTTONS
+   ======================================== */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  font-family: var(--font-heading);
+  font-weight: 600;
+  font-size: 16px;
+  border: none;
+  border-radius: var(--radius-md);
+  padding: 16px 32px;
+  cursor: pointer;
+  transition: all var(--transition);
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.btn-primary {
+  background: var(--accent);
+  color: #fff;
+  box-shadow: 0 4px 16px rgba(255, 111, 97, 0.3);
+}
+
+.btn-primary:hover {
+  background: var(--accent-hover);
+  transform: scale(1.05);
+  box-shadow: 0 6px 24px rgba(255, 111, 97, 0.4);
+}
+
+.btn-green {
+  background: var(--green);
+  color: #fff;
+  box-shadow: 0 4px 16px rgba(45, 156, 111, 0.3);
+}
+
+.btn-green:hover {
+  background: var(--green-light);
+  transform: scale(1.05);
+  box-shadow: 0 6px 24px rgba(45, 156, 111, 0.4);
+}
+
+.btn-secondary {
+  background: transparent;
+  color: var(--primary);
+  border: 2px solid var(--border-light);
+}
+
+.btn-secondary:hover {
+  border-color: var(--secondary);
+  color: var(--secondary);
+}
+
+.btn-outline-white {
+  background: transparent;
+  color: #fff;
+  border: 2px solid rgba(255,255,255,0.4);
+}
+
+.btn-outline-white:hover {
+  background: rgba(255,255,255,0.1);
+  border-color: rgba(255,255,255,0.7);
+}
+
+.btn-lg {
+  padding: 20px 40px;
+  font-size: 18px;
+  border-radius: var(--radius-lg);
+}
+
+/* ========================================
+   NAVIGATION
+   ======================================== */
+.nav {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1000;
+  padding: 0 24px;
+  transition: all 300ms ease;
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-bottom: 1px solid rgba(226, 232, 240, 0.5);
+}
+
+.nav.scrolled {
+  background: rgba(255, 255, 255, 0.96);
+  border-bottom-color: var(--border-light);
+  box-shadow: var(--shadow-sm);
+}
+
+.nav-inner {
+  max-width: var(--container);
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 72px;
+}
+
+.nav-logo {
+  font-family: var(--font-heading);
+  font-weight: 800;
+  font-size: 24px;
+  color: var(--primary);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.nav-logo .logo-mark {
+  width: 36px;
+  height: 36px;
+  background: linear-gradient(135deg, var(--secondary), var(--primary));
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  font-size: 18px;
+  font-weight: 800;
+}
+
+.nav-links {
+  display: flex;
+  align-items: center;
+  gap: 32px;
+  list-style: none;
+}
+
+.nav-links a {
+  font-family: var(--font-heading);
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--text-muted);
+  transition: color var(--transition);
+}
+
+.nav-links a:hover { color: var(--primary); }
+
+.nav-cta {
+  font-size: 14px !important;
+  padding: 10px 24px !important;
+  background: var(--primary) !important;
+  color: #fff !important;
+  box-shadow: 0 2px 8px rgba(27, 54, 93, 0.25) !important;
+}
+
+.nav-cta:hover {
+  background: var(--primary-light) !important;
+  box-shadow: 0 4px 16px rgba(27, 54, 93, 0.35) !important;
+  transform: none !important;
+}
+
+.nav-mobile-btn {
+  display: none;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 8px;
+  color: var(--primary);
+}
+
+@media (max-width: 768px) {
+  .nav-links { display: none; }
+  .nav-mobile-btn { display: block; }
+  .nav-links.open {
+    display: flex;
+    flex-direction: column;
+    position: absolute;
+    top: 72px;
+    left: 0;
+    right: 0;
+    background: rgba(255,255,255,0.98);
+    backdrop-filter: blur(12px);
+    padding: 24px;
+    gap: 20px;
+    border-bottom: 1px solid var(--border-light);
+    box-shadow: var(--shadow-md);
+  }
+}
+
+/* ========================================
+   BREADCRUMB
+   ======================================== */
+.breadcrumb {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 13px;
+  color: var(--text-muted);
+  margin-bottom: 24px;
+}
+
+.breadcrumb a {
+  color: var(--secondary);
+  transition: color var(--transition);
+}
+
+.breadcrumb a:hover { color: var(--primary); }
+
+.breadcrumb-sep {
+  margin: 0 4px;
+  opacity: 0.4;
+}
+
+/* ========================================
+   HERO COMPACT
+   ======================================== */
+.hero-compact {
+  padding: 120px 0 80px;
+  background: var(--bg-light);
+  position: relative;
+  overflow: hidden;
+}
+
+.hero-bg {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+}
+
+.hero-gradient {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(120px);
+  opacity: 0.12;
+  animation: float 20s ease-in-out infinite;
+}
+
+.hero-gradient-1 {
+  width: 700px;
+  height: 700px;
+  top: -250px;
+  right: -150px;
+  background: var(--green);
+}
+
+.hero-gradient-2 {
+  width: 450px;
+  height: 450px;
+  bottom: -150px;
+  left: -100px;
+  background: var(--primary);
+  animation-delay: -9s;
+}
+
+@keyframes float {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  33% { transform: translate(30px, -20px) scale(1.05); }
+  66% { transform: translate(-20px, 20px) scale(0.95); }
+}
+
+.hero-compact .container {
+  position: relative;
+  z-index: 1;
+}
+
+.pillar-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(45, 156, 111, 0.1);
+  border: 1px solid rgba(45, 156, 111, 0.25);
+  border-radius: 100px;
+  padding: 6px 16px;
+  font-family: var(--font-heading);
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--green);
+  margin-bottom: 20px;
+}
+
+.pillar-badge-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--green);
+  flex-shrink: 0;
+}
+
+.hero-compact h1 {
+  margin-bottom: 16px;
+  background: linear-gradient(135deg, var(--primary) 30%, var(--green));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.hero-subtitle {
+  font-size: clamp(17px, 1.9vw, 22px);
+  color: var(--text-muted);
+  max-width: 600px;
+  line-height: 1.6;
+  margin-bottom: 40px;
+}
+
+.hero-stats-row {
+  display: flex;
+  gap: 32px;
+  flex-wrap: wrap;
+}
+
+.hero-stat-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.hero-stat-icon {
+  width: 40px;
+  height: 40px;
+  border-radius: 10px;
+  background: rgba(45, 156, 111, 0.1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--green);
+  flex-shrink: 0;
+}
+
+.hero-stat-text {
+  font-family: var(--font-heading);
+}
+
+.hero-stat-num {
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--primary);
+  line-height: 1.1;
+}
+
+.hero-stat-label {
+  font-size: 12px;
+  color: var(--text-muted);
+}
+
+/* ========================================
+   SECTIONS GENERIC
+   ======================================== */
+.section {
+  padding: var(--section-py) 0;
+}
+
+.section-header {
+  margin-bottom: 56px;
+}
+
+/* ========================================
+   PAIN POINTS
+   ======================================== */
+.pain-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 24px;
+  margin-bottom: 64px;
+}
+
+@media (min-width: 900px) {
+  .pain-grid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+.pain-card {
+  background: var(--bg-light);
+  border-radius: var(--radius-lg);
+  padding: 28px 24px;
+  box-shadow: var(--shadow-sm);
+  border: 1px solid var(--border-light);
+  transition: all var(--transition);
+  position: relative;
+  overflow: hidden;
+}
+
+.pain-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: var(--red);
+  opacity: 0;
+  transition: opacity var(--transition);
+}
+
+.pain-card:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-md);
+}
+
+.pain-card:hover::before {
+  opacity: 1;
+}
+
+.pain-icon {
+  width: 48px;
+  height: 48px;
+  border-radius: 12px;
+  background: rgba(229, 57, 53, 0.08);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--red);
+  margin-bottom: 16px;
+}
+
+.pain-card h3 {
+  font-size: 17px;
+  font-weight: 700;
+  color: var(--primary);
+  margin-bottom: 8px;
+}
+
+.pain-card p {
+  font-size: 14px;
+  color: var(--text-muted);
+  line-height: 1.6;
+}
+
+/* Operations Reality */
+.ops-reality {
+  background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
+  border-radius: var(--radius-xl);
+  padding: 48px;
+  color: #fff;
+}
+
+.ops-reality h3 {
+  color: #fff;
+  font-size: clamp(20px, 2.5vw, 26px);
+  margin-bottom: 8px;
+}
+
+.ops-reality-sub {
+  color: rgba(255,255,255,0.7);
+  font-size: 15px;
+  margin-bottom: 32px;
+}
+
+.ops-reality-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+}
+
+.ops-reality-item {
+  background: rgba(255,255,255,0.08);
+  border-radius: var(--radius-md);
+  padding: 20px;
+  border: 1px solid rgba(255,255,255,0.12);
+}
+
+.ops-reality-item .item-num {
+  font-family: var(--font-heading);
+  font-size: 28px;
+  font-weight: 800;
+  color: var(--green);
+  line-height: 1;
+  margin-bottom: 6px;
+}
+
+.ops-reality-item .item-label {
+  font-size: 13px;
+  color: rgba(255,255,255,0.75);
+  line-height: 1.4;
+}
+
+@media (max-width: 768px) {
+  .ops-reality { padding: 32px 24px; }
+  .ops-reality-grid { grid-template-columns: 1fr 1fr; }
+}
+
+@media (max-width: 480px) {
+  .ops-reality-grid { grid-template-columns: 1fr; }
+}
+
+/* ========================================
+   FEATURES SECTION
+   ======================================== */
+.features-top-row {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+  margin-bottom: 24px;
+}
+
+.features-bottom-row {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+  margin-top: 24px;
+}
+
+.feat-card {
+  background: var(--bg-white);
+  border-radius: var(--radius-lg);
+  padding: 32px 28px;
+  box-shadow: var(--shadow-sm);
+  border: 1px solid var(--border-light);
+  transition: all var(--transition);
+  position: relative;
+  overflow: hidden;
+}
+
+.feat-card::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, var(--green), var(--secondary));
+  opacity: 0;
+  transition: opacity var(--transition);
+}
+
+.feat-card:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-md);
+}
+
+.feat-card:hover::after {
+  opacity: 1;
+}
+
+.feat-icon {
+  width: 52px;
+  height: 52px;
+  border-radius: 14px;
+  background: rgba(45, 156, 111, 0.08);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--green);
+  margin-bottom: 20px;
+}
+
+.feat-card h3 {
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--primary);
+  margin-bottom: 8px;
+}
+
+.feat-card p {
+  font-size: 14px;
+  color: var(--text-muted);
+  line-height: 1.6;
+}
+
+.feat-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(45, 156, 111, 0.08);
+  border-radius: 100px;
+  padding: 4px 12px;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--green);
+  margin-top: 16px;
+}
+
+/* Featured wide card — Doi soat */
+.feat-card-wide {
+  background: linear-gradient(135deg, #f0fdf8 0%, #e8f8f3 100%);
+  border-radius: var(--radius-xl);
+  padding: 40px;
+  box-shadow: var(--shadow-md);
+  border: 1px solid rgba(45, 156, 111, 0.2);
+  transition: all var(--transition);
+  position: relative;
+  overflow: hidden;
+}
+
+.feat-card-wide::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: linear-gradient(90deg, var(--green), var(--secondary));
+}
+
+.feat-card-wide:hover {
+  box-shadow: var(--shadow-lg);
+  transform: translateY(-2px);
+}
+
+.feat-wide-header {
+  display: flex;
+  align-items: flex-start;
+  gap: 20px;
+  margin-bottom: 32px;
+}
+
+.feat-wide-icon {
+  width: 64px;
+  height: 64px;
+  border-radius: 18px;
+  background: rgba(45, 156, 111, 0.12);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--green);
+  flex-shrink: 0;
+}
+
+.feat-wide-title h3 {
+  font-size: clamp(20px, 2.2vw, 26px);
+  font-weight: 800;
+  color: var(--primary);
+  margin-bottom: 6px;
+}
+
+.feat-wide-title p {
+  font-size: 15px;
+  color: var(--text-muted);
+  line-height: 1.5;
+}
+
+.feat-wide-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: var(--green);
+  color: #fff;
+  border-radius: 100px;
+  padding: 5px 14px;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  margin-top: 8px;
+}
+
+.feat-wide-sub {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+}
+
+.feat-wide-sub-item {
+  background: #fff;
+  border-radius: var(--radius-md);
+  padding: 20px 16px;
+  border: 1px solid rgba(45, 156, 111, 0.15);
+  box-shadow: var(--shadow-sm);
+  transition: all var(--transition);
+}
+
+.feat-wide-sub-item:hover {
+  border-color: var(--green);
+  box-shadow: 0 4px 16px rgba(45, 156, 111, 0.12);
+  transform: translateY(-2px);
+}
+
+.feat-wide-sub-icon {
+  width: 36px;
+  height: 36px;
+  border-radius: 10px;
+  background: rgba(45, 156, 111, 0.08);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--green);
+  margin-bottom: 12px;
+}
+
+.feat-wide-sub-item h4 {
+  font-family: var(--font-heading);
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--primary);
+  margin-bottom: 6px;
+}
+
+.feat-wide-sub-item p {
+  font-size: 12px;
+  color: var(--text-muted);
+  line-height: 1.5;
+}
+
+@media (max-width: 900px) {
+  .features-top-row,
+  .features-bottom-row {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .feat-wide-sub {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 600px) {
+  .features-top-row,
+  .features-bottom-row {
+    grid-template-columns: 1fr;
+  }
+  .feat-wide-sub {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .feat-card-wide { padding: 28px 20px; }
+  .feat-wide-header { flex-direction: column; gap: 12px; }
+}
+
+@media (max-width: 400px) {
+  .feat-wide-sub { grid-template-columns: 1fr; }
+}
+
+/* ========================================
+   COMPARISON TABLE
+   ======================================== */
+.comp-wrap {
+  overflow-x: auto;
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-md);
+  border: 1px solid var(--border-light);
+}
+
+.comp-table {
+  width: 100%;
+  border-collapse: collapse;
+  background: var(--bg-white);
+  min-width: 600px;
+}
+
+.comp-table th {
+  font-family: var(--font-heading);
+  font-weight: 700;
+  font-size: 14px;
+  padding: 20px 24px;
+  text-align: left;
+  border-bottom: 2px solid var(--border-light);
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.comp-table th.col-diso {
+  background: rgba(45, 156, 111, 0.06);
+  color: var(--green);
+  border-bottom-color: var(--green);
+}
+
+.comp-table td {
+  padding: 16px 24px;
+  border-bottom: 1px solid var(--border-light);
+  font-size: 15px;
+  vertical-align: middle;
+}
+
+.comp-table tr:last-child td { border-bottom: none; }
+
+.comp-table td.col-feature {
+  font-weight: 600;
+  color: var(--text-dark);
+}
+
+.comp-table td.col-diso {
+  background: rgba(45, 156, 111, 0.04);
+  font-weight: 600;
+  color: var(--primary);
+}
+
+.comp-table tr:hover td {
+  background: var(--bg-light);
+}
+
+.comp-table tr:hover td.col-diso {
+  background: rgba(45, 156, 111, 0.08);
+}
+
+.check-yes {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: rgba(45, 156, 111, 0.12);
+  color: var(--green);
+}
+
+.check-no {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: rgba(229, 57, 53, 0.08);
+  color: var(--red);
+}
+
+.check-partial {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: rgba(255, 111, 97, 0.08);
+  color: var(--accent);
+  font-size: 13px;
+  font-weight: 700;
+}
+
+/* ========================================
+   WORKFLOW SECTION
+   ======================================== */
+.workflow-steps {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 0;
+  position: relative;
+}
+
+.workflow-steps::before {
+  content: '';
+  position: absolute;
+  top: 44px;
+  left: calc(12.5% + 24px);
+  right: calc(12.5% + 24px);
+  height: 2px;
+  background: linear-gradient(90deg, var(--green), var(--secondary));
+  z-index: 0;
+}
+
+.workflow-step {
+  text-align: center;
+  padding: 0 16px;
+  position: relative;
+  z-index: 1;
+}
+
+.workflow-step-num {
+  width: 88px;
+  height: 88px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--green), var(--secondary));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 20px;
+  box-shadow: 0 6px 20px rgba(45, 156, 111, 0.25);
+}
+
+.workflow-step-num svg {
+  color: #fff;
+}
+
+.workflow-step-label {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--green);
+  margin-bottom: 8px;
+}
+
+.workflow-step h3 {
+  font-size: 17px;
+  font-weight: 700;
+  color: var(--primary);
+  margin-bottom: 8px;
+}
+
+.workflow-step p {
+  font-size: 13px;
+  color: var(--text-muted);
+  line-height: 1.6;
+}
+
+.workflow-arrow {
+  display: none;
+}
+
+@media (max-width: 768px) {
+  .workflow-steps {
+    grid-template-columns: 1fr;
+    gap: 0;
+  }
+  .workflow-steps::before { display: none; }
+  .workflow-step {
+    display: flex;
+    align-items: flex-start;
+    gap: 20px;
+    text-align: left;
+    padding: 0 0 32px 0;
+    position: relative;
+  }
+  .workflow-step::after {
+    content: '';
+    position: absolute;
+    left: 43px;
+    top: 88px;
+    bottom: 0;
+    width: 2px;
+    background: linear-gradient(180deg, var(--green), var(--secondary));
+  }
+  .workflow-step:last-child::after { display: none; }
+  .workflow-step-num {
+    width: 88px;
+    height: 88px;
+    flex-shrink: 0;
+    margin: 0;
+  }
+  .workflow-step-content { flex: 1; padding-top: 12px; }
+}
+
+/* ========================================
+   USE CASE SECTION
+   ======================================== */
+.usecase-card {
+  background: var(--bg-white);
+  border-radius: var(--radius-xl);
+  box-shadow: var(--shadow-lg);
+  overflow: hidden;
+  border: 1px solid var(--border-light);
+}
+
+.usecase-header {
+  background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
+  padding: 40px 48px;
+  color: #fff;
+}
+
+.usecase-header h3 {
+  color: #fff;
+  font-size: clamp(20px, 2.5vw, 28px);
+  margin-bottom: 8px;
+}
+
+.usecase-header p {
+  color: rgba(255,255,255,0.7);
+  font-size: 15px;
+}
+
+.usecase-body {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: start;
+  gap: 0;
+}
+
+.usecase-col {
+  padding: 40px 40px;
+}
+
+.usecase-col-label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--font-heading);
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  margin-bottom: 20px;
+}
+
+.usecase-col-label.before { color: var(--red); }
+.usecase-col-label.after { color: var(--green); }
+
+.usecase-col.col-before {
+  background: #fff8f8;
+  border-right: 1px solid var(--border-light);
+}
+
+.usecase-col.col-after {
+  background: #f0fdf8;
+}
+
+.usecase-divider {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 0;
+  background: var(--bg-white);
+  border-right: 1px solid var(--border-light);
+  min-width: 60px;
+}
+
+.usecase-arrow-icon {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: var(--green);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  box-shadow: 0 4px 12px rgba(45, 156, 111, 0.3);
+}
+
+.usecase-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.usecase-item:last-child { margin-bottom: 0; }
+
+.usecase-item-dot {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 2px;
+}
+
+.usecase-item-dot.dot-red { background: rgba(229, 57, 53, 0.1); color: var(--red); }
+.usecase-item-dot.dot-green { background: rgba(45, 156, 111, 0.1); color: var(--green); }
+
+.usecase-item p {
+  font-size: 14px;
+  color: var(--text-dark);
+  line-height: 1.6;
+}
+
+.usecase-result {
+  background: linear-gradient(135deg, var(--green), var(--secondary));
+  padding: 24px 40px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  flex-wrap: wrap;
+}
+
+.usecase-result-item {
+  text-align: center;
+}
+
+.usecase-result-num {
+  font-family: var(--font-heading);
+  font-size: 28px;
+  font-weight: 800;
+  color: #fff;
+  line-height: 1;
+  margin-bottom: 4px;
+}
+
+.usecase-result-label {
+  font-size: 12px;
+  color: rgba(255,255,255,0.8);
+}
+
+@media (max-width: 768px) {
+  .usecase-header { padding: 32px 24px; }
+  .usecase-body { grid-template-columns: 1fr; }
+  .usecase-col { padding: 28px 24px; }
+  .usecase-col.col-before { border-right: none; border-bottom: 1px solid var(--border-light); }
+  .usecase-divider { display: none; }
+  .usecase-result { padding: 20px 24px; }
+}
+
+/* ========================================
+   KEY NUMBERS
+   ======================================== */
+.numbers-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 24px;
+}
+
+.number-card {
+  background: var(--bg-white);
+  border-radius: var(--radius-lg);
+  padding: 36px 28px;
+  text-align: center;
+  box-shadow: var(--shadow-sm);
+  border: 1px solid var(--border-light);
+  transition: all var(--transition);
+  position: relative;
+  overflow: hidden;
+}
+
+.number-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: linear-gradient(90deg, var(--green), var(--secondary));
+}
+
+.number-card:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-md);
+}
+
+.number-card .num {
+  font-family: var(--font-heading);
+  font-size: clamp(36px, 4vw, 52px);
+  font-weight: 800;
+  color: var(--green);
+  line-height: 1;
+  margin-bottom: 8px;
+}
+
+.number-card .num-label {
+  font-family: var(--font-heading);
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--primary);
+  margin-bottom: 8px;
+}
+
+.number-card .num-desc {
+  font-size: 13px;
+  color: var(--text-muted);
+  line-height: 1.5;
+}
+
+@media (max-width: 768px) {
+  .numbers-grid { grid-template-columns: repeat(2, 1fr); }
+}
+
+@media (max-width: 400px) {
+  .numbers-grid { grid-template-columns: 1fr; }
+}
+
+/* ========================================
+   MODULE CONNECTIONS
+   ======================================== */
+.connections-diagram {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  gap: 32px;
+  align-items: center;
+  max-width: 960px;
+  margin: 0 auto;
+}
+
+.connections-left,
+.connections-right {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.connections-center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.hub-card {
+  width: 140px;
+  height: 140px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--green), var(--secondary));
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  box-shadow: 0 8px 32px rgba(45, 156, 111, 0.3);
+  color: #fff;
+  text-align: center;
+  flex-shrink: 0;
+}
+
+.hub-card-icon {
+  color: #fff;
+}
+
+.hub-card-label {
+  font-family: var(--font-heading);
+  font-size: 13px;
+  font-weight: 700;
+  color: #fff;
+  line-height: 1.3;
+  text-align: center;
+  padding: 0 12px;
+}
+
+.conn-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: var(--bg-white);
+  border-radius: var(--radius-md);
+  padding: 16px 20px;
+  box-shadow: var(--shadow-sm);
+  border: 1px solid var(--border-light);
+  transition: all var(--transition);
+}
+
+.conn-item:hover {
+  border-color: var(--green);
+  box-shadow: 0 4px 16px rgba(45, 156, 111, 0.1);
+  transform: translateX(-4px);
+}
+
+.connections-right .conn-item:hover {
+  transform: translateX(4px);
+}
+
+.conn-icon {
+  width: 40px;
+  height: 40px;
+  border-radius: 10px;
+  background: rgba(45, 156, 111, 0.08);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--green);
+  flex-shrink: 0;
+}
+
+.conn-text {
+  font-family: var(--font-heading);
+}
+
+.conn-text strong {
+  display: block;
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--primary);
+  margin-bottom: 2px;
+}
+
+.conn-text span {
+  font-size: 12px;
+  color: var(--text-muted);
+}
+
+.conn-arrow {
+  margin-left: auto;
+  color: var(--green);
+  opacity: 0.5;
+  flex-shrink: 0;
+}
+
+.connections-right .conn-arrow {
+  margin-left: 0;
+  margin-right: auto;
+  order: -1;
+  transform: rotate(180deg);
+}
+
+@media (max-width: 768px) {
+  .connections-diagram {
+    grid-template-columns: 1fr;
+  }
+  .connections-center {
+    order: -1;
+  }
+  .conn-item:hover { transform: translateY(-2px); }
+  .connections-right .conn-item:hover { transform: translateY(-2px); }
+  .conn-arrow { display: none; }
+}
+
+/* ========================================
+   CTA SECTION
+   ======================================== */
+.cta-section {
+  padding: var(--section-py) 0;
+  background: var(--bg-dark);
+  position: relative;
+  overflow: hidden;
+}
+
+.cta-section::before {
+  content: '';
+  position: absolute;
+  width: 600px;
+  height: 600px;
+  border-radius: 50%;
+  background: var(--green);
+  opacity: 0.06;
+  top: -200px;
+  right: -200px;
+  filter: blur(80px);
+}
+
+.cta-section::after {
+  content: '';
+  position: absolute;
+  width: 400px;
+  height: 400px;
+  border-radius: 50%;
+  background: var(--secondary);
+  opacity: 0.06;
+  bottom: -150px;
+  left: -100px;
+  filter: blur(80px);
+}
+
+.cta-inner {
+  position: relative;
+  z-index: 1;
+  text-align: center;
+}
+
+.cta-inner h2 {
+  color: #fff;
+  font-size: clamp(28px, 3.5vw, 44px);
+  margin-bottom: 16px;
+}
+
+.cta-inner p {
+  color: rgba(255,255,255,0.65);
+  font-size: clamp(16px, 1.8vw, 20px);
+  max-width: 540px;
+  margin: 0 auto 40px;
+  line-height: 1.6;
+}
+
+.cta-btn-row {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.cta-note {
+  margin-top: 20px;
+  font-size: 13px;
+  color: rgba(255,255,255,0.4);
+}
+
+/* ========================================
+   FOOTER
+   ======================================== */
+.footer {
+  background: #0a1826;
+  padding: 48px 0 32px;
+  border-top: 1px solid rgba(255,255,255,0.06);
+}
+
+.footer-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 24px;
+  margin-bottom: 32px;
+}
+
+.footer-logo {
+  font-family: var(--font-heading);
+  font-weight: 800;
+  font-size: 22px;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.footer-logo .logo-mark {
+  width: 34px;
+  height: 34px;
+  background: linear-gradient(135deg, var(--secondary), var(--primary));
+  border-radius: 9px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  font-size: 16px;
+  font-weight: 800;
+}
+
+.footer-links {
+  display: flex;
+  gap: 24px;
+  flex-wrap: wrap;
+}
+
+.footer-links a {
+  font-size: 14px;
+  color: rgba(255,255,255,0.45);
+  transition: color var(--transition);
+}
+
+.footer-links a:hover { color: rgba(255,255,255,0.8); }
+
+.footer-bottom {
+  padding-top: 24px;
+  border-top: 1px solid rgba(255,255,255,0.06);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.footer-copy {
+  font-size: 13px;
+  color: rgba(255,255,255,0.3);
+}
+
+.footer-tagline {
+  font-size: 13px;
+  color: rgba(255,255,255,0.3);
+}
+
+/* ========================================
+   REVEAL ANIMATIONS
+   ======================================== */
+.reveal {
+  opacity: 0;
+  transform: translateY(24px);
+  transition: opacity 0.6s ease, transform 0.6s ease;
+}
+
+.reveal.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.reveal-delay-1 { transition-delay: 0.1s; }
+.reveal-delay-2 { transition-delay: 0.2s; }
+.reveal-delay-3 { transition-delay: 0.3s; }
+.reveal-delay-4 { transition-delay: 0.4s; }
+
+/* ========================================
+   RESPONSIVE UTILITIES
+   ======================================== */
+@media (max-width: 480px) {
+  :root { --section-py: 64px; }
+  .btn-lg { padding: 16px 28px; font-size: 16px; }
+  .hero-stats-row { gap: 20px; }
+}
+</style>
+</head>
+<body>
+
+<!-- NAVIGATION -->
+<nav class="nav" id="nav">
+  <div class="nav-inner">
+    <a href="../../" class="nav-logo"><span class="logo-mark">D</span> Diso</a>
+    <ul class="nav-links" id="navLinks">
+      <li><a href="../../">Trang chủ</a></li>
+      <li><a href="../../#solution">Giải pháp</a></li>
+      <li><a href="../../#proof">Khách hàng</a></li>
+      <li><a href="../../comparison/">So sánh</a></li>
+      <li><a href="https://calendar.app.google/2PrCTZy9JW2UKfsW7" target="_blank" rel="noopener" class="btn btn-primary nav-cta">Đặt lịch demo</a></li>
+    </ul>
+    <button class="nav-mobile-btn" id="navToggle" aria-label="Toggle navigation">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12h18M3 6h18M3 18h18"/></svg>
+    </button>
+  </div>
+</nav>
+
+<!-- HERO COMPACT -->
+<section class="hero-compact">
+  <div class="hero-bg">
+    <div class="hero-gradient hero-gradient-1"></div>
+    <div class="hero-gradient hero-gradient-2"></div>
+  </div>
+  <div class="container">
+    <nav class="breadcrumb" aria-label="Breadcrumb">
+      <a href="../../">Trang chủ</a>
+      <span class="breadcrumb-sep">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+      </span>
+      <a href="../../#solution">Giải pháp</a>
+      <span class="breadcrumb-sep">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+      </span>
+      <span>Backend Vận hành</span>
+    </nav>
+
+    <div class="pillar-badge">
+      <span class="pillar-badge-dot"></span>
+      Giải pháp 3 / 5
+    </div>
+
+    <h1>Backend Vận hành</h1>
+    <p class="hero-subtitle">Từ đơn hàng đến giao hàng — tự động hóa toàn bộ</p>
+
+    <div class="hero-stats-row">
+      <div class="hero-stat-item">
+        <div class="hero-stat-icon">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+        </div>
+        <div class="hero-stat-text">
+          <div class="hero-stat-num">1 dashboard</div>
+          <div class="hero-stat-label">Tất cả đơn hàng</div>
+        </div>
+      </div>
+      <div class="hero-stat-item">
+        <div class="hero-stat-icon">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+        </div>
+        <div class="hero-stat-text">
+          <div class="hero-stat-num">4 loại đối soát</div>
+          <div class="hero-stat-label">Tự động 100%</div>
+        </div>
+      </div>
+      <div class="hero-stat-item">
+        <div class="hero-stat-icon">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+        </div>
+        <div class="hero-stat-text">
+          <div class="hero-stat-num">4 hãng vận chuyển</div>
+          <div class="hero-stat-label">1 click tạo đơn</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PAIN POINTS SECTION -->
+<section class="section" style="background: var(--bg-white);">
+  <div class="container">
+    <div class="section-header text-center reveal">
+      <span class="section-label">Vấn đề thực tế</span>
+      <h2>Vận hành thủ công — chi phí ẩn cao</h2>
+      <p class="section-subtitle">Khi đơn hàng tăng, mọi thứ bắt đầu vỡ vụn nếu không có hệ thống</p>
+    </div>
+
+    <div class="pain-grid">
+      <div class="pain-card reveal reveal-delay-1">
+        <div class="pain-icon">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
+        </div>
+        <h3>100 đơn/ngày là giới hạn</h3>
+        <p>Qua 100 đơn/ngày, quản lý thủ công bắt đầu rối loạn — sai tên, sai địa chỉ, trùng đơn, bỏ sót khiếu nại.</p>
+      </div>
+      <div class="pain-card reveal reveal-delay-2">
+        <div class="pain-icon">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+        </div>
+        <h3>Kế toán đối soát bằng tay</h3>
+        <p>4 loại cần đối soát: đơn hàng, affiliate, reseller, đại sứ. Mỗi loại một file Excel, mỗi tháng mất hàng chục giờ.</p>
+      </div>
+      <div class="pain-card reveal reveal-delay-3">
+        <div class="pain-icon">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+        </div>
+        <h3>4 tab vận chuyển mở song song</h3>
+        <p>GHN, GHTK, Viettel Post, J&amp;T — mỗi hãng một cửa sổ, nhân viên phải nhập thủ công từng đơn.</p>
+      </div>
+      <div class="pain-card reveal reveal-delay-4">
+        <div class="pain-icon">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"/><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/></svg>
+        </div>
+        <h3>Data rải rác khắp nơi</h3>
+        <p>Khách hàng, đơn hàng, hoa hồng — mỗi thứ một chỗ. Không có cái nhìn tổng thể để ra quyết định.</p>
+      </div>
+    </div>
+
+    <!-- Operations Reality -->
+    <div class="ops-reality reveal">
+      <h3>Thực tế vận hành — con số không thể phủ nhận</h3>
+      <p class="ops-reality-sub">Đây là lý do bạn cần hệ thống, không phải thêm người</p>
+      <div class="ops-reality-grid">
+        <div class="ops-reality-item">
+          <div class="item-num">4 loại</div>
+          <div class="item-label">đối soát cần xử lý mỗi tháng — sàn TMĐT chỉ có 1</div>
+        </div>
+        <div class="ops-reality-item">
+          <div class="item-num">50–100tr</div>
+          <div class="item-label">chi phí team dev/tháng nếu tự xây hệ thống tương đương</div>
+        </div>
+        <div class="ops-reality-item">
+          <div class="item-num">5–10%</div>
+          <div class="item-label">tỷ lệ sai sót khi đối soát thủ công, theo khảo sát thực tế</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FEATURES SECTION -->
+<section class="section" style="background: var(--bg-light);">
+  <div class="container">
+    <div class="section-header text-center reveal">
+      <span class="section-label">Tính năng</span>
+      <h2>7 tính năng vận hành cốt lõi</h2>
+      <p class="section-subtitle">Mọi thứ bạn cần để vận hành quy mô lớn — trong một hệ thống thống nhất</p>
+    </div>
+
+    <!-- Top row: 3 cards -->
+    <div class="features-top-row">
+      <div class="feat-card reveal reveal-delay-1">
+        <div class="feat-icon">
+          <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+        </div>
+        <h3>Quản lý đơn hàng tập trung</h3>
+        <p>1 dashboard duy nhất cho tất cả đơn từ mọi kênh — website, affiliate, reseller, đại sứ. Không bỏ sót, không trùng.</p>
+        <div class="feat-tag">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+          1 dashboard duy nhất
+        </div>
+      </div>
+      <div class="feat-card reveal reveal-delay-2">
+        <div class="feat-icon">
+          <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="1" y="3" width="15" height="13"/><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>
+        </div>
+        <h3>Tích hợp vận chuyển 4 hãng</h3>
+        <p>GHN, GHTK, Viettel Post, J&amp;T Express tích hợp sẵn. Tạo vận đơn 1 click, theo dõi trạng thái real-time.</p>
+        <div class="feat-tag">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+          1 click tạo vận đơn
+        </div>
+      </div>
+      <div class="feat-card reveal reveal-delay-3">
+        <div class="feat-icon">
+          <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/></svg>
+        </div>
+        <h3>Quản lý tồn kho thông minh</h3>
+        <p>Theo dõi tồn kho theo SKU, cảnh báo tự động khi sắp hết hàng. Đồng bộ từ đơn hàng xuống kho ngay lập tức.</p>
+        <div class="feat-tag">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+          Cảnh báo tự động
+        </div>
+      </div>
+    </div>
+
+    <!-- Wide featured card: Doi soat -->
+    <div class="feat-card-wide reveal">
+      <div class="feat-wide-header">
+        <div class="feat-wide-icon">
+          <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+        </div>
+        <div class="feat-wide-title">
+          <h3>Đối soát tự động 4 loại</h3>
+          <p>Tính năng độc quyền mà không sàn TMĐT nào có — tự động đối soát toàn bộ dòng tiền trong hệ sinh thái của bạn</p>
+          <span class="feat-wide-badge">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+            Điểm khác biệt cốt lõi
+          </span>
+        </div>
+      </div>
+      <div class="feat-wide-sub">
+        <div class="feat-wide-sub-item">
+          <div class="feat-wide-sub-icon">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+          </div>
+          <h4>Đối soát đơn hàng</h4>
+          <p>Khớp doanh thu thực thu từ cổng thanh toán với đơn đã xác nhận. Phát hiện chênh lệch tức thì.</p>
+        </div>
+        <div class="feat-wide-sub-item">
+          <div class="feat-wide-sub-icon">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+          </div>
+          <h4>Đối soát Affiliate</h4>
+          <p>Tính hoa hồng chính xác theo từng publisher, link tracking. Xuất báo cáo chi trả tự động.</p>
+        </div>
+        <div class="feat-wide-sub-item">
+          <div class="feat-wide-sub-icon">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+          </div>
+          <h4>Đối soát Reseller</h4>
+          <p>Theo dõi chiết khấu, thanh toán còn thiếu, công nợ của từng đại lý. Không bao giờ nhầm lẫn.</p>
+        </div>
+        <div class="feat-wide-sub-item">
+          <div class="feat-wide-sub-icon">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+          </div>
+          <h4>Đối soát Đại sứ</h4>
+          <p>Kiểm soát hoa hồng đại sứ thương hiệu theo đơn thực, hiệu suất theo tháng. Minh bạch hoàn toàn.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Bottom row: 3 cards -->
+    <div class="features-bottom-row">
+      <div class="feat-card reveal reveal-delay-1">
+        <div class="feat-icon">
+          <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+        </div>
+        <h3>CRM Khách hàng</h3>
+        <p>Data khách hàng là của bạn, không phải của sàn. Phân nhóm theo hành vi, lịch sử mua, giá trị vòng đời. Kích hoạt tái mua chủ động.</p>
+        <div class="feat-tag">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+          Data của bạn, bạn sở hữu
+        </div>
+      </div>
+      <div class="feat-card reveal reveal-delay-2">
+        <div class="feat-icon">
+          <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+        </div>
+        <h3>Analytics Real-time</h3>
+        <p>Dashboard doanh thu, số đơn, hiệu quả từng kênh bán — cập nhật liên tục. Ra quyết định dựa trên dữ liệu thực.</p>
+        <div class="feat-tag">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+          Cập nhật liên tục
+        </div>
+      </div>
+      <div class="feat-card reveal reveal-delay-3">
+        <div class="feat-icon">
+          <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+        </div>
+        <h3>Phân quyền Admin</h3>
+        <p>3 cấp quyền: Root (toàn quyền), Admin (quản lý vận hành), Collaborator (thực thi). Ai được xem gì, làm gì — kiểm soát hoàn toàn.</p>
+        <div class="feat-tag">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+          Root / Admin / Collaborator
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- COMPARISON TABLE -->
+<section class="section" style="background: var(--bg-white);">
+  <div class="container">
+    <div class="section-header text-center reveal">
+      <span class="section-label">So sánh</span>
+      <h2>Diso vs. các giải pháp thay thế</h2>
+      <p class="section-subtitle">Tại sao tự xây hoặc dùng sàn TMĐT không phải câu trả lời</p>
+    </div>
+
+    <div class="comp-wrap reveal">
+      <table class="comp-table">
+        <thead>
+          <tr>
+            <th style="width:34%">Tính năng</th>
+            <th class="col-diso" style="width:22%">Diso</th>
+            <th style="width:22%">Sàn TMĐT</th>
+            <th style="width:22%">Tự xây</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="col-feature">Quản lý đơn tất cả kênh trong 1 nơi</td>
+            <td class="col-diso">
+              <span class="check-yes"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></span>
+            </td>
+            <td><span class="check-no"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></span></td>
+            <td><span class="check-partial">~</span></td>
+          </tr>
+          <tr>
+            <td class="col-feature">Tích hợp GHN, GHTK, Viettel, J&amp;T</td>
+            <td class="col-diso">
+              <span class="check-yes"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></span>
+            </td>
+            <td><span class="check-no"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></span></td>
+            <td><span class="check-partial">~</span></td>
+          </tr>
+          <tr>
+            <td class="col-feature">Đối soát Affiliate tự động</td>
+            <td class="col-diso">
+              <span class="check-yes"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></span>
+            </td>
+            <td><span class="check-no"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></span></td>
+            <td><span class="check-partial">~</span></td>
+          </tr>
+          <tr>
+            <td class="col-feature">Đối soát Reseller &amp; Đại sứ</td>
+            <td class="col-diso">
+              <span class="check-yes"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></span>
+            </td>
+            <td><span class="check-no"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></span></td>
+            <td><span class="check-partial">~</span></td>
+          </tr>
+          <tr>
+            <td class="col-feature">CRM — data khách hàng thuộc bạn</td>
+            <td class="col-diso">
+              <span class="check-yes"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></span>
+            </td>
+            <td><span class="check-no"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></span></td>
+            <td><span class="check-yes"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></span></td>
+          </tr>
+          <tr>
+            <td class="col-feature">Analytics real-time đa kênh</td>
+            <td class="col-diso">
+              <span class="check-yes"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></span>
+            </td>
+            <td><span class="check-partial">~</span></td>
+            <td><span class="check-partial">~</span></td>
+          </tr>
+          <tr>
+            <td class="col-feature">Phân quyền đa cấp Admin</td>
+            <td class="col-diso">
+              <span class="check-yes"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></span>
+            </td>
+            <td><span class="check-no"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></span></td>
+            <td><span class="check-yes"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></span></td>
+          </tr>
+          <tr>
+            <td class="col-feature">Tích hợp với Affiliate &amp; Reseller giải pháp</td>
+            <td class="col-diso">
+              <span class="check-yes"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></span>
+            </td>
+            <td><span class="check-no"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></span></td>
+            <td><span class="check-no"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></span></td>
+          </tr>
+          <tr>
+            <td class="col-feature">Chi phí triển khai</td>
+            <td class="col-diso" style="color: var(--green); font-weight: 700;">SaaS, không upfront</td>
+            <td style="color: var(--text-muted); font-size: 14px;">Phí sàn + ràng buộc</td>
+            <td style="color: var(--red); font-size: 14px;">50–100tr/tháng</td>
+          </tr>
+          <tr>
+            <td class="col-feature">Thời gian chạy</td>
+            <td class="col-diso" style="color: var(--green); font-weight: 700;">Ngay sau onboarding</td>
+            <td style="color: var(--text-muted); font-size: 14px;">Ngay (giới hạn)</td>
+            <td style="color: var(--red); font-size: 14px;">3–6 tháng</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<!-- WORKFLOW SECTION -->
+<section class="section" style="background: var(--bg-light);">
+  <div class="container">
+    <div class="section-header text-center reveal">
+      <span class="section-label">Quy trình</span>
+      <h2>Từ đơn hàng đến dòng tiền — 4 bước tự động</h2>
+      <p class="section-subtitle">Mỗi bước được hệ thống xử lý và ghi nhận, không cần can thiệp thủ công</p>
+    </div>
+
+    <div class="workflow-steps">
+      <div class="workflow-step reveal reveal-delay-1">
+        <div class="workflow-step-num">
+          <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+        </div>
+        <div class="workflow-step-content">
+          <div class="workflow-step-label">Bước 1</div>
+          <h3>Ghi nhận</h3>
+          <p>Đơn hàng từ tất cả kênh tự động vào 1 dashboard. Phân loại theo nguồn, kênh, trạng thái.</p>
+        </div>
+      </div>
+      <div class="workflow-step reveal reveal-delay-2">
+        <div class="workflow-step-num">
+          <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+        </div>
+        <div class="workflow-step-content">
+          <div class="workflow-step-label">Bước 2</div>
+          <h3>Xác nhận</h3>
+          <p>Xác nhận đơn, trừ kho tự động, thông báo bên liên quan. Không cần nhập tay.</p>
+        </div>
+      </div>
+      <div class="workflow-step reveal reveal-delay-3">
+        <div class="workflow-step-num">
+          <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="1" y="3" width="15" height="13"/><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>
+        </div>
+        <div class="workflow-step-content">
+          <div class="workflow-step-label">Bước 3</div>
+          <h3>Giao hàng</h3>
+          <p>Chọn hãng vận chuyển, tạo vận đơn 1 click, theo dõi real-time. Cập nhật trạng thái tự động.</p>
+        </div>
+      </div>
+      <div class="workflow-step reveal reveal-delay-4">
+        <div class="workflow-step-num">
+          <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+        </div>
+        <div class="workflow-step-content">
+          <div class="workflow-step-label">Bước 4</div>
+          <h3>Hoàn thành + Đối soát</h3>
+          <p>Giao hàng thành công — hệ thống tự đối soát doanh thu, hoa hồng, ghi nhận vào báo cáo tài chính.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- USE CASE SECTION -->
+<section class="section" style="background: var(--bg-white);">
+  <div class="container">
+    <div class="section-header text-center reveal">
+      <span class="section-label">Thực tế triển khai</span>
+      <h2>Brand thời trang — 200 đơn/ngày, 3 kênh</h2>
+      <p class="section-subtitle">Từ 2 nhân viên kế toán sai sót 5–10% đến vận hành tự động 100%</p>
+    </div>
+
+    <div class="usecase-card reveal">
+      <div class="usecase-header">
+        <h3>Brand thời trang nữ — Hà Nội</h3>
+        <p>Quy mô: 200 đơn/ngày — 3 kênh (website, reseller, đại sứ) — team 15 người</p>
+      </div>
+      <div class="usecase-body">
+        <div class="usecase-col col-before">
+          <div class="usecase-col-label before">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg>
+            Trước Diso
+          </div>
+          <div class="usecase-item">
+            <div class="usecase-item-dot dot-red">
+              <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+            </div>
+            <p>2 nhân viên kế toán làm đối soát thủ công mỗi tháng</p>
+          </div>
+          <div class="usecase-item">
+            <div class="usecase-item-dot dot-red">
+              <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+            </div>
+            <p>Tỷ lệ sai sót 5–10% mỗi kỳ đối soát — tranh chấp hoa hồng thường xuyên</p>
+          </div>
+          <div class="usecase-item">
+            <div class="usecase-item-dot dot-red">
+              <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+            </div>
+            <p>4 cửa sổ vận chuyển mở song song — mỗi đơn mất 5–8 phút xử lý</p>
+          </div>
+          <div class="usecase-item">
+            <div class="usecase-item-dot dot-red">
+              <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+            </div>
+            <p>Không biết kênh nào hiệu quả nhất — ngân sách bị phân bổ sai</p>
+          </div>
+        </div>
+        <div class="usecase-divider">
+          <div class="usecase-arrow-icon">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+          </div>
+        </div>
+        <div class="usecase-col col-after">
+          <div class="usecase-col-label after">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><polyline points="20 6 9 17 4 12"/></svg>
+            Sau khi dùng Diso
+          </div>
+          <div class="usecase-item">
+            <div class="usecase-item-dot dot-green">
+              <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
+            </div>
+            <p>Đối soát 4 loại chạy hoàn toàn tự động — không cần nhân viên kế toán xử lý</p>
+          </div>
+          <div class="usecase-item">
+            <div class="usecase-item-dot dot-green">
+              <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
+            </div>
+            <p>Tỷ lệ sai sót = 0% — hoa hồng được tính chính xác, xuất báo cáo 1 click</p>
+          </div>
+          <div class="usecase-item">
+            <div class="usecase-item-dot dot-green">
+              <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
+            </div>
+            <p>1 click tạo vận đơn — xử lý 200 đơn trong vòng 30 phút buổi sáng</p>
+          </div>
+          <div class="usecase-item">
+            <div class="usecase-item-dot dot-green">
+              <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
+            </div>
+            <p>Analytics real-time — biết ngay kênh nào mang về doanh thu cao nhất</p>
+          </div>
+        </div>
+      </div>
+      <div class="usecase-result">
+        <div class="usecase-result-item">
+          <div class="usecase-result-num">0%</div>
+          <div class="usecase-result-label">Sai sót đối soát</div>
+        </div>
+        <div class="usecase-result-item">
+          <div class="usecase-result-num">100%</div>
+          <div class="usecase-result-label">Tự động hóa đối soát</div>
+        </div>
+        <div class="usecase-result-item">
+          <div class="usecase-result-num">30 phút</div>
+          <div class="usecase-result-label">Xử lý 200 đơn/ngày</div>
+        </div>
+        <div class="usecase-result-item">
+          <div class="usecase-result-num">2 NV</div>
+          <div class="usecase-result-label">Tiết kiệm nhân sự kế toán</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- KEY NUMBERS SECTION -->
+<section class="section" style="background: var(--bg-light);">
+  <div class="container">
+    <div class="section-header text-center reveal">
+      <span class="section-label">Con số nổi bật</span>
+      <h2>Vận hành theo con số</h2>
+    </div>
+
+    <div class="numbers-grid">
+      <div class="number-card reveal reveal-delay-1">
+        <div class="num">4</div>
+        <div class="num-label">Loại đối soát</div>
+        <div class="num-desc">Đơn hàng, Affiliate, Reseller, Đại sứ — tự động 100%</div>
+      </div>
+      <div class="number-card reveal reveal-delay-2">
+        <div class="num">4</div>
+        <div class="num-label">Hãng vận chuyển</div>
+        <div class="num-desc">GHN, GHTK, Viettel Post, J&amp;T — tích hợp sẵn</div>
+      </div>
+      <div class="number-card reveal reveal-delay-3">
+        <div class="num">1</div>
+        <div class="num-label">Click tạo đơn</div>
+        <div class="num-desc">Từ xác nhận đến in vận đơn, chỉ 1 thao tác</div>
+      </div>
+      <div class="number-card reveal reveal-delay-4">
+        <div class="num">100%</div>
+        <div class="num-label">Tự động hóa</div>
+        <div class="num-desc">Không sai sót, không thủ công, không tranh chấp</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- MODULE CONNECTIONS SECTION -->
+<section class="section" style="background: var(--bg-white);">
+  <div class="container">
+    <div class="section-header text-center reveal">
+      <span class="section-label">Tích hợp hệ sinh thái</span>
+      <h2>Backend Vận hành — trung tâm kết nối</h2>
+      <p class="section-subtitle">Nhận dữ liệu từ tất cả giải pháp, xử lý tập trung, đối soát thống nhất</p>
+    </div>
+
+    <div class="connections-diagram reveal">
+      <!-- Left: two connections -->
+      <div class="connections-left">
+        <div class="conn-item">
+          <div class="conn-icon">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+          </div>
+          <div class="conn-text">
+            <strong>Website TMĐT</strong>
+            <span>Đơn hàng từ web &rarr; vào hệ thống ngay</span>
+          </div>
+          <div class="conn-arrow">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+          </div>
+        </div>
+        <div class="conn-item">
+          <div class="conn-icon">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+          </div>
+          <div class="conn-text">
+            <strong>Giải pháp Affiliate</strong>
+            <span>Đơn qua affiliate link &rarr; ghi nhận tự động</span>
+          </div>
+          <div class="conn-arrow">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+          </div>
+        </div>
+      </div>
+
+      <!-- Center: Hub -->
+      <div class="connections-center">
+        <div class="hub-card">
+          <div class="hub-card-icon">
+            <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+          </div>
+          <div class="hub-card-label">Backend<br>Vận hành</div>
+        </div>
+      </div>
+
+      <!-- Right: two connections -->
+      <div class="connections-right">
+        <div class="conn-item">
+          <div class="conn-arrow">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+          </div>
+          <div class="conn-icon">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+          </div>
+          <div class="conn-text">
+            <strong>Giải pháp Reseller</strong>
+            <span>Đơn từ đại lý &rarr; đối soát chiết khấu</span>
+          </div>
+        </div>
+        <div class="conn-item">
+          <div class="conn-arrow">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+          </div>
+          <div class="conn-icon">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+          </div>
+          <div class="conn-text">
+            <strong>Giải pháp Đại sứ</strong>
+            <span>Đơn từ đại sứ &rarr; hoa hồng chính xác</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA SECTION -->
+<section class="cta-section">
+  <div class="container">
+    <div class="cta-inner">
+      <span class="section-label" style="color: rgba(255,255,255,0.5);">Bắt đầu ngay</span>
+      <h2>Vận hành tự động từ ngày đầu tiên</h2>
+      <p>Demo miễn phí 30 phút — chúng tôi sẽ chạy thử đối soát thực tế với dữ liệu của bạn</p>
+      <div class="cta-btn-row">
+        <a href="https://calendar.app.google/2PrCTZy9JW2UKfsW7" target="_blank" rel="noopener" class="btn btn-green btn-lg">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+          Đặt lịch demo miễn phí
+        </a>
+        <a href="../../#solution" class="btn btn-outline-white btn-lg">
+          Xem giải pháp khác
+        </a>
+      </div>
+      <p class="cta-note">Không cần thẻ tín dụng &middot; Demo trực tiếp với chuyên gia &middot; 30 phút</p>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer class="footer">
+  <div class="container">
+    <div class="footer-inner">
+      <a href="../../" class="footer-logo">
+        <span class="logo-mark">D</span>
+        Diso
+      </a>
+      <nav class="footer-links">
+        <a href="../../">Trang chủ</a>
+        <a href="../../#solution">Giải pháp</a>
+        <a href="../../comparison/">So sánh</a>
+        <a href="../ecommerce/">Website TMĐT</a>
+        <a href="../affiliate/">Affiliate</a>
+        <a href="../reseller/">Reseller</a>
+        <a href="../ambassador/">Đại sứ</a>
+      </nav>
+    </div>
+    <div class="footer-bottom">
+      <p class="footer-copy">&copy; 2026 Diso Commerce Suite. All rights reserved.</p>
+      <p class="footer-tagline">Vận hành thông minh — tăng trưởng bền vững</p>
+    </div>
+  </div>
+</footer>
+
+<script>
+// Nav scroll behavior
+(function() {
+  var nav = document.getElementById('nav');
+  function onScroll() {
+    if (window.scrollY > 20) {
+      nav.classList.add('scrolled');
+    } else {
+      nav.classList.remove('scrolled');
+    }
+  }
+  window.addEventListener('scroll', onScroll, { passive: true });
+  onScroll();
+})();
+
+// Mobile nav toggle
+(function() {
+  var btn = document.getElementById('navToggle');
+  var links = document.getElementById('navLinks');
+  if (!btn || !links) return;
+  btn.addEventListener('click', function() {
+    var isOpen = links.classList.toggle('open');
+    btn.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+  });
+  // Close on link click
+  links.querySelectorAll('a').forEach(function(a) {
+    a.addEventListener('click', function() {
+      links.classList.remove('open');
+      btn.setAttribute('aria-expanded', 'false');
+    });
+  });
+})();
+
+// Reveal on scroll
+(function() {
+  var reveals = document.querySelectorAll('.reveal');
+  if (!reveals.length) return;
+
+  function checkReveals() {
+    var winH = window.innerHeight;
+    reveals.forEach(function(el) {
+      var rect = el.getBoundingClientRect();
+      if (rect.top < winH - 80) {
+        el.classList.add('visible');
+      }
+    });
+  }
+
+  window.addEventListener('scroll', checkReveals, { passive: true });
+  window.addEventListener('resize', checkReveals, { passive: true });
+  // Initial check after a short delay
+  setTimeout(checkReveals, 100);
+})();
+
+// Smooth scroll for anchor links
+document.querySelectorAll('a[href^="#"]').forEach(function(a) {
+  a.addEventListener('click', function(e) {
+    var target = document.querySelector(this.getAttribute('href'));
+    if (target) {
+      e.preventDefault();
+      var offset = 80;
+      var top = target.getBoundingClientRect().top + window.scrollY - offset;
+      window.scrollTo({ top: top, behavior: 'smooth' });
+    }
+  });
+});
+</script>
+</body>
+</html>

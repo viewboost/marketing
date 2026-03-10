@@ -1,0 +1,2062 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Affiliate Marketing - Diso Commerce Suite</title>
+<meta name="description" content="Kéo khách về website mà không tốn tiền quảng cáo. Hệ thống Affiliate Marketing toàn diện với tracking, hoa hồng linh hoạt và chống gian lận.">
+<link rel="icon" type="image/svg+xml" href="../../favicon.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400&family=Inter:wght@400;500;600&subset=vietnamese&display=swap" rel="stylesheet">
+<style>
+/* ========================================
+   CSS RESET & BASE
+   ======================================== */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+:root {
+  --primary: #1B365D;
+  --primary-light: #243f6b;
+  --secondary: #368CBF;
+  --secondary-light: #4da3d4;
+  --accent: #FF6F61;
+  --accent-hover: #ff5a4a;
+  --bg-white: #FFFFFF;
+  --bg-light: #F4F6F8;
+  --bg-dark: #0F1F33;
+  --text-dark: #263238;
+  --text-muted: #5A6B7B;
+  --text-light: #8A9AAA;
+  --border-light: #E2E8F0;
+  --green: #2D9C6F;
+  --red: #E53935;
+  --shadow-sm: 0 2px 8px rgba(0,0,0,0.06);
+  --shadow-md: 0 4px 16px rgba(0,0,0,0.08);
+  --shadow-lg: 0 8px 24px rgba(0,0,0,0.12);
+  --shadow-xl: 0 16px 48px rgba(0,0,0,0.16);
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 16px;
+  --radius-xl: 24px;
+  --font-heading: 'Be Vietnam Pro', sans-serif;
+  --font-body: 'Inter', 'Be Vietnam Pro', sans-serif;
+  --container: 1200px;
+  --section-py: 96px;
+  --transition: 250ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+html {
+  scroll-behavior: smooth;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  font-family: var(--font-body);
+  font-size: 16px;
+  line-height: 1.6;
+  color: var(--text-dark);
+  background: var(--bg-white);
+  overflow-x: hidden;
+}
+
+img { max-width: 100%; display: block; }
+a { text-decoration: none; color: inherit; }
+ul { list-style: none; }
+
+.container {
+  max-width: var(--container);
+  margin: 0 auto;
+  padding: 0 24px;
+}
+
+/* ========================================
+   TYPOGRAPHY
+   ======================================== */
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-heading);
+  font-weight: 700;
+  line-height: 1.2;
+  color: var(--primary);
+}
+
+h1 { font-size: clamp(32px, 4vw, 52px); font-weight: 800; }
+h2 { font-size: clamp(28px, 3.5vw, 40px); }
+h3 { font-size: clamp(20px, 2.5vw, 24px); }
+
+.section-label {
+  display: inline-block;
+  font-family: var(--font-heading);
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--secondary);
+  margin-bottom: 16px;
+}
+
+.section-subtitle {
+  font-size: clamp(16px, 1.8vw, 20px);
+  color: var(--text-muted);
+  max-width: 640px;
+  margin: 16px auto 0;
+  line-height: 1.6;
+}
+
+.text-center { text-align: center; }
+
+/* ========================================
+   BUTTONS
+   ======================================== */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  font-family: var(--font-heading);
+  font-weight: 600;
+  font-size: 16px;
+  border: none;
+  border-radius: var(--radius-md);
+  padding: 16px 32px;
+  cursor: pointer;
+  transition: all var(--transition);
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.btn-primary {
+  background: var(--accent);
+  color: #fff;
+  box-shadow: 0 4px 16px rgba(255, 111, 97, 0.3);
+}
+
+.btn-primary:hover {
+  background: var(--accent-hover);
+  transform: scale(1.05);
+  box-shadow: 0 6px 24px rgba(255, 111, 97, 0.4);
+}
+
+.btn-secondary {
+  background: transparent;
+  color: var(--primary);
+  border: 2px solid var(--border-light);
+}
+
+.btn-secondary:hover {
+  border-color: var(--secondary);
+  color: var(--secondary);
+}
+
+.btn-outline-white {
+  background: transparent;
+  color: #fff;
+  border: 2px solid rgba(255,255,255,0.4);
+}
+
+.btn-outline-white:hover {
+  background: rgba(255,255,255,0.1);
+  border-color: rgba(255,255,255,0.7);
+}
+
+.btn-lg {
+  padding: 20px 40px;
+  font-size: 18px;
+  border-radius: var(--radius-lg);
+}
+
+/* ========================================
+   NAVIGATION
+   ======================================== */
+.nav {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1000;
+  padding: 0 24px;
+  transition: all 300ms ease;
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-bottom: 1px solid rgba(226, 232, 240, 0.5);
+}
+
+.nav.scrolled {
+  background: rgba(255, 255, 255, 0.96);
+  border-bottom-color: var(--border-light);
+  box-shadow: var(--shadow-sm);
+}
+
+.nav-inner {
+  max-width: var(--container);
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 72px;
+}
+
+.nav-logo {
+  font-family: var(--font-heading);
+  font-weight: 800;
+  font-size: 24px;
+  color: var(--primary);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.nav-logo .logo-mark {
+  width: 36px;
+  height: 36px;
+  background: linear-gradient(135deg, var(--secondary), var(--primary));
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  font-size: 18px;
+  font-weight: 800;
+}
+
+.nav-links {
+  display: flex;
+  align-items: center;
+  gap: 32px;
+  list-style: none;
+}
+
+.nav-links a {
+  font-family: var(--font-heading);
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--text-muted);
+  transition: color var(--transition);
+}
+
+.nav-links a:hover { color: var(--primary); }
+
+.nav-cta {
+  font-size: 14px !important;
+  padding: 10px 24px !important;
+  background: var(--primary) !important;
+  color: #fff !important;
+  box-shadow: 0 2px 8px rgba(27, 54, 93, 0.25) !important;
+}
+
+.nav-cta:hover {
+  background: var(--primary-light) !important;
+  box-shadow: 0 4px 16px rgba(27, 54, 93, 0.35) !important;
+  transform: none !important;
+}
+
+.nav-mobile-btn {
+  display: none;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 8px;
+  color: var(--primary);
+}
+
+@media (max-width: 768px) {
+  .nav-links { display: none; }
+  .nav-mobile-btn { display: block; }
+  .nav-links.open {
+    display: flex;
+    flex-direction: column;
+    position: absolute;
+    top: 72px;
+    left: 0;
+    right: 0;
+    background: rgba(255,255,255,0.98);
+    backdrop-filter: blur(12px);
+    padding: 24px;
+    gap: 20px;
+    border-bottom: 1px solid var(--border-light);
+    box-shadow: var(--shadow-md);
+  }
+}
+
+/* ========================================
+   BREADCRUMB
+   ======================================== */
+.breadcrumb {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 13px;
+  color: var(--text-muted);
+  margin-bottom: 24px;
+}
+
+.breadcrumb a {
+  color: var(--secondary);
+  transition: color var(--transition);
+}
+
+.breadcrumb a:hover { color: var(--primary); }
+
+.breadcrumb-sep {
+  margin: 0 4px;
+  opacity: 0.4;
+}
+
+/* ========================================
+   HERO COMPACT
+   ======================================== */
+.hero-compact {
+  padding: 120px 0 80px;
+  background: var(--bg-light);
+  position: relative;
+  overflow: hidden;
+}
+
+.hero-bg {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+}
+
+.hero-gradient {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(120px);
+  opacity: 0.12;
+  animation: float 20s ease-in-out infinite;
+}
+
+.hero-gradient-1 {
+  width: 700px;
+  height: 700px;
+  top: -250px;
+  right: -150px;
+  background: var(--secondary);
+}
+
+.hero-gradient-2 {
+  width: 450px;
+  height: 450px;
+  bottom: -150px;
+  left: -100px;
+  background: var(--primary);
+  animation-delay: -9s;
+}
+
+@keyframes float {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  33% { transform: translate(30px, -20px) scale(1.05); }
+  66% { transform: translate(-20px, 20px) scale(0.95); }
+}
+
+.hero-compact .container {
+  position: relative;
+  z-index: 1;
+}
+
+.pillar-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(54, 140, 191, 0.1);
+  border: 1px solid rgba(54, 140, 191, 0.25);
+  border-radius: 100px;
+  padding: 6px 16px;
+  font-family: var(--font-heading);
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--secondary);
+  margin-bottom: 20px;
+}
+
+.pillar-badge-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--secondary);
+  flex-shrink: 0;
+}
+
+.hero-compact h1 {
+  margin-bottom: 16px;
+  background: linear-gradient(135deg, var(--primary) 30%, var(--secondary));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.hero-subtitle {
+  font-size: clamp(17px, 1.9vw, 22px);
+  color: var(--text-muted);
+  max-width: 600px;
+  line-height: 1.6;
+  margin-bottom: 40px;
+}
+
+.hero-stats-row {
+  display: flex;
+  gap: 32px;
+  flex-wrap: wrap;
+}
+
+.hero-stat-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.hero-stat-icon {
+  width: 40px;
+  height: 40px;
+  border-radius: 10px;
+  background: rgba(54, 140, 191, 0.1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--secondary);
+  flex-shrink: 0;
+}
+
+.hero-stat-text {
+  font-family: var(--font-heading);
+}
+
+.hero-stat-num {
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--primary);
+  line-height: 1.1;
+}
+
+.hero-stat-label {
+  font-size: 12px;
+  color: var(--text-muted);
+}
+
+/* ========================================
+   SECTIONS GENERIC
+   ======================================== */
+.section {
+  padding: var(--section-py) 0;
+}
+
+.section-header {
+  margin-bottom: 56px;
+}
+
+/* ========================================
+   PAIN POINTS
+   ======================================== */
+.pain-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+  margin-bottom: 64px;
+}
+
+.pain-card {
+  background: var(--bg-white);
+  border-radius: var(--radius-lg);
+  padding: 32px 28px;
+  box-shadow: var(--shadow-sm);
+  border: 1px solid var(--border-light);
+  transition: all var(--transition);
+  position: relative;
+  overflow: hidden;
+}
+
+.pain-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: var(--secondary);
+  opacity: 0;
+  transition: opacity var(--transition);
+}
+
+.pain-card:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-md);
+}
+
+.pain-card:hover::before {
+  opacity: 1;
+}
+
+.pain-icon {
+  width: 48px;
+  height: 48px;
+  border-radius: 12px;
+  background: rgba(54, 140, 191, 0.08);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--secondary);
+  margin-bottom: 20px;
+}
+
+.pain-card h3 {
+  font-size: 18px;
+  margin-bottom: 10px;
+}
+
+.pain-card p {
+  font-size: 14px;
+  color: var(--text-muted);
+  line-height: 1.6;
+}
+
+.market-stats {
+  background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+  border-radius: var(--radius-xl);
+  padding: 48px;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 32px;
+  color: #fff;
+}
+
+.market-stat {
+  text-align: center;
+}
+
+.market-stat-num {
+  font-family: var(--font-heading);
+  font-size: clamp(28px, 3vw, 40px);
+  font-weight: 800;
+  color: #fff;
+  line-height: 1;
+  margin-bottom: 8px;
+}
+
+.market-stat-label {
+  font-size: 13px;
+  color: rgba(255,255,255,0.75);
+  line-height: 1.4;
+}
+
+.market-stat-num.accent-yellow {
+  color: #FFD166;
+}
+
+/* ========================================
+   FEATURES GRID
+   ======================================== */
+.features-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+}
+
+.feature-card {
+  background: var(--bg-white);
+  border-radius: var(--radius-lg);
+  padding: 32px 28px;
+  box-shadow: var(--shadow-sm);
+  border: 1px solid var(--border-light);
+  transition: all var(--transition);
+}
+
+.feature-card:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-md);
+  border-color: rgba(54, 140, 191, 0.3);
+}
+
+.feature-icon {
+  width: 52px;
+  height: 52px;
+  border-radius: 14px;
+  background: rgba(54, 140, 191, 0.08);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--secondary);
+  margin-bottom: 20px;
+  transition: all var(--transition);
+}
+
+.feature-card:hover .feature-icon {
+  background: rgba(54, 140, 191, 0.15);
+  transform: scale(1.05);
+}
+
+.feature-card h3 {
+  font-size: 18px;
+  margin-bottom: 12px;
+}
+
+.feature-bullets {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.feature-bullets li {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  font-size: 14px;
+  color: var(--text-muted);
+  line-height: 1.5;
+}
+
+.feature-bullets li::before {
+  content: '';
+  display: inline-block;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--secondary);
+  flex-shrink: 0;
+  margin-top: 7px;
+}
+
+/* ========================================
+   COMPARISON TABLE
+   ======================================== */
+.table-wrap {
+  margin-top: 48px;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-md);
+}
+
+.table-wrap::-webkit-scrollbar { height: 6px; }
+.table-wrap::-webkit-scrollbar-track { background: var(--bg-light); border-radius: 3px; }
+.table-wrap::-webkit-scrollbar-thumb { background: var(--border-light); border-radius: 3px; }
+
+.comp-table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  min-width: 680px;
+  background: var(--bg-white);
+}
+
+.comp-table th,
+.comp-table td {
+  padding: 16px 20px;
+  text-align: left;
+  font-size: 14px;
+  border-bottom: 1px solid var(--border-light);
+  vertical-align: middle;
+}
+
+.comp-table thead th {
+  font-family: var(--font-heading);
+  font-weight: 700;
+  font-size: 14px;
+  padding: 18px 20px;
+  background: var(--bg-light);
+  color: var(--text-dark);
+  white-space: nowrap;
+}
+
+.comp-table thead th:first-child {
+  border-radius: var(--radius-lg) 0 0 0;
+  min-width: 200px;
+}
+
+.comp-table thead th:last-child {
+  border-radius: 0 var(--radius-lg) 0 0;
+}
+
+.comp-table tbody tr:last-child td { border-bottom: none; }
+.comp-table tbody tr:last-child td:first-child { border-radius: 0 0 0 var(--radius-lg); }
+.comp-table tbody tr:last-child td:last-child { border-radius: 0 0 var(--radius-lg) 0; }
+
+.comp-table tbody tr { transition: background var(--transition); }
+.comp-table tbody tr:hover td { background: rgba(54, 140, 191, 0.02); }
+.comp-table tbody tr:hover td.col-diso { background: rgba(27, 54, 93, 0.06); }
+
+.comp-table td:first-child {
+  font-family: var(--font-heading);
+  font-weight: 600;
+  color: var(--primary);
+  font-size: 13px;
+}
+
+.col-diso { position: relative; }
+
+.comp-table thead .col-diso {
+  background: var(--primary) !important;
+  color: #fff !important;
+}
+
+.comp-table tbody .col-diso {
+  background: rgba(27, 54, 93, 0.03);
+  font-weight: 500;
+}
+
+.comp-table .row-summary td {
+  font-family: var(--font-heading);
+  font-weight: 700;
+  font-size: 14px;
+  background: var(--bg-light);
+  color: var(--primary);
+  border-top: 2px solid var(--border-light);
+}
+
+.comp-table .row-summary td.col-diso {
+  background: rgba(27, 54, 93, 0.08);
+  color: var(--primary);
+}
+
+.col-label {
+  display: block;
+  font-size: 11px;
+  font-weight: 500;
+  opacity: 0.7;
+  margin-top: 2px;
+}
+
+.col-diso .col-label { opacity: 0.85; }
+
+.check-icon, .cross-icon, .neutral-icon {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 13px;
+}
+
+.check-icon::before {
+  content: '';
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: rgba(45, 156, 111, 0.1);
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%232D9C6F' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='20 6 9 17 4 12'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: center;
+  flex-shrink: 0;
+}
+
+.cross-icon::before {
+  content: '';
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: rgba(229, 57, 53, 0.1);
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='10' viewBox='0 0 24 24' fill='none' stroke='%23E53935' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cline x1='18' y1='6' x2='6' y2='18'/%3E%3Cline x1='6' y1='6' x2='18' y2='18'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: center;
+  flex-shrink: 0;
+}
+
+.neutral-icon::before {
+  content: '';
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: rgba(90, 107, 123, 0.1);
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='2' viewBox='0 0 24 4' fill='none' stroke='%235A6B7B' stroke-width='3' stroke-linecap='round'%3E%3Cline x1='2' y1='2' x2='22' y2='2'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: center;
+  flex-shrink: 0;
+}
+
+.check-icon { color: var(--green); font-weight: 500; }
+.cross-icon { color: var(--red); }
+.neutral-icon { color: var(--text-muted); }
+
+/* ========================================
+   WORKFLOW
+   ======================================== */
+.workflow-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 0;
+  position: relative;
+  margin-top: 48px;
+}
+
+.workflow-step {
+  position: relative;
+  padding: 0 16px;
+  text-align: center;
+}
+
+.workflow-step:not(:last-child)::after {
+  content: '';
+  position: absolute;
+  top: 40px;
+  right: -16px;
+  width: 32px;
+  height: 2px;
+  background: linear-gradient(90deg, var(--secondary), rgba(54, 140, 191, 0.3));
+  z-index: 1;
+}
+
+.step-circle {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  background: var(--bg-white);
+  border: 3px solid var(--secondary);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 24px;
+  box-shadow: var(--shadow-sm);
+  transition: all var(--transition);
+  position: relative;
+  z-index: 2;
+}
+
+.workflow-step:hover .step-circle {
+  background: var(--secondary);
+  color: #fff;
+  transform: scale(1.08);
+  box-shadow: 0 8px 24px rgba(54, 140, 191, 0.3);
+}
+
+.step-number {
+  font-family: var(--font-heading);
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--secondary);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  transition: color var(--transition);
+}
+
+.workflow-step:hover .step-number {
+  color: rgba(255,255,255,0.8);
+}
+
+.step-icon {
+  color: var(--secondary);
+  transition: color var(--transition);
+}
+
+.workflow-step:hover .step-icon {
+  color: #fff;
+}
+
+.step-card {
+  background: var(--bg-white);
+  border-radius: var(--radius-md);
+  padding: 24px 20px;
+  box-shadow: var(--shadow-sm);
+  border: 1px solid var(--border-light);
+  transition: all var(--transition);
+}
+
+.workflow-step:hover .step-card {
+  box-shadow: var(--shadow-md);
+  border-color: rgba(54, 140, 191, 0.3);
+}
+
+.step-card h4 {
+  font-size: 16px;
+  margin-bottom: 8px;
+  color: var(--primary);
+}
+
+.step-card p {
+  font-size: 13px;
+  color: var(--text-muted);
+  line-height: 1.5;
+}
+
+/* ========================================
+   USE CASE
+   ======================================== */
+.usecase-card {
+  background: var(--bg-white);
+  border-radius: var(--radius-xl);
+  padding: 48px;
+  box-shadow: var(--shadow-md);
+  border: 1px solid var(--border-light);
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 48px;
+  align-items: center;
+}
+
+.usecase-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(54, 140, 191, 0.08);
+  border-radius: 100px;
+  padding: 6px 16px;
+  font-family: var(--font-heading);
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--secondary);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-bottom: 20px;
+}
+
+.usecase-card blockquote {
+  font-size: clamp(16px, 1.6vw, 19px);
+  color: var(--text-dark);
+  font-style: italic;
+  line-height: 1.7;
+  border-left: 4px solid var(--secondary);
+  padding-left: 24px;
+  margin: 24px 0;
+}
+
+.usecase-context {
+  font-size: 14px;
+  color: var(--text-muted);
+  line-height: 1.6;
+}
+
+.usecase-highlights {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+.highlight-item {
+  background: var(--bg-light);
+  border-radius: var(--radius-md);
+  padding: 20px;
+  text-align: center;
+  transition: all var(--transition);
+}
+
+.highlight-item:hover {
+  background: rgba(54, 140, 191, 0.06);
+  transform: translateY(-2px);
+}
+
+.highlight-num {
+  font-family: var(--font-heading);
+  font-size: 32px;
+  font-weight: 800;
+  color: var(--secondary);
+  line-height: 1;
+  margin-bottom: 6px;
+}
+
+.highlight-label {
+  font-size: 13px;
+  color: var(--text-muted);
+  line-height: 1.4;
+}
+
+/* ========================================
+   KEY NUMBERS
+   ======================================== */
+.numbers-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 24px;
+  margin-top: 48px;
+}
+
+.number-card {
+  background: var(--bg-white);
+  border-radius: var(--radius-lg);
+  padding: 32px 24px;
+  text-align: center;
+  box-shadow: var(--shadow-sm);
+  border: 1px solid var(--border-light);
+  transition: all var(--transition);
+  position: relative;
+  overflow: hidden;
+}
+
+.number-card::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: var(--secondary);
+  transform: scaleX(0);
+  transition: transform var(--transition);
+}
+
+.number-card:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-md);
+}
+
+.number-card:hover::after {
+  transform: scaleX(1);
+}
+
+.number-icon {
+  width: 48px;
+  height: 48px;
+  border-radius: 12px;
+  background: rgba(54, 140, 191, 0.08);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--secondary);
+  margin: 0 auto 16px;
+}
+
+.number-value {
+  font-family: var(--font-heading);
+  font-size: clamp(28px, 3vw, 40px);
+  font-weight: 800;
+  color: var(--primary);
+  line-height: 1;
+  margin-bottom: 8px;
+}
+
+.number-desc {
+  font-size: 14px;
+  color: var(--text-muted);
+  line-height: 1.4;
+}
+
+/* ========================================
+   MODULE CONNECTIONS
+   ======================================== */
+.module-diagram {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0;
+  margin-top: 56px;
+  position: relative;
+}
+
+.module-center {
+  background: linear-gradient(135deg, var(--secondary), var(--primary));
+  border-radius: var(--radius-xl);
+  padding: 28px 32px;
+  text-align: center;
+  color: #fff;
+  box-shadow: 0 12px 40px rgba(54, 140, 191, 0.35);
+  z-index: 2;
+  min-width: 180px;
+  flex-shrink: 0;
+}
+
+.module-center-icon {
+  width: 56px;
+  height: 56px;
+  background: rgba(255,255,255,0.15);
+  border-radius: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 12px;
+}
+
+.module-center h4 {
+  font-family: var(--font-heading);
+  font-size: 16px;
+  font-weight: 700;
+  color: #fff;
+  margin-bottom: 4px;
+}
+
+.module-center p {
+  font-size: 12px;
+  color: rgba(255,255,255,0.75);
+}
+
+.module-connections-left,
+.module-connections-right {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.module-connections-left {
+  align-items: flex-end;
+  padding-right: 40px;
+}
+
+.module-connections-right {
+  align-items: flex-start;
+  padding-left: 40px;
+}
+
+.module-node {
+  background: var(--bg-white);
+  border-radius: var(--radius-md);
+  padding: 16px 20px;
+  box-shadow: var(--shadow-sm);
+  border: 1px solid var(--border-light);
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-width: 200px;
+  transition: all var(--transition);
+  cursor: default;
+}
+
+.module-node:hover {
+  box-shadow: var(--shadow-md);
+  border-color: rgba(54, 140, 191, 0.3);
+  transform: translateX(-2px);
+}
+
+.module-connections-right .module-node:hover {
+  transform: translateX(2px);
+}
+
+.module-node-icon {
+  width: 40px;
+  height: 40px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.node-1 .module-node-icon { background: rgba(27, 54, 93, 0.08); color: var(--primary); }
+.node-2 .module-node-icon { background: rgba(45, 156, 111, 0.08); color: var(--green); }
+.node-3 .module-node-icon { background: rgba(155, 89, 182, 0.08); color: #9B59B6; }
+.node-4 .module-node-icon { background: rgba(255, 111, 97, 0.08); color: var(--accent); }
+
+.module-node-text h5 {
+  font-family: var(--font-heading);
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--primary);
+  margin-bottom: 2px;
+}
+
+.module-node-text p {
+  font-size: 12px;
+  color: var(--text-muted);
+}
+
+.connection-line {
+  position: absolute;
+  top: 50%;
+  width: 40px;
+  height: 2px;
+  background: linear-gradient(90deg, var(--border-light), var(--secondary));
+}
+
+/* ========================================
+   CTA SECTION
+   ======================================== */
+.cta-section {
+  padding: var(--section-py) 0;
+  background: var(--bg-dark);
+  position: relative;
+  overflow: hidden;
+}
+
+.cta-bg-shape {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(100px);
+  opacity: 0.08;
+}
+
+.cta-bg-shape-1 {
+  width: 600px;
+  height: 600px;
+  top: -200px;
+  right: -100px;
+  background: var(--secondary);
+}
+
+.cta-bg-shape-2 {
+  width: 400px;
+  height: 400px;
+  bottom: -150px;
+  left: -100px;
+  background: var(--accent);
+}
+
+.cta-section .container {
+  position: relative;
+  z-index: 1;
+}
+
+.cta-section h2 {
+  color: #fff;
+  margin-bottom: 16px;
+  font-size: clamp(28px, 3.5vw, 44px);
+}
+
+.cta-section p {
+  color: rgba(255,255,255,0.65);
+  font-size: clamp(16px, 1.8vw, 20px);
+  max-width: 560px;
+  margin: 0 auto 48px;
+  line-height: 1.6;
+}
+
+.cta-trust {
+  margin-top: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 24px;
+  flex-wrap: wrap;
+}
+
+.cta-trust-item {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 13px;
+  color: rgba(255,255,255,0.55);
+}
+
+.cta-trust-item svg {
+  color: rgba(255,255,255,0.4);
+}
+
+/* ========================================
+   FOOTER
+   ======================================== */
+.footer {
+  background: var(--bg-dark);
+  border-top: 1px solid rgba(255,255,255,0.06);
+  padding: 40px 0 24px;
+}
+
+.footer-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+
+.footer-logo {
+  font-family: var(--font-heading);
+  font-weight: 800;
+  font-size: 20px;
+  color: rgba(255,255,255,0.9);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.footer-logo .logo-mark {
+  width: 32px;
+  height: 32px;
+  background: linear-gradient(135deg, var(--secondary), var(--primary));
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  font-size: 16px;
+  font-weight: 800;
+}
+
+.footer-copy {
+  font-size: 13px;
+  color: rgba(255,255,255,0.35);
+}
+
+.footer-links {
+  display: flex;
+  gap: 24px;
+}
+
+.footer-links a {
+  font-size: 13px;
+  color: rgba(255,255,255,0.45);
+  transition: color var(--transition);
+}
+
+.footer-links a:hover { color: rgba(255,255,255,0.8); }
+
+/* ========================================
+   REVEAL ANIMATION
+   ======================================== */
+.reveal {
+  opacity: 0;
+  transform: translateY(24px);
+  transition: opacity 600ms ease, transform 600ms ease;
+}
+
+.reveal.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.reveal-delay-1 { transition-delay: 100ms; }
+.reveal-delay-2 { transition-delay: 200ms; }
+.reveal-delay-3 { transition-delay: 300ms; }
+.reveal-delay-4 { transition-delay: 400ms; }
+
+/* ========================================
+   RESPONSIVE
+   ======================================== */
+@media (max-width: 1024px) {
+  .pain-grid { grid-template-columns: repeat(2, 1fr); }
+  .features-grid { grid-template-columns: repeat(2, 1fr); }
+  .market-stats { grid-template-columns: repeat(2, 1fr); }
+  .numbers-grid { grid-template-columns: repeat(2, 1fr); }
+  .module-diagram { flex-wrap: wrap; gap: 24px; }
+  .module-connections-left,
+  .module-connections-right { padding: 0; flex-direction: row; flex-wrap: wrap; justify-content: center; align-items: center; }
+  .module-node { min-width: 160px; }
+}
+
+@media (max-width: 768px) {
+  :root { --section-py: 64px; }
+
+  .pain-grid { grid-template-columns: 1fr; }
+  .features-grid { grid-template-columns: 1fr; }
+  .market-stats { grid-template-columns: repeat(2, 1fr); padding: 32px 24px; gap: 24px; }
+  .workflow-grid { grid-template-columns: 1fr 1fr; gap: 24px; }
+  .workflow-step::after { display: none; }
+  .usecase-card { grid-template-columns: 1fr; gap: 32px; padding: 32px 24px; }
+  .usecase-highlights { grid-template-columns: 1fr 1fr; }
+  .numbers-grid { grid-template-columns: 1fr 1fr; }
+  .module-diagram { flex-direction: column; gap: 16px; }
+  .module-connections-left,
+  .module-connections-right { flex-direction: row; flex-wrap: wrap; gap: 12px; padding: 0; }
+}
+
+@media (max-width: 480px) {
+  .market-stats { grid-template-columns: 1fr 1fr; }
+  .workflow-grid { grid-template-columns: 1fr; }
+  .usecase-highlights { grid-template-columns: 1fr; }
+  .numbers-grid { grid-template-columns: 1fr 1fr; }
+  .module-connections-left,
+  .module-connections-right { flex-direction: column; }
+  .cta-section h2 { font-size: 26px; }
+}
+</style>
+</head>
+<body>
+
+<!-- ========================================
+     NAVIGATION
+     ======================================== -->
+<nav class="nav" id="nav">
+  <div class="nav-inner">
+    <a href="../../" class="nav-logo">
+      <span class="logo-mark">D</span>
+      Diso
+    </a>
+    <ul class="nav-links" id="navLinks">
+      <li><a href="../../">Trang chủ</a></li>
+      <li><a href="../../#solution">Giải pháp</a></li>
+      <li><a href="../../#proof">Khách hàng</a></li>
+      <li><a href="../../comparison/">So sánh</a></li>
+      <li>
+        <a href="https://calendar.app.google/2PrCTZy9JW2UKfsW7" target="_blank" rel="noopener" class="btn btn-primary nav-cta">
+          Đặt lịch demo
+        </a>
+      </li>
+    </ul>
+    <button class="nav-mobile-btn" id="navToggle" aria-label="Toggle navigation">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M3 12h18M3 6h18M3 18h18"/>
+      </svg>
+    </button>
+  </div>
+</nav>
+
+<!-- ========================================
+     HERO COMPACT
+     ======================================== -->
+<section class="hero-compact">
+  <div class="hero-bg">
+    <div class="hero-gradient hero-gradient-1"></div>
+    <div class="hero-gradient hero-gradient-2"></div>
+  </div>
+  <div class="container">
+    <nav class="breadcrumb" aria-label="Breadcrumb">
+      <a href="../../">Trang chủ</a>
+      <span class="breadcrumb-sep">›</span>
+      <a href="../../#solution">Giải pháp</a>
+      <span class="breadcrumb-sep">›</span>
+      <span>Affiliate Marketing</span>
+    </nav>
+
+    <div class="pillar-badge">
+      <span class="pillar-badge-dot"></span>
+      Giải pháp 2 / 5
+    </div>
+
+    <h1>Affiliate Marketing</h1>
+    <p class="hero-subtitle">Kéo khách về website mà không tốn tiền quảng cáo</p>
+
+    <div class="hero-stats-row">
+      <div class="hero-stat-item">
+        <div class="hero-stat-icon">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+        </div>
+        <div class="hero-stat-text">
+          <div class="hero-stat-num">300K+</div>
+          <div class="hero-stat-label">KOL/KOC tại Việt Nam</div>
+        </div>
+      </div>
+      <div class="hero-stat-item">
+        <div class="hero-stat-icon">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+        </div>
+        <div class="hero-stat-text">
+          <div class="hero-stat-num">~1 tỷ USD</div>
+          <div class="hero-stat-label">Quy mô thị trường 2024</div>
+        </div>
+      </div>
+      <div class="hero-stat-item">
+        <div class="hero-stat-icon">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>
+        </div>
+        <div class="hero-stat-text">
+          <div class="hero-stat-num">30x</div>
+          <div class="hero-stat-label">Tăng trưởng vs 2022</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ========================================
+     PAIN POINTS
+     ======================================== -->
+<section class="section" style="background: var(--bg-white);">
+  <div class="container">
+    <div class="section-header text-center reveal">
+      <span class="section-label">Vấn đề hiện tại</span>
+      <h2>Tại sao kênh quảng cáo truyền thống không còn hiệu quả?</h2>
+      <p class="section-subtitle">Doanh nghiệp đang đốt ngân sách mà không xây dựng được kênh bán hàng bền vững</p>
+    </div>
+
+    <div class="pain-grid">
+      <div class="pain-card reveal reveal-delay-1">
+        <div class="pain-icon">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
+        </div>
+        <h3>Chi phí CPC leo thang</h3>
+        <p>Chi phí quảng cáo CPC tăng <strong>30–50%/năm</strong> trên các nền tảng lớn. Biên lợi nhuận co hẹp, doanh nghiệp nhỏ và vừa ngày càng khó cạnh tranh bằng ngân sách.</p>
+      </div>
+
+      <div class="pain-card reveal reveal-delay-2">
+        <div class="pain-icon">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+        </div>
+        <h3>Không có kênh bền vững</h3>
+        <p>Phụ thuộc hoàn toàn vào quảng cáo trả phí. Khi tắt ngân sách, doanh thu về 0. Không có lực lượng affiliate tự phát triển và lan rộng theo thời gian.</p>
+      </div>
+
+      <div class="pain-card reveal reveal-delay-3">
+        <div class="pain-icon">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+        </div>
+        <h3>Tự build mất 3–6 tháng</h3>
+        <p>Xây dựng hệ thống affiliate từ đầu yêu cầu đội ngũ kỹ thuật, tốn <strong>3–6 tháng</strong> phát triển và chi phí vận hành lớn. Nhiều tính năng chống gian lận thường bị bỏ qua.</p>
+      </div>
+    </div>
+
+    <div class="market-stats reveal">
+      <div class="market-stat">
+        <div class="market-stat-num accent-yellow">700M–1B</div>
+        <div class="market-stat-label">USD quy mô thị trường<br>Affiliate Việt Nam 2024</div>
+      </div>
+      <div class="market-stat">
+        <div class="market-stat-num">300K+</div>
+        <div class="market-stat-label">KOL/KOC đang hoạt động<br>trên thị trường</div>
+      </div>
+      <div class="market-stat">
+        <div class="market-stat-num accent-yellow">30x</div>
+        <div class="market-stat-label">Tốc độ tăng trưởng<br>so với năm 2022</div>
+      </div>
+      <div class="market-stat">
+        <div class="market-stat-num">Top 5</div>
+        <div class="market-stat-label">Thị trường Affiliate<br>lớn nhất Đông Nam Á</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ========================================
+     FEATURES
+     ======================================== -->
+<section class="section" style="background: var(--bg-light);" id="features">
+  <div class="container">
+    <div class="section-header text-center reveal">
+      <span class="section-label">Tính năng</span>
+      <h2>6 tính năng cốt lõi của Affiliate Marketing</h2>
+      <p class="section-subtitle">Toàn bộ công cụ cần thiết để xây dựng mạng lưới affiliate chuyên nghiệp ngay từ ngày đầu</p>
+    </div>
+
+    <div class="features-grid">
+      <!-- Feature 1 -->
+      <div class="feature-card reveal reveal-delay-1">
+        <div class="feature-icon">
+          <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
+        </div>
+        <h3>Link Tracking</h3>
+        <ul class="feature-bullets">
+          <li>Tạo link tracking riêng cho từng affiliate</li>
+          <li>Theo dõi click, conversion, doanh thu real-time</li>
+          <li>Hỗ trợ UTM parameters và deep link</li>
+          <li>Dashboard phân tích chi tiết theo kênh</li>
+        </ul>
+      </div>
+
+      <!-- Feature 2 -->
+      <div class="feature-card reveal reveal-delay-2">
+        <div class="feature-icon">
+          <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+        </div>
+        <h3>Hoa hồng linh hoạt</h3>
+        <ul class="feature-bullets">
+          <li>Cấu hình % hoa hồng theo danh mục sản phẩm</li>
+          <li>Hoa hồng theo tầng (tier commission)</li>
+          <li>Bonus thưởng khi đạt mốc doanh số</li>
+          <li>Thanh toán tự động qua ngân hàng / ví điện tử</li>
+        </ul>
+      </div>
+
+      <!-- Feature 3 -->
+      <div class="feature-card reveal reveal-delay-3">
+        <div class="feature-icon">
+          <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18"/><path d="M9 21V9"/></svg>
+        </div>
+        <h3>Dashboard Affiliate</h3>
+        <ul class="feature-bullets">
+          <li>Portal riêng cho từng affiliate đăng nhập</li>
+          <li>Xem thu nhập, đơn hàng, lịch sử thanh toán</li>
+          <li>Tải tài liệu marketing (banner, nội dung mẫu)</li>
+          <li>Thông báo real-time khi có đơn mới</li>
+        </ul>
+      </div>
+
+      <!-- Feature 4 -->
+      <div class="feature-card reveal reveal-delay-1">
+        <div class="feature-icon">
+          <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+        </div>
+        <h3>Promotion Tools</h3>
+        <ul class="feature-bullets">
+          <li>Tạo mã giảm giá riêng cho từng affiliate</li>
+          <li>Chiến dịch flash sale với tracking riêng biệt</li>
+          <li>Landing page tùy chỉnh cho từng campaign</li>
+          <li>A/B testing banner và nội dung quảng cáo</li>
+        </ul>
+      </div>
+
+      <!-- Feature 5 -->
+      <div class="feature-card reveal reveal-delay-2">
+        <div class="feature-icon">
+          <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+        </div>
+        <h3>Phân nhóm &amp; Targeting</h3>
+        <ul class="feature-bullets">
+          <li>Phân loại affiliate theo tier: Bronze, Silver, Gold</li>
+          <li>Gắn tag theo lĩnh vực, kênh, địa khu vực</li>
+          <li>Gửi offer và campaign theo nhóm mục tiêu</li>
+          <li>Quản lý onboarding và approval tự động</li>
+        </ul>
+      </div>
+
+      <!-- Feature 6 -->
+      <div class="feature-card reveal reveal-delay-3">
+        <div class="feature-icon">
+          <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+        </div>
+        <h3>Chống gian lận</h3>
+        <ul class="feature-bullets">
+          <li>Phát hiện click gian lận bằng AI tự động</li>
+          <li>Kiểm tra IP, device fingerprinting, cookie</li>
+          <li>Cảnh báo affiliate vi phạm chính sách</li>
+          <li>Báo cáo anomaly và hold payment tự động</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ========================================
+     COMPARISON TABLE
+     ======================================== -->
+<section class="section" style="background: var(--bg-white);" id="comparison">
+  <div class="container">
+    <div class="section-header text-center reveal">
+      <span class="section-label">So sánh</span>
+      <h2>Tự build, Sàn TMĐT hay Diso?</h2>
+      <p class="section-subtitle">So sánh chi tiết 3 lựa chọn phổ biến để triển khai Affiliate Marketing</p>
+    </div>
+
+    <div class="table-wrap reveal">
+      <table class="comp-table" role="table">
+        <thead>
+          <tr>
+            <th scope="col">Tiêu chí</th>
+            <th scope="col">Tự Build</th>
+            <th scope="col">Bán trên Sàn</th>
+            <th scope="col" class="col-diso">
+              Diso
+              <span class="col-label">Khuyến nghị</span>
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Thời gian triển khai</td>
+            <td><span class="cross-icon">3–6 tháng dev</span></td>
+            <td><span class="neutral-icon">Phụ thuộc sàn</span></td>
+            <td class="col-diso"><span class="check-icon">1–3 ngày là xong</span></td>
+          </tr>
+          <tr>
+            <td>Chi phí khởi động</td>
+            <td><span class="cross-icon">100–500 triệu VNĐ</span></td>
+            <td><span class="check-icon">Thấp ban đầu</span></td>
+            <td class="col-diso"><span class="check-icon">0 đồng upfront</span></td>
+          </tr>
+          <tr>
+            <td>Hoa hồng linh hoạt</td>
+            <td><span class="check-icon">Tùy chỉnh hoàn toàn</span></td>
+            <td><span class="cross-icon">Theo quy định sàn</span></td>
+            <td class="col-diso"><span class="check-icon">Linh hoạt toàn phần</span></td>
+          </tr>
+          <tr>
+            <td>Dữ liệu khách hàng</td>
+            <td><span class="check-icon">Sở hữu 100%</span></td>
+            <td><span class="cross-icon">Sàn giữ dữ liệu</span></td>
+            <td class="col-diso"><span class="check-icon">Bạn sở hữu 100%</span></td>
+          </tr>
+          <tr>
+            <td>Chống gian lận tích hợp</td>
+            <td><span class="cross-icon">Phải tự xây dựng</span></td>
+            <td><span class="neutral-icon">Có nhưng hạn chế</span></td>
+            <td class="col-diso"><span class="check-icon">AI chống gian lận sẵn</span></td>
+          </tr>
+          <tr>
+            <td>Tích hợp hệ thống khác</td>
+            <td><span class="neutral-icon">Tùy năng lực team</span></td>
+            <td><span class="cross-icon">Hạn chế API</span></td>
+            <td class="col-diso"><span class="check-icon">Mở, REST API đầy đủ</span></td>
+          </tr>
+          <tr>
+            <td>Báo cáo &amp; Đối soát</td>
+            <td><span class="neutral-icon">Phải tự xây</span></td>
+            <td><span class="neutral-icon">Báo cáo cơ bản</span></td>
+            <td class="col-diso"><span class="check-icon">Tự động, real-time</span></td>
+          </tr>
+        </tbody>
+        <tfoot>
+          <tr class="row-summary">
+            <td>Đánh giá tổng thể</td>
+            <td>Tốt nhất về tùy biến, nhưng chậm và đắt</td>
+            <td>Đơn giản nhưng mất quyền kiểm soát</td>
+            <td class="col-diso">Tốt nhất cho doanh nghiệp tự chủ</td>
+          </tr>
+        </tfoot>
+      </table>
+    </div>
+  </div>
+</section>
+
+<!-- ========================================
+     WORKFLOW
+     ======================================== -->
+<section class="section" style="background: var(--bg-light);" id="workflow">
+  <div class="container">
+    <div class="section-header text-center reveal">
+      <span class="section-label">Quy trình</span>
+      <h2>Triển khai affiliate chỉ trong 4 bước</h2>
+      <p class="section-subtitle">Từ tạo campaign đến đối soát hoa hồng, tất cả được tự động hóa trên một nền tảng</p>
+    </div>
+
+    <div class="workflow-grid">
+      <!-- Step 1 -->
+      <div class="workflow-step reveal reveal-delay-1">
+        <div class="step-circle">
+          <span class="step-number">Bước 1</span>
+          <div class="step-icon">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 5v14M5 12h14"/></svg>
+          </div>
+        </div>
+        <div class="step-card">
+          <h4>Tạo Campaign</h4>
+          <p>Thiết lập chiến dịch: tên, thời gian, sản phẩm, mức hoa hồng và điều kiện tham gia chỉ trong vài phút.</p>
+        </div>
+      </div>
+
+      <!-- Step 2 -->
+      <div class="workflow-step reveal reveal-delay-2">
+        <div class="step-circle">
+          <span class="step-number">Bước 2</span>
+          <div class="step-icon">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12 19.79 19.79 0 0 1 1.63 3.36 2 2 0 0 1 3.6 1h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 8.6a16 16 0 0 0 5.5 5.5l.97-.97a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 21 16.92z"/></svg>
+          </div>
+        </div>
+        <div class="step-card">
+          <h4>Mời Affiliate</h4>
+          <p>Gửi lời mời qua link, email hoặc mã QR. Affiliate đăng ký, được duyệt và nhận link tracking tức thì.</p>
+        </div>
+      </div>
+
+      <!-- Step 3 -->
+      <div class="workflow-step reveal reveal-delay-3">
+        <div class="step-circle">
+          <span class="step-number">Bước 3</span>
+          <div class="step-icon">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>
+          </div>
+        </div>
+        <div class="step-card">
+          <h4>Bán hàng</h4>
+          <p>Affiliate quảng bá sản phẩm. Mỗi click và đơn hàng được ghi nhận tự động, real-time trên dashboard.</p>
+        </div>
+      </div>
+
+      <!-- Step 4 -->
+      <div class="workflow-step reveal reveal-delay-4">
+        <div class="step-circle">
+          <span class="step-number">Bước 4</span>
+          <div class="step-icon">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+          </div>
+        </div>
+        <div class="step-card">
+          <h4>Đối soát &amp; Thanh toán</h4>
+          <p>Hệ thống tự đối soát hoa hồng cuối kỳ, lọc gian lận và thanh toán cho affiliate qua tài khoản ngân hàng.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ========================================
+     USE CASE
+     ======================================== -->
+<section class="section" style="background: var(--bg-white);" id="usecase">
+  <div class="container">
+    <div class="section-header text-center reveal">
+      <span class="section-label">Case Study</span>
+      <h2>Thực tế triển khai</h2>
+    </div>
+
+    <div class="usecase-card reveal">
+      <div>
+        <div class="usecase-badge">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+          Brand mỹ phẩm nội địa
+        </div>
+
+        <h3 style="font-size: 22px; margin-bottom: 16px;">Từ 0 lên 200 đơn/ngày nhờ mạng lưới 50 blogger</h3>
+
+        <blockquote>
+          "Trước đây chúng tôi chỉ dựa vào Facebook Ads, chi phí ngày càng đắt mà hiệu quả giảm. Sau khi triển khai Affiliate qua Diso, 50 beauty blogger bắt đầu giới thiệu sản phẩm tự nhiên — chúng tôi chỉ trả hoa hồng khi có đơn thực sự."
+        </blockquote>
+
+        <p class="usecase-context">
+          <strong>Bối cảnh:</strong> Brand mỹ phẩm thuần chay, đội ngũ 12 người, ngân sách marketing 30 triệu/tháng. Trước đây toàn bộ ngân sách đổ vào Facebook Ads với ROAS ngày càng giảm.
+        </p>
+        <br>
+        <p class="usecase-context">
+          <strong>Giải pháp:</strong> Tạo chương trình affiliate với hoa hồng 12% cho beauty blogger, cung cấp sample sản phẩm và nội dung mẫu. Mỗi blogger có link tracking và dashboard riêng.
+        </p>
+      </div>
+
+      <div class="usecase-highlights">
+        <div class="highlight-item">
+          <div class="highlight-num">50</div>
+          <div class="highlight-label">Blogger tích cực trong tháng đầu</div>
+        </div>
+        <div class="highlight-item">
+          <div class="highlight-num">200</div>
+          <div class="highlight-label">Đơn hàng mỗi ngày sau 60 ngày</div>
+        </div>
+        <div class="highlight-item">
+          <div class="highlight-num">0</div>
+          <div class="highlight-label">Chi phí upfront để khởi động</div>
+        </div>
+        <div class="highlight-item">
+          <div class="highlight-num">12%</div>
+          <div class="highlight-label">Hoa hồng trả khi có đơn thực</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ========================================
+     KEY NUMBERS
+     ======================================== -->
+<section class="section" style="background: var(--bg-light);">
+  <div class="container">
+    <div class="section-header text-center reveal">
+      <span class="section-label">Con số nổi bật</span>
+      <h2>Diso Affiliate Marketing bằng con số</h2>
+    </div>
+
+    <div class="numbers-grid">
+      <div class="number-card reveal reveal-delay-1">
+        <div class="number-icon">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+        </div>
+        <div class="number-value">300K+</div>
+        <div class="number-desc">KOL/KOC tại Việt Nam bạn có thể tiếp cận</div>
+      </div>
+
+      <div class="number-card reveal reveal-delay-2">
+        <div class="number-icon">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+        </div>
+        <div class="number-value">0 đồng</div>
+        <div class="number-desc">Chi phí upfront để bắt đầu, chỉ trả khi có đơn</div>
+      </div>
+
+      <div class="number-card reveal reveal-delay-3">
+        <div class="number-icon">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+        </div>
+        <div class="number-value">3–6 tháng</div>
+        <div class="number-desc">Tiết kiệm so với tự xây dựng hệ thống</div>
+      </div>
+
+      <div class="number-card reveal reveal-delay-4">
+        <div class="number-icon">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>
+        </div>
+        <div class="number-value">30 lần</div>
+        <div class="number-desc">Tăng trưởng thị trường affiliate từ 2022 đến nay</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ========================================
+     MODULE CONNECTIONS
+     ======================================== -->
+<section class="section" style="background: var(--bg-white);" id="connections">
+  <div class="container">
+    <div class="section-header text-center reveal">
+      <span class="section-label">Hệ sinh thái</span>
+      <h2>Affiliate kết nối với toàn bộ hệ thống Diso</h2>
+      <p class="section-subtitle">Affiliate không hoạt động độc lập — được tích hợp sâu với 4 giải pháp còn lại để tối ưu hiệu quả</p>
+    </div>
+
+    <div class="module-diagram reveal">
+      <!-- Left connections -->
+      <div class="module-connections-left">
+        <div class="module-node node-1">
+          <div class="module-node-icon">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18"/><path d="M9 21V9"/></svg>
+          </div>
+          <div class="module-node-text">
+            <h5>Website TMĐT</h5>
+            <p>Đích đến của traffic affiliate</p>
+          </div>
+        </div>
+
+        <div class="module-node node-2">
+          <div class="module-node-icon">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 7H4a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2z"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>
+          </div>
+          <div class="module-node-text">
+            <h5>Backend Vận hành</h5>
+            <p>Xử lý đơn và đối soát hoa hồng</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Center: Affiliate module -->
+      <div class="module-center">
+        <div class="module-center-icon">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
+        </div>
+        <h4>Affiliate Marketing</h4>
+        <p>Giải pháp 2/5</p>
+      </div>
+
+      <!-- Right connections -->
+      <div class="module-connections-right">
+        <div class="module-node node-3">
+          <div class="module-node-icon">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M12 1v4M12 19v4M4.22 4.22l2.83 2.83M16.95 16.95l2.83 2.83M1 12h4M19 12h4M4.22 19.78l2.83-2.83M16.95 7.05l2.83-2.83"/></svg>
+          </div>
+          <div class="module-node-text">
+            <h5>Reseller</h5>
+            <p>Affiliate nâng cao thành đại lý</p>
+          </div>
+        </div>
+
+        <div class="module-node node-4">
+          <div class="module-node-icon">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+          </div>
+          <div class="module-node-text">
+            <h5>Đại sứ Thương hiệu</h5>
+            <p>Top affiliate trở thành brand ambassador</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div style="margin-top: 40px; display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px;" class="reveal">
+      <div style="background: var(--bg-light); border-radius: var(--radius-md); padding: 20px; text-align: center;">
+        <div style="font-family: var(--font-heading); font-size: 13px; font-weight: 600; color: var(--primary); margin-bottom: 6px;">Website TMĐT</div>
+        <div style="font-size: 12px; color: var(--text-muted);">Nhận traffic từ affiliate link, tracking conversion tự động</div>
+      </div>
+      <div style="background: var(--bg-light); border-radius: var(--radius-md); padding: 20px; text-align: center;">
+        <div style="font-family: var(--font-heading); font-size: 13px; font-weight: 600; color: var(--primary); margin-bottom: 6px;">Backend Vận hành</div>
+        <div style="font-size: 12px; color: var(--text-muted);">Xử lý đơn hàng từ affiliate, đối soát hoa hồng cuối kỳ</div>
+      </div>
+      <div style="background: var(--bg-light); border-radius: var(--radius-md); padding: 20px; text-align: center;">
+        <div style="font-family: var(--font-heading); font-size: 13px; font-weight: 600; color: var(--primary); margin-bottom: 6px;">Reseller</div>
+        <div style="font-size: 12px; color: var(--text-muted);">Chuyển affiliate xuất sắc thành đại lý bán hàng chính thức</div>
+      </div>
+      <div style="background: var(--bg-light); border-radius: var(--radius-md); padding: 20px; text-align: center;">
+        <div style="font-family: var(--font-heading); font-size: 13px; font-weight: 600; color: var(--primary); margin-bottom: 6px;">Đại sứ Thương hiệu</div>
+        <div style="font-size: 12px; color: var(--text-muted);">Top affiliate có thể nâng cấp lên chương trình ambassador</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ========================================
+     CTA SECTION
+     ======================================== -->
+<section class="cta-section" id="demo">
+  <div class="cta-bg-shape cta-bg-shape-1"></div>
+  <div class="cta-bg-shape cta-bg-shape-2"></div>
+  <div class="container text-center">
+    <span class="section-label" style="color: rgba(255,255,255,0.6);">Bắt đầu ngay hôm nay</span>
+    <h2>Demo miễn phí 30 phút</h2>
+    <p>Xem thực tế hệ thống Affiliate Marketing của Diso hoạt động như thế nào với dữ liệu thực từ doanh nghiệp của bạn.</p>
+
+    <a href="https://calendar.app.google/2PrCTZy9JW2UKfsW7" target="_blank" rel="noopener" class="btn btn-primary btn-lg">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+      Đặt lịch demo ngay
+    </a>
+
+    <div class="cta-trust">
+      <div class="cta-trust-item">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+        Miễn phí, không ràng buộc
+      </div>
+      <div class="cta-trust-item">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+        Demo với dữ liệu thực của bạn
+      </div>
+      <div class="cta-trust-item">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+        Tư vấn chuyên sâu 1-1
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ========================================
+     FOOTER
+     ======================================== -->
+<footer class="footer">
+  <div class="container">
+    <div class="footer-inner">
+      <a href="../../" class="footer-logo">
+        <span class="logo-mark">D</span>
+        Diso
+      </a>
+
+      <div class="footer-links">
+        <a href="../../">Trang chủ</a>
+        <a href="../../comparison/">So sánh</a>
+        <a href="https://calendar.app.google/2PrCTZy9JW2UKfsW7" target="_blank" rel="noopener">Đặt lịch demo</a>
+      </div>
+
+      <p class="footer-copy">&copy; 2024 Diso Commerce Suite. All rights reserved.</p>
+    </div>
+  </div>
+</footer>
+
+<!-- ========================================
+     JAVASCRIPT
+     ======================================== -->
+<script>
+(function() {
+  'use strict';
+
+  // ---- NAV SCROLL EFFECT ----
+  var nav = document.getElementById('nav');
+  function onScroll() {
+    if (window.scrollY > 20) {
+      nav.classList.add('scrolled');
+    } else {
+      nav.classList.remove('scrolled');
+    }
+  }
+  window.addEventListener('scroll', onScroll, { passive: true });
+  onScroll();
+
+  // ---- MOBILE MENU TOGGLE ----
+  var navToggle = document.getElementById('navToggle');
+  var navLinks = document.getElementById('navLinks');
+  navToggle.addEventListener('click', function() {
+    var isOpen = navLinks.classList.toggle('open');
+    navToggle.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+  });
+
+  // Close menu when a link is clicked
+  navLinks.querySelectorAll('a').forEach(function(link) {
+    link.addEventListener('click', function() {
+      navLinks.classList.remove('open');
+      navToggle.setAttribute('aria-expanded', 'false');
+    });
+  });
+
+  // ---- SMOOTH SCROLL FOR ANCHOR LINKS ----
+  document.querySelectorAll('a[href^="#"]').forEach(function(anchor) {
+    anchor.addEventListener('click', function(e) {
+      var target = document.querySelector(this.getAttribute('href'));
+      if (target) {
+        e.preventDefault();
+        var navHeight = nav.offsetHeight;
+        var targetTop = target.getBoundingClientRect().top + window.scrollY - navHeight - 16;
+        window.scrollTo({ top: targetTop, behavior: 'smooth' });
+      }
+    });
+  });
+
+  // ---- REVEAL ANIMATION ----
+  var revealElements = document.querySelectorAll('.reveal');
+
+  if ('IntersectionObserver' in window) {
+    var observer = new IntersectionObserver(function(entries) {
+      entries.forEach(function(entry) {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+          observer.unobserve(entry.target);
+        }
+      });
+    }, {
+      threshold: 0.1,
+      rootMargin: '0px 0px -48px 0px'
+    });
+
+    revealElements.forEach(function(el) {
+      observer.observe(el);
+    });
+  } else {
+    // Fallback: show all elements immediately
+    revealElements.forEach(function(el) {
+      el.classList.add('visible');
+    });
+  }
+
+})();
+</script>
+</body>
+</html>
