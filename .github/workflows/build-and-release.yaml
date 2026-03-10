@@ -1,4 +1,4 @@
-name: 🚀 [Release] Build image
+name: 🚀 [Release] Build image and release to server
 
 run-name: 🚀 [Release][${{ inputs.version }}] Building marketing image
 
