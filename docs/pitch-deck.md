@@ -201,7 +201,60 @@ VNG | Yody | Anker | Flamingo | Turborg | Wild Rift
 
 ---
 
-## SLIDE 11: TẠI SAO CHỌN DISO
+## SLIDE 11: CASE STUDIES
+
+**Tiêu đề:** Mô hình này đã được chứng minh
+
+**3 case studies (mỗi cái 1 block với logo + số liệu):**
+
+> **Coolmate (Việt Nam) — D2C Thời trang nam**
+> Bán chủ yếu qua website riêng, không phụ thuộc sàn.
+> Doanh thu: **139 tỷ VND**, tăng **3.5x** so với năm trước.
+> Sở hữu toàn bộ data khách hàng → remarketing hiệu quả.
+
+> **Gymshark (Quốc tế) — Từ $500K đến £1 tỷ+**
+> Không bán trên Amazon. 100% D2C qua website riêng.
+> Đội ngũ brand ambassador trên Instagram → ROI **6.6x**.
+> Từ startup thành unicorn nhờ own-platform + ambassador model.
+
+> **Meesho (Ấn Độ) — Nền tảng Reseller**
+> **187 triệu** người dùng, reseller bán hàng qua mạng xã hội.
+> IPO valuation: **$600 triệu**.
+> Chứng minh: mô hình reseller network scale được cực lớn.
+
+**Key message:**
+> Own-platform + đội quân bán hàng = công thức đã tạo ra những công ty tỷ đô. Diso giúp bạn áp dụng công thức này — ngay tại Việt Nam.
+
+---
+
+## SLIDE 12: TẦM NHÌN 3 NĂM
+
+**Tiêu đề:** Build xong, bạn được gì?
+
+**Visual:** Timeline 4 giai đoạn nối nhau (nền gradient từ nhạt → đậm)
+
+> **Tháng 1-3: Xây nền móng**
+> Website thương hiệu riêng + thanh toán + vận chuyển tự động.
+> → Đơn hàng đầu tiên trên kênh riêng.
+
+> **Tháng 3-6: Kích hoạt đội quân bán hàng**
+> 50-100 affiliate + 20-50 reseller có storefront riêng.
+> → Chi phí trên mỗi đơn giảm **40-60%**.
+
+> **Tháng 6-12: Vòng lặp tăng trưởng**
+> 200-500 affiliate + reseller. Đại sứ thương hiệu tạo content trên 7 nền tảng. CRM 10.000+ khách hàng.
+> → Doanh thu kênh riêng = **30-50%** tổng doanh thu.
+
+> **Năm 2-3: Nền tảng vững chắc**
+> 1.000+ người bán hàng cho bạn. Database 50.000-100.000+ khách hàng.
+> → Kênh riêng chiếm **50-70%** doanh thu. Margin cao hơn **15-30%** so với sàn.
+
+**Key message:**
+> Sau 2-3 năm, bạn không còn là "seller trên sàn". Bạn là chủ một nền tảng thương mại điện tử — với website riêng, 1.000+ người bán hàng, và database 50.000+ khách hàng. **Đó không phải phần mềm. Đó là tài sản.**
+
+---
+
+## SLIDE 13: TẠI SAO CHỌN DISO
 
 **Tiêu đề:** Tại sao Diso Commerce Suite?
 
@@ -224,7 +277,7 @@ VNG | Yody | Anker | Flamingo | Turborg | Wild Rift
 
 ---
 
-## SLIDE 12: NEXT STEPS
+## SLIDE 14: NEXT STEPS
 
 **Tiêu đề:** Bắt đầu chỉ với 3 bước
 
@@ -260,8 +313,9 @@ VNG | Yody | Anker | Flamingo | Turborg | Wild Rift
 - CTA "Book demo" xuất hiện ở slide 12 và góc nhỏ ở các slide khác
 
 ### Ghi chú
-- Pitch Deck này không chứa: pricing, case study chi tiết, thông tin liên hệ
-- Các nội dung đó sẽ nằm trong tài liệu Sale Kit riêng (Pricing Sheet, Case Study, One-Pager)
+- Pitch Deck này không chứa: pricing, thông tin liên hệ
+- Các nội dung đó sẽ nằm trong tài liệu Sale Kit riêng (Pricing Sheet, One-Pager)
+- Case study chi tiết & vision đầy đủ: xem `marketing/docs/vision.md`
 
 ### Nguồn số liệu thị trường (Slide 3)
 - TMĐT VN ~28 tỷ USD: Mordor Intelligence, Vietnam Briefing (2025)
