@@ -360,6 +360,41 @@ body {
 }
 .btn-copilot-reject:hover { color: var(--color-error); }
 
+/* Copilot states */
+.ai-copilot.sent {
+  background: linear-gradient(135deg, #D1FAE5 0%, #DBEAFE 100%);
+  border-color: rgba(5,150,105,0.2);
+}
+.copilot-sent-notice {
+  display: flex; align-items: center; gap: 6px;
+  font-size: 0.8125rem; font-weight: 600; color: var(--dora-accent);
+  padding: 6px 0;
+}
+.copilot-sent-notice svg { width: 16px; height: 16px; }
+.ai-draft[contenteditable="true"] {
+  outline: 2px solid var(--dora-primary); background: #fff;
+  cursor: text;
+}
+.ai-copilot.rejected {
+  opacity: 0; transform: translateY(8px);
+  transition: opacity 300ms, transform 300ms;
+}
+.ai-copilot.generating {
+  background: linear-gradient(135deg, #FEF3C7 0%, #DBEAFE 100%);
+  border-color: rgba(217,119,6,0.15);
+}
+.copilot-generating-notice {
+  display: flex; align-items: center; gap: 6px;
+  font-size: 0.8125rem; font-weight: 500; color: var(--text-secondary);
+  padding: 8px 0;
+}
+.copilot-generating-notice .spinner {
+  width: 14px; height: 14px; border: 2px solid var(--border-default);
+  border-top-color: var(--dora-primary); border-radius: 50%;
+  animation: copilot-spin 0.6s linear infinite;
+}
+@keyframes copilot-spin { to { transform: rotate(360deg); } }
+
 /* Customer 360 */
 .customer-360 {
   width: 190px; min-width: 190px; border-left: 1px solid var(--border-default);
@@ -755,7 +790,7 @@ const langData = {
   }
 };
 
-let currentLang = 'vi';
+let currentLang = null;
 let animationTimer = null;
 let isAnimating = false;
 
@@ -915,6 +950,20 @@ function stopAnimation() {
 function switchLang(lang) {
   if (lang === currentLang && !isAnimating) return;
   stopAnimation();
+  resetCopilotState();
+  // Restore copilot actions buttons
+  const actionsEl = document.querySelector('.copilot-actions');
+  if (actionsEl) {
+    actionsEl.innerHTML = '<button class="btn-copilot-send">Send</button><button class="btn-copilot-edit">Edit</button><button class="btn-copilot-reject">Reject</button>';
+    actionsEl.style.display = 'flex';
+  }
+  // Restore hidden elements
+  const confRow = document.querySelector('#ai-copilot .confidence-row');
+  const kbRef = document.querySelector('#ai-copilot .kb-ref');
+  if (confRow) confRow.style.display = 'flex';
+  if (kbRef) kbRef.style.display = 'flex';
+  const notice = document.getElementById('gen-notice');
+  if (notice) notice.remove();
   currentLang = lang;
 
   // Update button states
@@ -966,7 +1015,9 @@ document.querySelectorAll('.lang-btn').forEach(btn => {
 
 document.getElementById('replay-btn').addEventListener('click', () => {
   stopAnimation();
-  switchLang(currentLang);
+  const lang = currentLang;
+  currentLang = null; // force switchLang to re-run
+  switchLang(lang);
 });
 
 // ── SLA timer ─────────────────────────────────────────────────
@@ -978,6 +1029,202 @@ setInterval(() => {
   const s = slaSeconds % 60;
   document.getElementById('sla-time').textContent = `${m}m ${s.toString().padStart(2, '0')}s`;
 }, 1000);
+
+// ── Follow-up messages after agent sends ─────────────────────
+const followUpData = {
+  vi: {
+    customerReply: 'Nâng cấp giúp mình nhé, cảm ơn!',
+    agentReply: 'Dạ mình đã xử lý nâng cấp giao hàng hỏa tốc cho bạn rồi ạ. Đơn hàng sẽ được giao trong hôm nay. Cảm ơn bạn!'
+  },
+  ja: {
+    customerReply: 'はい、速達便でお願いいたします。',
+    agentReply: 'かしこまりました。速達便への変更を承りました。本日中にお届け予定でございます。ありがとうございます。'
+  },
+  en: {
+    customerReply: 'Yes please, upgrade it!',
+    agentReply: 'Done! I\'ve upgraded your shipping to FedEx Priority. You should receive your package by end of day today. Thank you!'
+  }
+};
+
+const altDrafts = {
+  vi: 'Dạ vâng, mình kiểm tra thêm cho bạn nhé. Hiện tại đơn hàng đang giao qua GHN. Ngoài hỏa tốc (25.000đ), bạn cũng có thể chọn giao hàng cùng ngày với phí 35.000đ. Bạn muốn chọn phương án nào ạ?',
+  ja: 'ご確認いたしました。現在の配送状況に加えて、いくつかのオプションをご案内いたします。速達便（550円）の他に、当日配送（880円）もご利用いただけます。ご希望のオプションをお知らせください。',
+  en: 'I\'ve checked your order details. Besides the FedEx Priority upgrade ($8.99), we also offer Same-Day Delivery for $14.99. Which option would you prefer?'
+};
+
+// ── Copilot button handlers (event delegation) ───────────────
+let copilotState = 'idle'; // idle | editing | sent | rejected
+
+function resetCopilotState() {
+  copilotState = 'idle';
+  const copilot = document.getElementById('ai-copilot');
+  copilot.classList.remove('sent', 'rejected', 'generating');
+  copilot.style.opacity = '';
+  copilot.style.transform = '';
+  const draft = document.getElementById('ai-draft-text');
+  draft.contentEditable = 'false';
+}
+
+function handleCopilotSend() {
+  if (copilotState === 'sent') return;
+  const copilot = document.getElementById('ai-copilot');
+  const customerChat = document.getElementById('customer-chat');
+  const agentChat = document.getElementById('agent-chat');
+  const draftText = document.getElementById('ai-draft-text').textContent;
+
+  copilotState = 'sent';
+
+  // Exit edit mode if active
+  const draft = document.getElementById('ai-draft-text');
+  draft.contentEditable = 'false';
+
+  // Remove typing indicators if still present
+  document.querySelectorAll('.typing-indicator').forEach(t => t.parentElement.remove());
+
+  // Add AI draft as sent message in both chats
+  const aiMsg = { role: 'ai', text: draftText };
+  customerChat.insertAdjacentHTML('beforeend', createMsgHTML(aiMsg, false));
+  agentChat.insertAdjacentHTML('beforeend', createMsgHTML(aiMsg, true));
+  customerChat.scrollTop = customerChat.scrollHeight;
+  agentChat.scrollTop = agentChat.scrollHeight;
+
+  // Update copilot to "sent" state
+  copilot.classList.add('sent');
+  const actionsEl = copilot.querySelector('.copilot-actions');
+  actionsEl.innerHTML = '<div class="copilot-sent-notice"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" width="16" height="16"><path d="M20 6L9 17l-5-5"/></svg> Sent successfully</div>';
+
+  // After a beat, customer replies
+  const fu = followUpData[currentLang];
+  setTimeout(() => {
+    const custMsg = { role: 'customer', text: fu.customerReply };
+    customerChat.insertAdjacentHTML('beforeend', createMsgHTML(custMsg, false));
+    agentChat.insertAdjacentHTML('beforeend', createMsgHTML(custMsg, true));
+    customerChat.scrollTop = customerChat.scrollHeight;
+    agentChat.scrollTop = agentChat.scrollHeight;
+
+    // Show typing then agent auto-reply
+    setTimeout(() => {
+      customerChat.insertAdjacentHTML('beforeend', createMsgHTML({ role: 'typing' }, false));
+      agentChat.insertAdjacentHTML('beforeend', createMsgHTML({ role: 'typing' }, true));
+      customerChat.scrollTop = customerChat.scrollHeight;
+      agentChat.scrollTop = agentChat.scrollHeight;
+
+      setTimeout(() => {
+        document.querySelectorAll('.typing-indicator').forEach(t => t.parentElement.remove());
+        const replyMsg = { role: 'ai', text: fu.agentReply };
+        customerChat.insertAdjacentHTML('beforeend', createMsgHTML(replyMsg, false));
+        agentChat.insertAdjacentHTML('beforeend', createMsgHTML(replyMsg, true));
+        customerChat.scrollTop = customerChat.scrollHeight;
+        agentChat.scrollTop = agentChat.scrollHeight;
+
+        // Hide copilot after conversation completes
+        setTimeout(() => {
+          copilot.style.display = 'none';
+          resetCopilotState();
+        }, 2000);
+      }, 1200);
+    }, 800);
+  }, 1500);
+}
+
+function handleCopilotEdit(btn) {
+  if (copilotState === 'sent') return;
+  const draft = document.getElementById('ai-draft-text');
+  const sendBtn = copilot_el().querySelector('.btn-copilot-send');
+
+  if (copilotState === 'editing') {
+    draft.contentEditable = 'false';
+    if (sendBtn) sendBtn.textContent = 'Send';
+    btn.textContent = 'Edit';
+    copilotState = 'idle';
+  } else {
+    copilotState = 'editing';
+    draft.contentEditable = 'true';
+    draft.focus();
+    const range = document.createRange();
+    range.selectNodeContents(draft);
+    range.collapse(false);
+    const sel = window.getSelection();
+    sel.removeAllRanges();
+    sel.addRange(range);
+    if (sendBtn) sendBtn.textContent = 'Send Edited';
+    btn.textContent = 'Cancel Edit';
+  }
+}
+
+function copilot_el() { return document.getElementById('ai-copilot'); }
+
+function handleCopilotReject() {
+  if (copilotState === 'sent') return;
+  const copilot = document.getElementById('ai-copilot');
+  const draft = document.getElementById('ai-draft-text');
+
+  // Reset edit state if active
+  if (copilotState === 'editing') {
+    draft.contentEditable = 'false';
+    const editBtn = copilot.querySelector('.btn-copilot-edit');
+    const sendBtn = copilot.querySelector('.btn-copilot-send');
+    if (editBtn) editBtn.textContent = 'Edit';
+    if (sendBtn) sendBtn.textContent = 'Send';
+  }
+
+  copilotState = 'rejected';
+
+  // Fade out
+  copilot.classList.add('rejected');
+
+  setTimeout(() => {
+    copilot.classList.remove('rejected');
+    copilot.classList.add('generating');
+    copilot.style.opacity = '1';
+    copilot.style.transform = 'none';
+
+    const actionsEl = copilot.querySelector('.copilot-actions');
+    actionsEl.style.display = 'none';
+    draft.textContent = '';
+
+    const confRow = copilot.querySelector('.confidence-row');
+    const kbRef = copilot.querySelector('.kb-ref');
+    confRow.style.display = 'none';
+    kbRef.style.display = 'none';
+
+    const label = copilot.querySelector('.ai-copilot-label');
+    label.insertAdjacentHTML('afterend', '<div class="copilot-generating-notice" id="gen-notice"><div class="spinner"></div> Generating alternative response...</div>');
+
+    // After delay, show new suggestion
+    setTimeout(() => {
+      const notice = document.getElementById('gen-notice');
+      if (notice) notice.remove();
+      copilot.classList.remove('generating');
+
+      const data = langData[currentLang];
+      draft.textContent = altDrafts[currentLang];
+      confRow.style.display = 'flex';
+      kbRef.style.display = 'flex';
+      actionsEl.style.display = 'flex';
+      actionsEl.innerHTML = '<button class="btn-copilot-send">Send</button><button class="btn-copilot-edit">Edit</button><button class="btn-copilot-reject">Reject</button>';
+
+      const newConf = data.confidence - 3;
+      document.getElementById('copilot-confidence-val').textContent = newConf + '%';
+      document.getElementById('copilot-confidence-bar').style.width = newConf + '%';
+
+      copilotState = 'idle';
+    }, 2000);
+  }, 350);
+}
+
+// Event delegation on copilot panel (works even after button re-render)
+document.getElementById('ai-copilot').addEventListener('click', function(e) {
+  const btn = e.target.closest('button');
+  if (!btn) return;
+  if (btn.classList.contains('btn-copilot-send')) {
+    handleCopilotSend();
+  } else if (btn.classList.contains('btn-copilot-edit')) {
+    handleCopilotEdit(btn);
+  } else if (btn.classList.contains('btn-copilot-reject')) {
+    handleCopilotReject();
+  }
+});
 
 // ── Init ──────────────────────────────────────────────────────
 
