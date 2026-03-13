@@ -9,6 +9,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Noto+Sans+JP:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+<script src="_embedded.js"></script>
 <style>
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 :root {
@@ -395,9 +396,20 @@ async function loadDoc(key) {
   contentEl.innerHTML = '<div class="loading"><div class="spinner"></div> Loading document...</div>';
 
   try {
-    const res = await fetch(docs[key].file);
-    if (!res.ok) throw new Error('Failed to load');
-    const md = await res.text();
+    let md;
+    // Try fetch first (works on http/https), fallback to embedded (for file://)
+    try {
+      const res = await fetch(docs[key].file);
+      if (!res.ok) throw new Error('fetch failed');
+      md = await res.text();
+    } catch (fetchErr) {
+      // Fallback to embedded content
+      if (typeof EMBEDDED_DOCS !== 'undefined' && EMBEDDED_DOCS[key]) {
+        md = EMBEDDED_DOCS[key];
+      } else {
+        throw fetchErr;
+      }
+    }
 
     // Render markdown
     const html = marked.parse(md);
