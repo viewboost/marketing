@@ -1,0 +1,914 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dora — Admin Analytics Dashboard</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Noto+Sans+JP:wght@400;500;600;700&display=swap" rel="stylesheet">
+<script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"></script>
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --dora-primary: #2563EB;
+  --dora-primary-hover: #1D4ED8;
+  --dora-primary-light: #DBEAFE;
+  --dora-primary-50: #EFF6FF;
+  --dora-secondary: #7C3AED;
+  --dora-secondary-light: #EDE9FE;
+  --dora-accent: #059669;
+  --dora-accent-light: #D1FAE5;
+  --color-success: #059669;
+  --color-warning: #D97706;
+  --color-error: #DC2626;
+  --color-line: #06C755;
+  --color-zalo: #0068FF;
+  --color-facebook: #1877F2;
+  --color-email: #EA4335;
+  --color-chat: #2563EB;
+  --bg-primary: #FFFFFF;
+  --bg-secondary: #F8FAFC;
+  --bg-tertiary: #F1F5F9;
+  --border-default: #E2E8F0;
+  --text-primary: #0F172A;
+  --text-secondary: #475569;
+  --text-tertiary: #94A3B8;
+  --shadow-sm: 0 1px 3px rgba(0,0,0,0.06), 0 1px 2px rgba(0,0,0,0.04);
+  --shadow-md: 0 4px 6px -1px rgba(0,0,0,0.07), 0 2px 4px -2px rgba(0,0,0,0.05);
+  --shadow-lg: 0 10px 15px -3px rgba(0,0,0,0.08), 0 4px 6px -4px rgba(0,0,0,0.04);
+  --radius-md: 0.5rem;
+  --radius-lg: 0.75rem;
+  --radius-xl: 1rem;
+  --radius-full: 9999px;
+  --font-sans: 'Inter', 'Noto Sans JP', system-ui, -apple-system, sans-serif;
+}
+
+body {
+  font-family: var(--font-sans);
+  background: var(--bg-secondary);
+  color: var(--text-primary);
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ── Top Bar ────────────────────────────────────── */
+.topbar {
+  position: sticky; top: 0; z-index: 50;
+  display: flex; align-items: center; justify-content: space-between;
+  height: 64px; padding: 0 24px;
+  background: rgba(255,255,255,0.85);
+  backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--border-default);
+}
+.topbar-left { display: flex; align-items: center; gap: 24px; }
+.logo {
+  font-size: 1.25rem; font-weight: 800; color: var(--dora-primary);
+  letter-spacing: -0.02em; display: flex; align-items: center; gap: 8px;
+}
+.logo-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--dora-primary); }
+.topbar-nav { display: flex; gap: 4px; }
+.topbar-nav a {
+  padding: 6px 14px; border-radius: var(--radius-md);
+  font-size: 0.875rem; font-weight: 500; text-decoration: none;
+  color: var(--text-secondary); transition: all 150ms;
+}
+.topbar-nav a:hover { background: var(--bg-tertiary); color: var(--text-primary); }
+.topbar-nav a.active {
+  background: var(--dora-primary-50); color: var(--dora-primary); font-weight: 600;
+}
+.topbar-right { display: flex; align-items: center; gap: 16px; }
+.date-picker {
+  display: flex; align-items: center; gap: 8px;
+  padding: 7px 14px; border-radius: var(--radius-md);
+  border: 1px solid var(--border-default); background: white;
+  font-size: 0.8125rem; font-weight: 500; color: var(--text-secondary);
+  cursor: pointer; transition: all 150ms; position: relative;
+}
+.date-picker:hover { border-color: var(--dora-primary); color: var(--text-primary); }
+.date-picker .dot-live {
+  width: 6px; height: 6px; border-radius: 50%; background: var(--color-success);
+  animation: pulse 2s ease-in-out infinite;
+}
+.avatar {
+  width: 36px; height: 36px; border-radius: 50%;
+  background: linear-gradient(135deg, var(--dora-primary), var(--dora-secondary));
+  display: flex; align-items: center; justify-content: center;
+  color: white; font-size: 0.8125rem; font-weight: 600; cursor: pointer;
+  transition: transform 150ms;
+}
+.avatar:hover { transform: scale(1.05); }
+
+/* ── Main Layout ────────────────────────────────── */
+.main { max-width: 1320px; margin: 0 auto; padding: 28px 24px 48px; }
+.page-header { margin-bottom: 28px; }
+.page-header h1 {
+  font-size: 1.625rem; font-weight: 700; letter-spacing: -0.025em;
+  color: var(--text-primary);
+}
+.page-header p { font-size: 0.875rem; color: var(--text-tertiary); margin-top: 4px; }
+
+/* ── Metric Cards ───────────────────────────────── */
+.metrics-grid {
+  display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px;
+  margin-bottom: 24px;
+}
+.metric-card {
+  background: white; border: 1px solid var(--border-default);
+  border-radius: var(--radius-xl); padding: 22px 24px;
+  box-shadow: var(--shadow-sm); transition: all 200ms;
+  position: relative; overflow: hidden;
+  opacity: 0; transform: translateY(12px);
+}
+.metric-card.visible { opacity: 1; transform: translateY(0); }
+.metric-card:hover { box-shadow: var(--shadow-lg); transform: translateY(-2px); }
+.metric-card.visible:hover { transform: translateY(-2px); }
+.metric-card-accent {
+  position: absolute; top: 0; left: 0; right: 0; height: 3px;
+}
+.metric-icon {
+  width: 40px; height: 40px; border-radius: var(--radius-lg);
+  display: flex; align-items: center; justify-content: center;
+  margin-bottom: 14px;
+}
+.metric-icon.blue { background: var(--dora-primary-50); color: var(--dora-primary); }
+.metric-icon.violet { background: var(--dora-secondary-light); color: var(--dora-secondary); }
+.metric-icon.green { background: var(--dora-accent-light); color: var(--dora-accent); }
+.metric-icon.gold { background: #FEF3C7; color: #D97706; }
+.metric-value {
+  font-size: 2rem; font-weight: 700; letter-spacing: -0.03em;
+  line-height: 1.1; margin-bottom: 4px;
+}
+.metric-label { font-size: 0.8125rem; color: var(--text-tertiary); font-weight: 500; margin-bottom: 10px; }
+.metric-trend {
+  display: inline-flex; align-items: center; gap: 4px;
+  font-size: 0.75rem; font-weight: 600; padding: 3px 8px;
+  border-radius: var(--radius-full);
+}
+.metric-trend.up { background: #ECFDF5; color: #059669; }
+.metric-trend.down-good { background: #ECFDF5; color: #059669; }
+.metric-trend.down-bad { background: #FEF2F2; color: #DC2626; }
+.sparkline-container {
+  position: absolute; bottom: 0; right: 0; width: 100px; height: 40px;
+  opacity: 0.15;
+}
+
+/* ── Charts Grid ────────────────────────────────── */
+.charts-row {
+  display: grid; gap: 16px; margin-bottom: 24px;
+}
+.charts-row.two-thirds { grid-template-columns: 2fr 1fr; }
+.charts-row.halves { grid-template-columns: 1fr 1fr; }
+.chart-card {
+  background: white; border: 1px solid var(--border-default);
+  border-radius: var(--radius-xl); padding: 24px;
+  box-shadow: var(--shadow-sm);
+  opacity: 0; transform: translateY(12px);
+}
+.chart-card.visible { opacity: 1; transform: translateY(0); }
+.chart-card-header {
+  display: flex; align-items: center; justify-content: space-between;
+  margin-bottom: 20px;
+}
+.chart-card-title {
+  font-size: 0.9375rem; font-weight: 600; color: var(--text-primary);
+  display: flex; align-items: center; gap: 8px;
+}
+.chart-card-subtitle { font-size: 0.75rem; color: var(--text-tertiary); font-weight: 500; }
+.chart-wrap { position: relative; }
+
+/* ── Donut Legend ────────────────────────────────── */
+.donut-layout { display: flex; align-items: center; gap: 20px; }
+.donut-chart-wrap { flex: 0 0 180px; position: relative; }
+.donut-center {
+  position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
+  text-align: center;
+}
+.donut-center-value { font-size: 1.25rem; font-weight: 700; color: var(--text-primary); }
+.donut-center-label { font-size: 0.6875rem; color: var(--text-tertiary); }
+.donut-legend { flex: 1; display: flex; flex-direction: column; gap: 10px; }
+.legend-item {
+  display: flex; align-items: center; gap: 10px;
+  font-size: 0.8125rem; color: var(--text-secondary);
+}
+.legend-dot {
+  width: 10px; height: 10px; border-radius: 3px; flex-shrink: 0;
+}
+.legend-value { margin-left: auto; font-weight: 600; color: var(--text-primary); }
+
+/* ── AI Performance ─────────────────────────────── */
+.ai-comparison { display: flex; flex-direction: column; gap: 20px; }
+.ai-row { display: flex; flex-direction: column; gap: 8px; }
+.ai-row-label { font-size: 0.8125rem; color: var(--text-secondary); font-weight: 500; }
+.ai-bar-group { display: flex; gap: 8px; align-items: center; }
+.ai-bar-track {
+  flex: 1; height: 32px; border-radius: var(--radius-md);
+  background: var(--bg-tertiary); overflow: hidden; position: relative;
+}
+.ai-bar-fill {
+  height: 100%; border-radius: var(--radius-md);
+  display: flex; align-items: center; padding: 0 12px;
+  font-size: 0.75rem; font-weight: 600; color: white;
+  transition: width 1.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.ai-bar-fill.ai { background: linear-gradient(90deg, #7C3AED, #A78BFA); }
+.ai-bar-fill.human { background: linear-gradient(90deg, #2563EB, #60A5FA); }
+.ai-bar-tag {
+  font-size: 0.6875rem; font-weight: 600; white-space: nowrap;
+  min-width: 48px; text-align: right;
+}
+.ai-bar-tag.ai-tag { color: var(--dora-secondary); }
+.ai-bar-tag.human-tag { color: var(--dora-primary); }
+.ai-cost-badge {
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 6px 12px; border-radius: var(--radius-md);
+  font-size: 0.75rem; font-weight: 600; margin-top: 4px;
+}
+.ai-cost-badge.savings { background: #ECFDF5; color: #059669; }
+
+/* ── Agent Leaderboard ──────────────────────────── */
+.leaderboard { display: flex; flex-direction: column; gap: 0; }
+.lb-header {
+  display: grid; grid-template-columns: 36px 1fr 80px 90px 80px 72px;
+  gap: 12px; padding: 0 12px 12px; align-items: center;
+  font-size: 0.6875rem; font-weight: 600; color: var(--text-tertiary);
+  text-transform: uppercase; letter-spacing: 0.05em;
+  border-bottom: 1px solid var(--border-default);
+}
+.lb-row {
+  display: grid; grid-template-columns: 36px 1fr 80px 90px 80px 72px;
+  gap: 12px; padding: 12px; align-items: center;
+  border-radius: var(--radius-md); transition: background 150ms;
+}
+.lb-row:hover { background: var(--bg-secondary); }
+.lb-rank {
+  width: 28px; height: 28px; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 0.75rem; font-weight: 700;
+}
+.lb-rank.gold { background: #FEF3C7; color: #B45309; }
+.lb-rank.silver { background: #F1F5F9; color: #475569; }
+.lb-rank.bronze { background: #FFF7ED; color: #C2410C; }
+.lb-rank.default { background: var(--bg-tertiary); color: var(--text-tertiary); }
+.lb-agent { display: flex; align-items: center; gap: 10px; }
+.lb-avatar {
+  width: 32px; height: 32px; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 0.6875rem; font-weight: 600; color: white; flex-shrink: 0;
+}
+.lb-name { font-size: 0.8125rem; font-weight: 600; }
+.lb-csat { font-size: 0.8125rem; font-weight: 600; display: flex; align-items: center; gap: 4px; }
+.lb-csat svg { color: #F59E0B; }
+.lb-tickets { font-size: 0.8125rem; color: var(--text-secondary); text-align: center; }
+.lb-time { font-size: 0.8125rem; color: var(--text-secondary); text-align: center; }
+.lb-status {
+  display: inline-flex; align-items: center; gap: 5px;
+  font-size: 0.6875rem; font-weight: 600; padding: 3px 10px;
+  border-radius: var(--radius-full);
+}
+.lb-status.online { background: #ECFDF5; color: #059669; }
+.lb-status.offline { background: var(--bg-tertiary); color: var(--text-tertiary); }
+.lb-status-dot {
+  width: 6px; height: 6px; border-radius: 50%;
+}
+.lb-status.online .lb-status-dot { background: #059669; animation: pulse 2s ease-in-out infinite; }
+.lb-status.offline .lb-status-dot { background: var(--text-tertiary); }
+
+/* ── Activity Feed ──────────────────────────────── */
+.feed-card {
+  background: white; border: 1px solid var(--border-default);
+  border-radius: var(--radius-xl); padding: 24px;
+  box-shadow: var(--shadow-sm); margin-top: 24px;
+  opacity: 0; transform: translateY(12px);
+}
+.feed-card.visible { opacity: 1; transform: translateY(0); }
+.feed-list {
+  max-height: 280px; overflow-y: auto; display: flex; flex-direction: column; gap: 0;
+}
+.feed-list::-webkit-scrollbar { width: 4px; }
+.feed-list::-webkit-scrollbar-track { background: transparent; }
+.feed-list::-webkit-scrollbar-thumb { background: var(--border-default); border-radius: 4px; }
+.feed-item {
+  display: flex; align-items: flex-start; gap: 12px;
+  padding: 12px 8px; border-bottom: 1px solid #F8FAFC;
+  animation: feedIn 400ms ease-out;
+}
+.feed-item:last-child { border-bottom: none; }
+.feed-icon-wrap {
+  width: 32px; height: 32px; border-radius: var(--radius-md);
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+}
+.feed-icon-wrap.resolved { background: #ECFDF5; color: #059669; }
+.feed-icon-wrap.escalated { background: #FFFBEB; color: #D97706; }
+.feed-icon-wrap.csat { background: #FEF3C7; color: #F59E0B; }
+.feed-icon-wrap.ticket { background: var(--dora-primary-50); color: var(--dora-primary); }
+.feed-icon-wrap.sla { background: #FEF2F2; color: #DC2626; }
+.feed-content { flex: 1; min-width: 0; }
+.feed-text { font-size: 0.8125rem; color: var(--text-primary); line-height: 1.5; }
+.feed-text strong { font-weight: 600; }
+.feed-time { font-size: 0.6875rem; color: var(--text-tertiary); margin-top: 2px; }
+.feed-badge {
+  font-size: 0.625rem; font-weight: 600; padding: 2px 7px;
+  border-radius: var(--radius-full); margin-left: 6px;
+}
+.feed-badge.line { background: #E6F9EE; color: #06C755; }
+.feed-badge.zalo { background: #E6F0FF; color: #0068FF; }
+.feed-badge.web { background: var(--dora-primary-50); color: var(--dora-primary); }
+.feed-badge.fb { background: #E8F0FE; color: #1877F2; }
+
+/* ── Animations ─────────────────────────────────── */
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.4; }
+}
+@keyframes feedIn {
+  from { opacity: 0; transform: translateY(-8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* ── Responsive ─────────────────────────────────── */
+@media (max-width: 1024px) {
+  .charts-row.two-thirds, .charts-row.halves { grid-template-columns: 1fr; }
+  .lb-header, .lb-row {
+    grid-template-columns: 36px 1fr 80px 72px;
+  }
+  .lb-tickets, .lb-time { display: none; }
+}
+@media (max-width: 768px) {
+  .metrics-grid { grid-template-columns: repeat(2, 1fr); }
+  .topbar-nav { display: none; }
+  .topbar { padding: 0 16px; }
+  .main { padding: 20px 16px 40px; }
+  .page-header h1 { font-size: 1.375rem; }
+  .donut-layout { flex-direction: column; }
+  .donut-chart-wrap { flex: none; width: 160px; }
+  .lb-header, .lb-row {
+    grid-template-columns: 28px 1fr 72px;
+  }
+  .lb-csat, .lb-tickets, .lb-time { display: none; }
+}
+@media (max-width: 480px) {
+  .metric-value { font-size: 1.625rem; }
+  .date-picker span { display: none; }
+}
+
+/* ── Reduced Motion ─────────────────────────────── */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+</style>
+</head>
+<body>
+
+<!-- ══ TOP BAR ══════════════════════════════════════ -->
+<header class="topbar">
+  <div class="topbar-left">
+    <div class="logo"><span class="logo-dot"></span> Dora</div>
+    <nav class="topbar-nav">
+      <a href="agent.html">Inbox</a>
+      <a href="ai-demo.html">AI Demo</a>
+      <a href="admin.html" class="active">Dashboard</a>
+    </nav>
+  </div>
+  <div class="topbar-right">
+    <button class="date-picker" id="datePicker">
+      <i data-lucide="calendar" style="width:15px;height:15px;"></i>
+      <span>Last 30 days</span>
+      <span class="dot-live"></span>
+      <i data-lucide="chevron-down" style="width:14px;height:14px;"></i>
+    </button>
+    <div class="avatar" title="Admin">AD</div>
+  </div>
+</header>
+
+<!-- ══ MAIN CONTENT ═════════════════════════════════ -->
+<main class="main">
+  <div class="page-header">
+    <h1>Analytics Dashboard</h1>
+    <p>Real-time overview of your customer care operations</p>
+  </div>
+
+  <!-- ── Metric Cards ──────────────────────────────── -->
+  <section class="metrics-grid">
+    <div class="metric-card" data-delay="0">
+      <div class="metric-card-accent" style="background:linear-gradient(90deg,#2563EB,#3B82F6);"></div>
+      <div class="metric-icon blue"><i data-lucide="message-square" style="width:20px;height:20px;"></i></div>
+      <div class="metric-value" data-count="1247" data-type="int">0</div>
+      <div class="metric-label">Total Conversations</div>
+      <span class="metric-trend up"><i data-lucide="trending-up" style="width:13px;height:13px;"></i> 12% vs last month</span>
+    </div>
+    <div class="metric-card" data-delay="80">
+      <div class="metric-card-accent" style="background:linear-gradient(90deg,#7C3AED,#A78BFA);"></div>
+      <div class="metric-icon violet"><i data-lucide="sparkles" style="width:20px;height:20px;"></i></div>
+      <div class="metric-value" data-count="65" data-type="pct">0%</div>
+      <div class="metric-label">AI Resolution Rate</div>
+      <span class="metric-trend up"><i data-lucide="trending-up" style="width:13px;height:13px;"></i> 8% vs last month</span>
+    </div>
+    <div class="metric-card" data-delay="160">
+      <div class="metric-card-accent" style="background:linear-gradient(90deg,#059669,#34D399);"></div>
+      <div class="metric-icon green"><i data-lucide="clock" style="width:20px;height:20px;"></i></div>
+      <div class="metric-value" data-count="83" data-type="time">0m 00s</div>
+      <div class="metric-label">Avg Response Time</div>
+      <span class="metric-trend down-good"><i data-lucide="trending-down" style="width:13px;height:13px;"></i> 23% faster</span>
+    </div>
+    <div class="metric-card" data-delay="240">
+      <div class="metric-card-accent" style="background:linear-gradient(90deg,#D97706,#FBBF24);"></div>
+      <div class="metric-icon gold"><i data-lucide="star" style="width:20px;height:20px;"></i></div>
+      <div class="metric-value" data-count="47" data-type="rating">0.0/5</div>
+      <div class="metric-label">CSAT Score</div>
+      <span class="metric-trend up"><i data-lucide="trending-up" style="width:13px;height:13px;"></i> +0.3 vs last month</span>
+    </div>
+  </section>
+
+  <!-- ── Volume + Channel Charts ───────────────────── -->
+  <section class="charts-row two-thirds">
+    <div class="chart-card" data-delay="300">
+      <div class="chart-card-header">
+        <div>
+          <div class="chart-card-title"><i data-lucide="bar-chart-3" style="width:16px;height:16px;color:var(--dora-primary)"></i> Conversation Volume</div>
+          <div class="chart-card-subtitle">Daily breakdown — AI vs Human handled</div>
+        </div>
+        <div style="display:flex;gap:14px;font-size:0.75rem;font-weight:500;color:var(--text-tertiary);">
+          <span style="display:flex;align-items:center;gap:5px;"><span style="width:10px;height:10px;border-radius:3px;background:#7C3AED;display:inline-block;"></span>AI</span>
+          <span style="display:flex;align-items:center;gap:5px;"><span style="width:10px;height:10px;border-radius:3px;background:#2563EB;display:inline-block;"></span>Human</span>
+        </div>
+      </div>
+      <div class="chart-wrap"><canvas id="volumeChart" height="240"></canvas></div>
+    </div>
+    <div class="chart-card" data-delay="380">
+      <div class="chart-card-header">
+        <div>
+          <div class="chart-card-title"><i data-lucide="pie-chart" style="width:16px;height:16px;color:var(--dora-secondary)"></i> Channel Distribution</div>
+          <div class="chart-card-subtitle">This month's breakdown</div>
+        </div>
+      </div>
+      <div class="donut-layout">
+        <div class="donut-chart-wrap">
+          <canvas id="channelChart" width="180" height="180"></canvas>
+          <div class="donut-center">
+            <div class="donut-center-value">1,247</div>
+            <div class="donut-center-label">total</div>
+          </div>
+        </div>
+        <div class="donut-legend">
+          <div class="legend-item"><span class="legend-dot" style="background:#06C755"></span>LINE<span class="legend-value">35%</span></div>
+          <div class="legend-item"><span class="legend-dot" style="background:#0068FF"></span>Zalo<span class="legend-value">28%</span></div>
+          <div class="legend-item"><span class="legend-dot" style="background:#2563EB"></span>Web Chat<span class="legend-value">22%</span></div>
+          <div class="legend-item"><span class="legend-dot" style="background:#1877F2"></span>Facebook<span class="legend-value">10%</span></div>
+          <div class="legend-item"><span class="legend-dot" style="background:#EA4335"></span>Email<span class="legend-value">5%</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── AI Perf + Leaderboard ─────────────────────── -->
+  <section class="charts-row halves">
+    <div class="chart-card" data-delay="440">
+      <div class="chart-card-header">
+        <div>
+          <div class="chart-card-title"><i data-lucide="cpu" style="width:16px;height:16px;color:var(--dora-secondary)"></i> AI vs Human Performance</div>
+          <div class="chart-card-subtitle">Cost and efficiency comparison</div>
+        </div>
+      </div>
+      <div class="ai-comparison">
+        <div class="ai-row">
+          <div class="ai-row-label">Resolution Rate</div>
+          <div class="ai-bar-group">
+            <span class="ai-bar-tag ai-tag">AI</span>
+            <div class="ai-bar-track">
+              <div class="ai-bar-fill ai" style="width:0%" data-width="65%">65%</div>
+            </div>
+          </div>
+          <div class="ai-bar-group">
+            <span class="ai-bar-tag human-tag">Human</span>
+            <div class="ai-bar-track">
+              <div class="ai-bar-fill human" style="width:0%" data-width="35%">35%</div>
+            </div>
+          </div>
+        </div>
+        <div class="ai-row">
+          <div class="ai-row-label">Avg Cost per Ticket</div>
+          <div class="ai-bar-group">
+            <span class="ai-bar-tag ai-tag">AI</span>
+            <div class="ai-bar-track">
+              <div class="ai-bar-fill ai" style="width:0%" data-width="4%">$0.03</div>
+            </div>
+          </div>
+          <div class="ai-bar-group">
+            <span class="ai-bar-tag human-tag">Human</span>
+            <div class="ai-bar-track">
+              <div class="ai-bar-fill human" style="width:0%" data-width="100%">$8.50</div>
+            </div>
+          </div>
+        </div>
+        <div class="ai-row">
+          <div class="ai-row-label">Avg Resolution Time</div>
+          <div class="ai-bar-group">
+            <span class="ai-bar-tag ai-tag">AI</span>
+            <div class="ai-bar-track">
+              <div class="ai-bar-fill ai" style="width:0%" data-width="9%">45s</div>
+            </div>
+          </div>
+          <div class="ai-bar-group">
+            <span class="ai-bar-tag human-tag">Human</span>
+            <div class="ai-bar-track">
+              <div class="ai-bar-fill human" style="width:0%" data-width="100%">8m 30s</div>
+            </div>
+          </div>
+        </div>
+        <div class="ai-cost-badge savings">
+          <i data-lucide="arrow-down-circle" style="width:14px;height:14px;"></i>
+          Estimated savings this month: <strong>$6,472</strong> (811 AI-resolved tickets)
+        </div>
+      </div>
+    </div>
+    <div class="chart-card" data-delay="520">
+      <div class="chart-card-header">
+        <div>
+          <div class="chart-card-title"><i data-lucide="trophy" style="width:16px;height:16px;color:#F59E0B"></i> Agent Leaderboard</div>
+          <div class="chart-card-subtitle">Top performers this month</div>
+        </div>
+      </div>
+      <div class="leaderboard">
+        <div class="lb-header">
+          <span>#</span><span>Agent</span><span>CSAT</span><span style="text-align:center">Tickets</span><span style="text-align:center">Resp.</span><span>Status</span>
+        </div>
+        <div class="lb-row">
+          <div class="lb-rank gold">1</div>
+          <div class="lb-agent">
+            <div class="lb-avatar" style="background:linear-gradient(135deg,#2563EB,#7C3AED)">NH</div>
+            <span class="lb-name">Nguy&#7877;n H&#7843;i</span>
+          </div>
+          <div class="lb-csat"><i data-lucide="star" style="width:13px;height:13px;fill:#F59E0B;"></i> 4.9</div>
+          <div class="lb-tickets">234</div>
+          <div class="lb-time">1m 12s</div>
+          <div class="lb-status online"><span class="lb-status-dot"></span>Online</div>
+        </div>
+        <div class="lb-row">
+          <div class="lb-rank silver">2</div>
+          <div class="lb-agent">
+            <div class="lb-avatar" style="background:linear-gradient(135deg,#E91E8C,#FF6B9D)">TY</div>
+            <span class="lb-name">&#30000;&#20013; &#12422;&#12365;</span>
+          </div>
+          <div class="lb-csat"><i data-lucide="star" style="width:13px;height:13px;fill:#F59E0B;"></i> 4.8</div>
+          <div class="lb-tickets">198</div>
+          <div class="lb-time">1m 45s</div>
+          <div class="lb-status online"><span class="lb-status-dot"></span>Online</div>
+        </div>
+        <div class="lb-row">
+          <div class="lb-rank bronze">3</div>
+          <div class="lb-agent">
+            <div class="lb-avatar" style="background:linear-gradient(135deg,#059669,#34D399)">LM</div>
+            <span class="lb-name">L&#234; Th&#7883; Mai</span>
+          </div>
+          <div class="lb-csat"><i data-lucide="star" style="width:13px;height:13px;fill:#F59E0B;"></i> 4.7</div>
+          <div class="lb-tickets">187</div>
+          <div class="lb-time">2m 03s</div>
+          <div class="lb-status offline"><span class="lb-status-dot"></span>Offline</div>
+        </div>
+        <div class="lb-row">
+          <div class="lb-rank default">4</div>
+          <div class="lb-agent">
+            <div class="lb-avatar" style="background:linear-gradient(135deg,#DC2626,#EF4444)">SK</div>
+            <span class="lb-name">&#20304;&#34276; &#20581;&#22826;</span>
+          </div>
+          <div class="lb-csat"><i data-lucide="star" style="width:13px;height:13px;fill:#F59E0B;"></i> 4.6</div>
+          <div class="lb-tickets">156</div>
+          <div class="lb-time">2m 18s</div>
+          <div class="lb-status online"><span class="lb-status-dot"></span>Online</div>
+        </div>
+        <div class="lb-row">
+          <div class="lb-rank default">5</div>
+          <div class="lb-agent">
+            <div class="lb-avatar" style="background:linear-gradient(135deg,#D97706,#FBBF24)">PL</div>
+            <span class="lb-name">Ph&#7841;m Linh</span>
+          </div>
+          <div class="lb-csat"><i data-lucide="star" style="width:13px;height:13px;fill:#F59E0B;"></i> 4.5</div>
+          <div class="lb-tickets">142</div>
+          <div class="lb-time">2m 34s</div>
+          <div class="lb-status offline"><span class="lb-status-dot"></span>Offline</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── Live Activity Feed ────────────────────────── -->
+  <div class="feed-card" data-delay="600">
+    <div class="chart-card-header">
+      <div>
+        <div class="chart-card-title"><i data-lucide="activity" style="width:16px;height:16px;color:var(--color-success)"></i> Live Activity Feed</div>
+        <div class="chart-card-subtitle">Real-time events across all channels</div>
+      </div>
+      <div style="display:flex;align-items:center;gap:6px;font-size:0.6875rem;font-weight:600;color:var(--color-success);"><span class="dot-live" style="width:6px;height:6px;border-radius:50%;background:var(--color-success);animation:pulse 2s ease-in-out infinite;display:inline-block;"></span> Live</div>
+    </div>
+    <div class="feed-list" id="feedList"></div>
+  </div>
+
+</main>
+
+<script>
+/* ═══════════════════════════════════════════════════
+   Dora Admin Dashboard — Interactions & Charts
+   ═══════════════════════════════════════════════════ */
+
+// ── Init Lucide Icons ─────────────────────────────
+lucide.createIcons();
+
+// ── Intersection Observer for Entrance Animations ─
+const animObserver = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      const delay = parseInt(e.target.dataset.delay || 0);
+      setTimeout(() => {
+        e.target.classList.add('visible');
+        e.target.style.transition = 'opacity 0.6s cubic-bezier(0.4,0,0.2,1), transform 0.6s cubic-bezier(0.4,0,0.2,1)';
+      }, delay);
+      animObserver.unobserve(e.target);
+    }
+  });
+}, { threshold: 0.1 });
+
+document.querySelectorAll('.metric-card, .chart-card, .feed-card').forEach(el => animObserver.observe(el));
+
+// ── Count-Up Animation ────────────────────────────
+function animateCountUp() {
+  document.querySelectorAll('.metric-value[data-count]').forEach(el => {
+    const target = parseInt(el.dataset.count);
+    const type = el.dataset.type;
+    const duration = 1500;
+    const start = performance.now();
+
+    function update(now) {
+      const elapsed = now - start;
+      const progress = Math.min(elapsed / duration, 1);
+      const eased = 1 - Math.pow(1 - progress, 3);
+      const current = Math.round(target * eased);
+
+      if (type === 'int') {
+        el.textContent = current.toLocaleString();
+      } else if (type === 'pct') {
+        el.textContent = current + '%';
+      } else if (type === 'time') {
+        const secs = current;
+        el.textContent = Math.floor(secs / 60) + 'm ' + String(secs % 60).padStart(2, '0') + 's';
+      } else if (type === 'rating') {
+        el.textContent = (current / 10).toFixed(1) + '/5';
+      }
+      if (progress < 1) requestAnimationFrame(update);
+    }
+    // Start counting when card becomes visible
+    const obs = new IntersectionObserver(entries => {
+      if (entries[0].isIntersecting) {
+        requestAnimationFrame(update);
+        obs.disconnect();
+      }
+    }, { threshold: 0.3 });
+    obs.observe(el.closest('.metric-card'));
+  });
+}
+animateCountUp();
+
+// ── AI Bar Animations ─────────────────────────────
+const barObserver = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      e.target.querySelectorAll('.ai-bar-fill[data-width]').forEach(bar => {
+        setTimeout(() => { bar.style.width = bar.dataset.width; }, 600);
+      });
+      barObserver.unobserve(e.target);
+    }
+  });
+}, { threshold: 0.2 });
+document.querySelectorAll('.ai-comparison').forEach(el => barObserver.observe(el));
+
+// ── Generate 30-Day Data ──────────────────────────
+function generateVolumeData() {
+  const labels = [];
+  const aiData = [];
+  const humanData = [];
+  const now = new Date();
+  for (let i = 29; i >= 0; i--) {
+    const d = new Date(now);
+    d.setDate(d.getDate() - i);
+    labels.push(d.toLocaleDateString('en', { month: 'short', day: 'numeric' }));
+    const base = 30 + Math.sin(i * 0.3) * 8;
+    const ai = Math.round(base * (0.55 + Math.random() * 0.2));
+    const human = Math.round(base * (0.25 + Math.random() * 0.15));
+    aiData.push(ai);
+    humanData.push(human);
+  }
+  return { labels, aiData, humanData };
+}
+
+// ── Conversation Volume Chart ─────────────────────
+const volData = generateVolumeData();
+const volumeCtx = document.getElementById('volumeChart').getContext('2d');
+
+const gradAI = volumeCtx.createLinearGradient(0, 0, 0, 240);
+gradAI.addColorStop(0, 'rgba(124, 58, 237, 0.25)');
+gradAI.addColorStop(1, 'rgba(124, 58, 237, 0.02)');
+
+const gradHuman = volumeCtx.createLinearGradient(0, 0, 0, 240);
+gradHuman.addColorStop(0, 'rgba(37, 99, 235, 0.18)');
+gradHuman.addColorStop(1, 'rgba(37, 99, 235, 0.02)');
+
+new Chart(volumeCtx, {
+  type: 'line',
+  data: {
+    labels: volData.labels,
+    datasets: [
+      {
+        label: 'AI Handled',
+        data: volData.aiData,
+        borderColor: '#7C3AED',
+        backgroundColor: gradAI,
+        borderWidth: 2,
+        fill: true,
+        tension: 0.4,
+        pointRadius: 0,
+        pointHoverRadius: 5,
+        pointHoverBackgroundColor: '#7C3AED',
+      },
+      {
+        label: 'Human Handled',
+        data: volData.humanData,
+        borderColor: '#2563EB',
+        backgroundColor: gradHuman,
+        borderWidth: 2,
+        fill: true,
+        tension: 0.4,
+        pointRadius: 0,
+        pointHoverRadius: 5,
+        pointHoverBackgroundColor: '#2563EB',
+      }
+    ]
+  },
+  options: {
+    responsive: true,
+    maintainAspectRatio: false,
+    interaction: { mode: 'index', intersect: false },
+    plugins: {
+      legend: { display: false },
+      tooltip: {
+        backgroundColor: '#0F172A',
+        titleFont: { family: "'Inter',sans-serif", size: 12 },
+        bodyFont: { family: "'Inter',sans-serif", size: 12 },
+        padding: 10,
+        cornerRadius: 8,
+        displayColors: true,
+        boxPadding: 4,
+      }
+    },
+    scales: {
+      x: {
+        grid: { display: false },
+        ticks: {
+          font: { family: "'Inter',sans-serif", size: 10 },
+          color: '#94A3B8',
+          maxTicksLimit: 8,
+        },
+        border: { display: false }
+      },
+      y: {
+        grid: { color: '#F1F5F9', drawBorder: false },
+        ticks: {
+          font: { family: "'Inter',sans-serif", size: 10 },
+          color: '#94A3B8',
+          padding: 8,
+        },
+        border: { display: false },
+        beginAtZero: true,
+      }
+    },
+    animation: { duration: 1200, easing: 'easeOutQuart' }
+  }
+});
+
+// ── Channel Distribution Donut ────────────────────
+const channelCtx = document.getElementById('channelChart').getContext('2d');
+new Chart(channelCtx, {
+  type: 'doughnut',
+  data: {
+    labels: ['LINE', 'Zalo', 'Web Chat', 'Facebook', 'Email'],
+    datasets: [{
+      data: [35, 28, 22, 10, 5],
+      backgroundColor: ['#06C755', '#0068FF', '#2563EB', '#1877F2', '#EA4335'],
+      borderWidth: 3,
+      borderColor: '#FFFFFF',
+      hoverBorderColor: '#FFFFFF',
+      hoverOffset: 6,
+    }]
+  },
+  options: {
+    responsive: true,
+    maintainAspectRatio: true,
+    cutout: '68%',
+    plugins: {
+      legend: { display: false },
+      tooltip: {
+        backgroundColor: '#0F172A',
+        titleFont: { family: "'Inter',sans-serif", size: 12 },
+        bodyFont: { family: "'Inter',sans-serif", size: 12 },
+        padding: 10,
+        cornerRadius: 8,
+        callbacks: {
+          label: function(ctx) {
+            return ctx.label + ': ' + ctx.parsed + '%';
+          }
+        }
+      }
+    },
+    animation: { animateRotate: true, duration: 1000, easing: 'easeOutQuart' }
+  }
+});
+
+// ── Live Activity Feed ────────────────────────────
+const feedEvents = [
+  { type: 'resolved', icon: 'sparkles', text: 'AI resolved query from <strong>田中ゆき</strong> via', badge: 'line', badgeLabel: 'LINE', extra: 'Confidence: 94%', time: '10:31 AM' },
+  { type: 'escalated', icon: 'arrow-up-right', text: 'Escalated to human: <strong>Trần Văn Đức</strong>', badge: '', badgeLabel: '', extra: 'Low confidence: 62%', time: '10:30 AM' },
+  { type: 'csat', icon: 'star', text: 'CSAT 5/5 from <strong>Lê Thị Mai</strong>: "Rất hài lòng!"', badge: '', badgeLabel: '', extra: '', time: '10:29 AM' },
+  { type: 'ticket', icon: 'ticket', text: 'New ticket <strong>#TKT-2024-0893</strong> from Web Form', badge: 'web', badgeLabel: 'Web', extra: '', time: '10:28 AM' },
+  { type: 'sla', icon: 'alert-triangle', text: 'SLA breach approaching: <strong>Phạm Quốc Bảo</strong>', badge: '', badgeLabel: '', extra: '3m remaining', time: '10:26 AM' },
+  { type: 'resolved', icon: 'sparkles', text: 'AI resolved query from <strong>鈴木一郎</strong> via', badge: 'web', badgeLabel: 'Web Chat', extra: 'Confidence: 91%', time: '10:25 AM' },
+  { type: 'csat', icon: 'star', text: 'CSAT 4/5 from <strong>Nguyễn Thu Hương</strong>', badge: '', badgeLabel: '', extra: '', time: '10:23 AM' },
+  { type: 'resolved', icon: 'sparkles', text: 'AI resolved query from <strong>山田太郎</strong> via', badge: 'line', badgeLabel: 'LINE', extra: 'Confidence: 97%', time: '10:21 AM' },
+  { type: 'ticket', icon: 'ticket', text: 'New ticket <strong>#TKT-2024-0894</strong> from', badge: 'zalo', badgeLabel: 'Zalo', extra: '', time: '10:20 AM' },
+  { type: 'escalated', icon: 'arrow-up-right', text: 'Escalated to human: <strong>高橋美咲</strong>', badge: '', badgeLabel: '', extra: 'Sentiment: negative', time: '10:18 AM' },
+];
+
+const newEventPool = [
+  { type: 'resolved', icon: 'sparkles', text: 'AI resolved query from <strong>中村健二</strong> via', badge: 'line', badgeLabel: 'LINE', extra: 'Confidence: 96%' },
+  { type: 'csat', icon: 'star', text: 'CSAT 5/5 from <strong>Trần Thị Hoa</strong>: "Tuyệt vời!"', badge: '', badgeLabel: '', extra: '' },
+  { type: 'resolved', icon: 'sparkles', text: 'AI resolved query from <strong>Đỗ Minh Tuấn</strong> via', badge: 'zalo', badgeLabel: 'Zalo', extra: 'Confidence: 89%' },
+  { type: 'ticket', icon: 'ticket', text: 'New ticket <strong>#TKT-2024-0895</strong> from', badge: 'fb', badgeLabel: 'Facebook', extra: '' },
+  { type: 'resolved', icon: 'sparkles', text: 'AI resolved query from <strong>伊藤翔</strong> via', badge: 'web', badgeLabel: 'Web Chat', extra: 'Confidence: 93%' },
+  { type: 'escalated', icon: 'arrow-up-right', text: 'Escalated to human: <strong>Hoàng Văn Hùng</strong>', badge: '', badgeLabel: '', extra: 'Complex order issue' },
+  { type: 'csat', icon: 'star', text: 'CSAT 4/5 from <strong>渡辺さくら</strong>', badge: '', badgeLabel: '', extra: '' },
+  { type: 'sla', icon: 'alert-triangle', text: 'SLA breach approaching: <strong>Võ Thị Ngọc</strong>', badge: '', badgeLabel: '', extra: '2m remaining' },
+  { type: 'resolved', icon: 'sparkles', text: 'AI resolved query from <strong>Lý Thanh Bình</strong> via', badge: 'zalo', badgeLabel: 'Zalo', extra: 'Confidence: 92%' },
+  { type: 'ticket', icon: 'ticket', text: 'New ticket <strong>#TKT-2024-0896</strong> from', badge: 'line', badgeLabel: 'LINE', extra: '' },
+];
+
+const feedList = document.getElementById('feedList');
+
+function createFeedItem(event) {
+  const iconMap = { resolved: 'resolved', escalated: 'escalated', csat: 'csat', ticket: 'ticket', sla: 'sla' };
+  const div = document.createElement('div');
+  div.className = 'feed-item';
+  let badgeHtml = event.badge ? `<span class="feed-badge ${event.badge}">${event.badgeLabel}</span>` : '';
+  let extraHtml = event.extra ? ` <span style="color:var(--text-tertiary);font-size:0.75rem;">(${event.extra})</span>` : '';
+  div.innerHTML = `
+    <div class="feed-icon-wrap ${iconMap[event.type]}">
+      <i data-lucide="${event.icon}" style="width:16px;height:16px;"></i>
+    </div>
+    <div class="feed-content">
+      <div class="feed-text">${event.text}${badgeHtml}${extraHtml}</div>
+      <div class="feed-time">${event.time || formatTime(new Date())}</div>
+    </div>
+  `;
+  return div;
+}
+
+function formatTime(d) {
+  return d.toLocaleTimeString('en', { hour: 'numeric', minute: '2-digit', hour12: true });
+}
+
+// Populate initial feed
+feedEvents.forEach(evt => {
+  feedList.appendChild(createFeedItem(evt));
+});
+lucide.createIcons();
+
+// Auto-add new events
+let eventIndex = 0;
+setInterval(() => {
+  const evt = newEventPool[eventIndex % newEventPool.length];
+  evt.time = formatTime(new Date());
+  const item = createFeedItem(evt);
+  feedList.insertBefore(item, feedList.firstChild);
+  lucide.createIcons();
+
+  // Remove old items if more than 15
+  while (feedList.children.length > 15) {
+    feedList.removeChild(feedList.lastChild);
+  }
+  eventIndex++;
+}, 4000);
+
+// ── Date Picker Toggle (visual) ───────────────────
+const picker = document.getElementById('datePicker');
+const ranges = ['Last 7 days', 'Last 30 days', 'Last 90 days', 'This year'];
+let rangeIdx = 1;
+picker.addEventListener('click', () => {
+  rangeIdx = (rangeIdx + 1) % ranges.length;
+  picker.querySelector('span').textContent = ranges[rangeIdx];
+});
+</script>
+</body>
+</html>

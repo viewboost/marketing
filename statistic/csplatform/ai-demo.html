@@ -1,0 +1,990 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI Demo — Dora Customer Care Platform</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Noto+Sans+JP:wght@400;500;600;700&display=swap" rel="stylesheet">
+<script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+<style>
+/* ── Reset & Variables ─────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --dora-primary: #2563EB;
+  --dora-primary-hover: #1D4ED8;
+  --dora-primary-light: #DBEAFE;
+  --dora-primary-50: #EFF6FF;
+  --dora-secondary: #7C3AED;
+  --dora-secondary-light: #EDE9FE;
+  --dora-accent: #059669;
+  --dora-accent-light: #D1FAE5;
+  --color-line: #06C755;
+  --color-zalo: #0068FF;
+  --color-facebook: #1877F2;
+  --color-chat: #2563EB;
+  --color-error: #DC2626;
+  --bg-primary: #FFFFFF;
+  --bg-secondary: #F8FAFC;
+  --bg-tertiary: #F1F5F9;
+  --border-default: #E2E8F0;
+  --text-primary: #0F172A;
+  --text-secondary: #475569;
+  --text-tertiary: #94A3B8;
+  --shadow-sm: 0 1px 3px rgba(0,0,0,0.06), 0 1px 2px rgba(0,0,0,0.04);
+  --shadow-md: 0 4px 6px -1px rgba(0,0,0,0.07), 0 2px 4px -2px rgba(0,0,0,0.05);
+  --shadow-lg: 0 10px 15px -3px rgba(0,0,0,0.08), 0 4px 6px -4px rgba(0,0,0,0.04);
+  --shadow-xl: 0 20px 25px -5px rgba(0,0,0,0.08), 0 8px 10px -6px rgba(0,0,0,0.04);
+  --shadow-widget: 0 8px 32px rgba(0,0,0,0.12);
+  --radius-sm: 0.375rem;
+  --radius-md: 0.5rem;
+  --radius-lg: 0.75rem;
+  --radius-xl: 1rem;
+  --radius-2xl: 1.25rem;
+  --radius-full: 9999px;
+  --font-sans: 'Inter', 'Noto Sans JP', system-ui, -apple-system, sans-serif;
+  --ease-default: cubic-bezier(0.4, 0, 0.2, 1);
+  --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+body {
+  font-family: var(--font-sans);
+  background: var(--bg-secondary);
+  color: var(--text-primary);
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+
+/* ── Top Nav ───────────────────────────────────────── */
+.top-nav {
+  position: sticky; top: 0; z-index: 100;
+  display: flex; align-items: center; justify-content: space-between;
+  height: 64px; padding: 0 24px;
+  background: rgba(255,255,255,0.88);
+  backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--border-default);
+}
+.nav-left { display: flex; align-items: center; gap: 16px; }
+.logo { font-size: 1.25rem; font-weight: 800; color: var(--dora-primary); letter-spacing: -0.02em; }
+.breadcrumb { display: flex; align-items: center; gap: 6px; font-size: 0.875rem; color: var(--text-tertiary); }
+.breadcrumb a { color: var(--text-secondary); text-decoration: none; }
+.breadcrumb a:hover { color: var(--dora-primary); }
+.breadcrumb .sep { color: var(--text-tertiary); }
+.breadcrumb .current { color: var(--text-primary); font-weight: 500; }
+.btn-back {
+  display: inline-flex; align-items: center; gap: 6px;
+  font-size: 0.875rem; font-weight: 500; color: var(--text-secondary);
+  text-decoration: none; padding: 6px 14px; border-radius: var(--radius-md);
+  border: 1px solid var(--border-default); background: var(--bg-primary);
+  cursor: pointer; transition: all 200ms var(--ease-default);
+}
+.btn-back:hover { background: var(--bg-tertiary); color: var(--text-primary); }
+
+/* ── Mobile View Tabs ──────────────────────────────── */
+.mobile-tabs {
+  display: none;
+  background: var(--bg-primary);
+  border-bottom: 1px solid var(--border-default);
+}
+.mobile-tabs button {
+  flex: 1; padding: 12px; font-size: 0.875rem; font-weight: 600;
+  border: none; background: none; color: var(--text-tertiary); cursor: pointer;
+  border-bottom: 2px solid transparent; transition: all 200ms;
+}
+.mobile-tabs button.active { color: var(--dora-primary); border-bottom-color: var(--dora-primary); }
+
+/* ── Split Screen ──────────────────────────────────── */
+.split-wrapper {
+  display: flex; max-width: 1440px; margin: 0 auto; min-height: calc(100vh - 64px - 56px);
+}
+.split-pane {
+  flex: 1; padding: 32px 24px; display: flex; flex-direction: column; align-items: center;
+}
+.split-pane.customer { background: var(--bg-secondary); }
+.split-pane.agent { background: var(--bg-primary); border-left: 1px solid var(--border-default); }
+.pane-label {
+  font-size: 0.75rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em;
+  color: var(--text-tertiary); margin-bottom: 16px; display: flex; align-items: center; gap: 6px;
+}
+.pane-label .dot { width: 8px; height: 8px; border-radius: 50%; }
+.pane-label .dot.blue { background: var(--dora-primary); }
+.pane-label .dot.violet { background: var(--dora-secondary); }
+.split-divider {
+  width: 1px; background: var(--border-default); position: relative; display: none;
+}
+
+/* ── Chat Widget (Customer) ────────────────────────── */
+.chat-widget {
+  width: 100%; max-width: 420px; border-radius: var(--radius-2xl);
+  background: var(--bg-primary); box-shadow: var(--shadow-widget);
+  overflow: hidden; display: flex; flex-direction: column;
+  height: 560px; border: 1px solid var(--border-default);
+}
+.chat-header {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 16px 20px; background: var(--dora-primary); color: white;
+}
+.chat-header-left { display: flex; align-items: center; gap: 10px; }
+.chat-avatar-sm {
+  width: 36px; height: 36px; border-radius: 50%; background: rgba(255,255,255,0.2);
+  display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 0.875rem;
+}
+.chat-title { font-weight: 600; font-size: 0.9375rem; }
+.chat-status { font-size: 0.75rem; opacity: 0.85; display: flex; align-items: center; gap: 4px; }
+.online-dot {
+  width: 7px; height: 7px; border-radius: 50%; background: #4ade80;
+  animation: pulse-dot 2s ease-in-out infinite;
+}
+@keyframes pulse-dot {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(74,222,128,0.5); }
+  50% { box-shadow: 0 0 0 4px rgba(74,222,128,0); }
+}
+.chat-header-right { display: flex; gap: 8px; }
+.chat-header-btn {
+  width: 32px; height: 32px; border-radius: 50%; border: none;
+  background: rgba(255,255,255,0.15); color: white; cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  transition: background 200ms;
+}
+.chat-header-btn:hover { background: rgba(255,255,255,0.25); }
+
+.chat-messages {
+  flex: 1; overflow-y: auto; padding: 20px 16px; display: flex; flex-direction: column; gap: 12px;
+  scroll-behavior: smooth;
+}
+.msg { display: flex; flex-direction: column; max-width: 82%; animation: messageIn 300ms var(--ease-spring) both; }
+.msg.customer { align-self: flex-start; }
+.msg.ai { align-self: flex-end; align-items: flex-end; }
+.msg-bubble {
+  padding: 10px 16px; font-size: 0.875rem; line-height: 1.55; word-break: break-word;
+}
+.msg.customer .msg-bubble {
+  background: var(--bg-tertiary); color: var(--text-primary);
+  border-radius: 16px 16px 16px 4px;
+}
+.msg.ai .msg-bubble {
+  background: var(--dora-primary); color: white;
+  border-radius: 16px 16px 4px 16px;
+}
+.msg-time { font-size: 0.6875rem; color: var(--text-tertiary); margin-top: 4px; padding: 0 4px; }
+.msg.ai .msg-time { text-align: right; }
+.msg-bubble a { color: inherit; font-weight: 600; text-decoration: underline; text-underline-offset: 2px; }
+
+@keyframes messageIn {
+  from { opacity: 0; transform: translateY(8px) scale(0.97); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+/* Typing indicator */
+.typing-indicator {
+  display: flex; align-items: center; gap: 4px;
+  padding: 12px 18px; background: var(--dora-primary); border-radius: 16px 16px 4px 16px;
+  align-self: flex-end; max-width: 70px;
+}
+.typing-indicator span {
+  width: 7px; height: 7px; border-radius: 50%; background: rgba(255,255,255,0.6);
+  animation: typingBounce 1.2s ease-in-out infinite;
+}
+.typing-indicator span:nth-child(2) { animation-delay: 0.15s; }
+.typing-indicator span:nth-child(3) { animation-delay: 0.3s; }
+@keyframes typingBounce {
+  0%, 60%, 100% { opacity: 0.35; transform: translateY(0); }
+  30% { opacity: 1; transform: translateY(-4px); }
+}
+
+.chat-input-area {
+  padding: 12px 16px; border-top: 1px solid var(--border-default);
+  display: flex; align-items: center; gap: 8px;
+}
+.chat-input {
+  flex: 1; padding: 10px 14px; border: 1px solid var(--border-default);
+  border-radius: var(--radius-full); font-size: 0.875rem;
+  font-family: var(--font-sans); outline: none; transition: border 200ms;
+  background: var(--bg-secondary);
+}
+.chat-input:focus { border-color: var(--dora-primary); }
+.chat-input::placeholder { color: var(--text-tertiary); }
+.chat-send-btn {
+  width: 38px; height: 38px; border-radius: 50%; border: none;
+  background: var(--dora-primary); color: white; cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  transition: background 200ms, transform 150ms;
+}
+.chat-send-btn:hover { background: var(--dora-primary-hover); transform: scale(1.05); }
+.chat-attach-btn {
+  width: 38px; height: 38px; border-radius: 50%; border: none;
+  background: transparent; color: var(--text-tertiary); cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+}
+.chat-attach-btn:hover { color: var(--text-secondary); }
+
+.channel-badge-bar {
+  padding: 8px 16px; background: var(--bg-secondary); border-top: 1px solid var(--border-default);
+  display: flex; align-items: center; justify-content: center; gap: 6px;
+  font-size: 0.75rem; color: var(--text-tertiary);
+}
+
+/* ── Channel Badge ─────────────────────────────────── */
+.channel-badge {
+  display: inline-flex; align-items: center; gap: 4px;
+  padding: 2px 8px; border-radius: var(--radius-full);
+  font-size: 0.6875rem; font-weight: 600; line-height: 1;
+}
+.channel-badge.zalo { background: #E6F0FF; color: var(--color-zalo); }
+.channel-badge.line { background: #E6F9ED; color: var(--color-line); }
+.channel-badge.facebook { background: #E8F0FE; color: var(--color-facebook); }
+.channel-badge.chat { background: var(--dora-primary-light); color: var(--dora-primary); }
+
+/* ── Agent View ────────────────────────────────────── */
+.agent-workspace {
+  width: 100%; max-width: 780px; border-radius: var(--radius-2xl);
+  background: var(--bg-primary); box-shadow: var(--shadow-widget);
+  overflow: hidden; display: flex; height: 560px;
+  border: 1px solid var(--border-default);
+}
+
+/* Conversation List */
+.conv-list {
+  width: 240px; min-width: 240px; border-right: 1px solid var(--border-default);
+  background: var(--bg-secondary); overflow-y: auto; display: flex; flex-direction: column;
+}
+.conv-list-header {
+  padding: 14px 16px; font-size: 0.8125rem; font-weight: 600; color: var(--text-primary);
+  border-bottom: 1px solid var(--border-default); display: flex; align-items: center; justify-content: space-between;
+  background: var(--bg-secondary); position: sticky; top: 0;
+}
+.conv-list-header .count {
+  font-size: 0.6875rem; font-weight: 600; background: var(--dora-primary);
+  color: white; padding: 1px 7px; border-radius: var(--radius-full);
+}
+.conv-item {
+  display: flex; align-items: flex-start; gap: 10px;
+  padding: 12px 14px; cursor: pointer; border-bottom: 1px solid var(--border-default);
+  transition: background 150ms;
+  position: relative;
+}
+.conv-item:hover { background: var(--bg-tertiary); }
+.conv-item.active { background: var(--dora-primary-50); border-left: 3px solid var(--dora-primary); }
+.conv-avatar {
+  width: 34px; height: 34px; border-radius: 50%; flex-shrink: 0;
+  display: flex; align-items: center; justify-content: center;
+  font-weight: 600; font-size: 0.75rem; color: white;
+}
+.conv-info { flex: 1; min-width: 0; }
+.conv-name { font-size: 0.8125rem; font-weight: 600; color: var(--text-primary); display: flex; align-items: center; gap: 5px; }
+.conv-preview { font-size: 0.75rem; color: var(--text-tertiary); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; margin-top: 2px; }
+.conv-meta { display: flex; flex-direction: column; align-items: flex-end; gap: 4px; flex-shrink: 0; }
+.conv-time { font-size: 0.6875rem; color: var(--text-tertiary); }
+.unread-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--dora-primary); }
+
+/* Conversation Detail */
+.conv-detail { flex: 1; display: flex; flex-direction: column; min-width: 0; }
+.conv-detail-header {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 12px 16px; border-bottom: 1px solid var(--border-default);
+  background: var(--bg-primary);
+}
+.conv-detail-left { display: flex; align-items: center; gap: 8px; }
+.conv-detail-name { font-size: 0.875rem; font-weight: 600; }
+.sla-timer {
+  display: flex; align-items: center; gap: 4px;
+  font-size: 0.6875rem; font-weight: 500; color: var(--dora-accent);
+  background: var(--dora-accent-light); padding: 3px 10px;
+  border-radius: var(--radius-full);
+}
+.sla-timer i { width: 12px; height: 12px; }
+
+.conv-messages {
+  flex: 1; overflow-y: auto; padding: 16px; display: flex; flex-direction: column; gap: 10px;
+}
+.agent-msg { display: flex; flex-direction: column; max-width: 85%; }
+.agent-msg.customer { align-self: flex-start; }
+.agent-msg.ai { align-self: flex-end; align-items: flex-end; }
+.agent-msg .msg-bubble { font-size: 0.8125rem; }
+.agent-msg.customer .msg-bubble { background: var(--bg-tertiary); border-radius: 14px 14px 14px 4px; }
+.agent-msg.ai .msg-bubble { background: var(--dora-primary); color: white; border-radius: 14px 14px 4px 14px; }
+
+/* AI Copilot */
+.ai-copilot {
+  margin: 0 12px 12px; padding: 14px; border-radius: var(--radius-xl);
+  background: linear-gradient(135deg, #EDE9FE 0%, #DBEAFE 100%);
+  border: 1px solid rgba(124,58,237,0.15);
+}
+.ai-copilot-label {
+  display: flex; align-items: center; gap: 5px;
+  font-size: 0.6875rem; font-weight: 600; color: var(--dora-secondary);
+  text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 8px;
+}
+.ai-copilot-label svg { width: 14px; height: 14px; }
+.ai-draft {
+  font-size: 0.8125rem; line-height: 1.55; color: var(--text-primary);
+  margin-bottom: 10px; padding: 10px 12px; background: rgba(255,255,255,0.7);
+  border-radius: var(--radius-md); border: 1px solid rgba(124,58,237,0.1);
+}
+.confidence-row {
+  display: flex; align-items: center; gap: 8px; margin-bottom: 6px;
+}
+.confidence-label { font-size: 0.6875rem; font-weight: 600; color: var(--text-secondary); white-space: nowrap; }
+.confidence-bar-bg {
+  flex: 1; height: 6px; border-radius: 3px; background: rgba(0,0,0,0.08);
+  overflow: hidden;
+}
+.confidence-bar-fill {
+  height: 100%; border-radius: 3px; background: var(--dora-accent);
+  width: 0%; transition: width 1.2s var(--ease-default);
+}
+.confidence-value { font-size: 0.75rem; font-weight: 700; color: var(--dora-accent); }
+.kb-ref {
+  font-size: 0.6875rem; color: var(--text-tertiary); margin-bottom: 10px;
+  display: flex; align-items: center; gap: 4px;
+}
+.kb-ref svg { width: 12px; height: 12px; }
+.copilot-actions { display: flex; gap: 6px; }
+.copilot-actions button {
+  padding: 6px 14px; border-radius: var(--radius-md); font-size: 0.75rem;
+  font-weight: 600; cursor: pointer; transition: all 200ms; font-family: var(--font-sans);
+}
+.btn-copilot-send {
+  background: var(--dora-primary); color: white; border: none;
+}
+.btn-copilot-send:hover { background: var(--dora-primary-hover); }
+.btn-copilot-edit {
+  background: var(--bg-primary); color: var(--text-primary); border: 1px solid var(--border-default);
+}
+.btn-copilot-edit:hover { background: var(--bg-tertiary); }
+.btn-copilot-reject {
+  background: transparent; color: var(--text-tertiary); border: none;
+}
+.btn-copilot-reject:hover { color: var(--color-error); }
+
+/* Customer 360 */
+.customer-360 {
+  width: 190px; min-width: 190px; border-left: 1px solid var(--border-default);
+  padding: 16px 14px; overflow-y: auto; background: var(--bg-secondary);
+  display: flex; flex-direction: column; gap: 14px;
+}
+.c360-header { text-align: center; }
+.c360-avatar {
+  width: 48px; height: 48px; border-radius: 50%; margin: 0 auto 8px;
+  display: flex; align-items: center; justify-content: center;
+  font-weight: 700; color: white; font-size: 1rem;
+}
+.c360-name { font-size: 0.875rem; font-weight: 600; }
+.c360-section-title {
+  font-size: 0.6875rem; font-weight: 600; color: var(--text-tertiary);
+  text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 6px;
+}
+.c360-row {
+  display: flex; justify-content: space-between; align-items: center;
+  font-size: 0.75rem; padding: 3px 0;
+}
+.c360-row .label { color: var(--text-tertiary); }
+.c360-row .value { font-weight: 600; color: var(--text-primary); }
+.c360-tags { display: flex; gap: 4px; flex-wrap: wrap; }
+.c360-tag {
+  font-size: 0.625rem; font-weight: 600; padding: 2px 8px;
+  border-radius: var(--radius-full);
+}
+.c360-tag.vip { background: #FEF3C7; color: #D97706; }
+.c360-tag.repeat { background: var(--dora-accent-light); color: var(--dora-accent); }
+
+/* ── Control Bar ───────────────────────────────────── */
+.control-bar {
+  display: flex; align-items: center; justify-content: center; gap: 16px;
+  padding: 16px 24px; background: var(--bg-primary);
+  border-top: 1px solid var(--border-default);
+  position: sticky; bottom: 0;
+}
+.lang-toggle { display: flex; background: var(--bg-tertiary); border-radius: var(--radius-full); padding: 3px; }
+.lang-btn {
+  padding: 8px 20px; border: none; border-radius: var(--radius-full);
+  font-size: 0.8125rem; font-weight: 600; cursor: pointer;
+  background: transparent; color: var(--text-secondary); transition: all 200ms;
+  font-family: var(--font-sans);
+}
+.lang-btn.active { background: var(--dora-primary); color: white; box-shadow: var(--shadow-sm); }
+.lang-btn:hover:not(.active) { color: var(--text-primary); }
+.replay-btn {
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 8px 20px; border-radius: var(--radius-full);
+  font-size: 0.8125rem; font-weight: 600; cursor: pointer;
+  background: var(--bg-primary); color: var(--dora-primary);
+  border: 1px solid var(--dora-primary); transition: all 200ms;
+  font-family: var(--font-sans);
+}
+.replay-btn:hover { background: var(--dora-primary-50); }
+
+/* ── AI Transparency Section ───────────────────────── */
+.ai-transparency {
+  max-width: 1200px; margin: 0 auto; padding: 48px 24px 64px;
+}
+.section-title {
+  font-size: 1.5rem; font-weight: 700; text-align: center; margin-bottom: 8px;
+  color: var(--text-primary);
+}
+.section-subtitle {
+  font-size: 0.9375rem; color: var(--text-secondary); text-align: center; margin-bottom: 32px;
+}
+.transparency-grid {
+  display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px;
+}
+.transparency-card {
+  background: var(--bg-primary); border: 1px solid var(--border-default);
+  border-radius: var(--radius-xl); padding: 24px;
+  transition: transform 200ms var(--ease-default), box-shadow 200ms var(--ease-default);
+}
+.transparency-card:hover { transform: translateY(-2px); box-shadow: var(--shadow-lg); }
+.tc-icon {
+  width: 40px; height: 40px; border-radius: var(--radius-lg);
+  display: flex; align-items: center; justify-content: center; margin-bottom: 14px;
+}
+.tc-icon.green { background: var(--dora-accent-light); color: var(--dora-accent); }
+.tc-icon.blue { background: var(--dora-primary-light); color: var(--dora-primary); }
+.tc-icon.amber { background: #FEF3C7; color: #D97706; }
+.tc-title { font-size: 0.9375rem; font-weight: 600; margin-bottom: 8px; }
+.tc-value { font-size: 1.75rem; font-weight: 800; color: var(--text-primary); margin-bottom: 6px; }
+.tc-bar-bg {
+  height: 8px; border-radius: 4px; background: var(--bg-tertiary); overflow: hidden; margin-bottom: 8px;
+  position: relative;
+}
+.tc-bar-fill {
+  height: 100%; border-radius: 4px; width: 0%; transition: width 1.5s var(--ease-default);
+}
+.tc-bar-fill.green { background: var(--dora-accent); }
+.tc-bar-fill.blue { background: var(--dora-primary); }
+.tc-desc { font-size: 0.8125rem; color: var(--text-secondary); line-height: 1.5; }
+.threshold-line {
+  position: absolute; left: 75%; top: -3px; bottom: -3px;
+  width: 2px; background: var(--color-error);
+}
+.threshold-label {
+  position: absolute; left: 75%; top: -18px; transform: translateX(-50%);
+  font-size: 0.625rem; font-weight: 600; color: var(--color-error); white-space: nowrap;
+}
+
+/* ── Animations ────────────────────────────────────── */
+.fade-in { animation: fadeInUp 500ms var(--ease-default) both; }
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(16px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.hidden-msg { display: none; }
+
+/* ── Responsive ────────────────────────────────────── */
+@media (max-width: 1100px) {
+  .customer-360 { display: none; }
+  .conv-list { width: 200px; min-width: 200px; }
+}
+@media (max-width: 900px) {
+  .mobile-tabs { display: flex; }
+  .split-wrapper { flex-direction: column; }
+  .split-pane { display: none; }
+  .split-pane.active-pane { display: flex; }
+  .split-pane.agent { border-left: none; border-top: 1px solid var(--border-default); }
+  .chat-widget, .agent-workspace { max-width: 100%; }
+  .agent-workspace { height: auto; min-height: 500px; }
+  .conv-list { width: 180px; min-width: 180px; }
+  .transparency-grid { grid-template-columns: 1fr; }
+  .breadcrumb { display: none; }
+}
+@media (max-width: 600px) {
+  .agent-workspace { flex-direction: column; height: auto; }
+  .conv-list { width: 100%; min-width: 0; max-height: 180px; border-right: none; border-bottom: 1px solid var(--border-default); }
+  .control-bar { flex-wrap: wrap; }
+  .lang-btn { padding: 8px 14px; font-size: 0.75rem; }
+}
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+</style>
+</head>
+<body>
+
+<!-- ── Top Nav ──────────────────────────────────────── -->
+<nav class="top-nav">
+  <div class="nav-left">
+    <div class="logo">Dora</div>
+    <div class="breadcrumb">
+      <a href="index.html">Demo Hub</a>
+      <span class="sep">/</span>
+      <span class="current">AI Demo</span>
+    </div>
+  </div>
+  <a href="index.html" class="btn-back">
+    <i data-lucide="arrow-left" style="width:16px;height:16px"></i> Back
+  </a>
+</nav>
+
+<!-- ── Mobile View Tabs ────────────────────────────── -->
+<div class="mobile-tabs">
+  <button class="active" data-tab="customer">Customer View</button>
+  <button data-tab="agent">Agent View</button>
+</div>
+
+<!-- ── Split Screen ────────────────────────────────── -->
+<div class="split-wrapper">
+  <!-- LEFT: Customer Chat -->
+  <div class="split-pane customer active-pane" id="pane-customer">
+    <div class="pane-label"><span class="dot blue"></span> What your customer sees</div>
+    <div class="chat-widget">
+      <div class="chat-header">
+        <div class="chat-header-left">
+          <div class="chat-avatar-sm">D</div>
+          <div>
+            <div class="chat-title">Dora Support</div>
+            <div class="chat-status"><span class="online-dot"></span> Online</div>
+          </div>
+        </div>
+        <div class="chat-header-right">
+          <button class="chat-header-btn"><i data-lucide="minus" style="width:16px;height:16px"></i></button>
+          <button class="chat-header-btn"><i data-lucide="x" style="width:16px;height:16px"></i></button>
+        </div>
+      </div>
+      <div class="chat-messages" id="customer-chat"></div>
+      <div class="chat-input-area">
+        <button class="chat-attach-btn"><i data-lucide="paperclip" style="width:18px;height:18px"></i></button>
+        <input class="chat-input" type="text" placeholder="Type a message..." id="customer-input">
+        <button class="chat-send-btn"><i data-lucide="send" style="width:16px;height:16px"></i></button>
+      </div>
+      <div class="channel-badge-bar">
+        Powered by <strong style="color:var(--dora-primary);margin-left:2px">Dora</strong>
+        <span style="margin:0 4px">|</span>
+        <span class="channel-badge zalo" id="customer-channel-badge">
+          <svg width="10" height="10" viewBox="0 0 48 48" fill="currentColor"><circle cx="24" cy="24" r="22"/></svg>
+          Zalo
+        </span>
+      </div>
+    </div>
+  </div>
+
+  <!-- RIGHT: Agent Inbox -->
+  <div class="split-pane agent" id="pane-agent">
+    <div class="pane-label"><span class="dot violet"></span> What your agent sees</div>
+    <div class="agent-workspace">
+      <!-- Conversation List -->
+      <div class="conv-list">
+        <div class="conv-list-header">
+          Conversations <span class="count" id="conv-count">6</span>
+        </div>
+        <div id="conv-list-items"></div>
+      </div>
+      <!-- Conversation Detail -->
+      <div class="conv-detail">
+        <div class="conv-detail-header">
+          <div class="conv-detail-left">
+            <span class="conv-detail-name" id="agent-conv-name">Nguyen Minh Tu</span>
+            <span class="channel-badge zalo" id="agent-channel-badge" style="margin-left:4px">Zalo</span>
+          </div>
+          <div class="sla-timer">
+            <i data-lucide="clock" style="width:12px;height:12px"></i>
+            <span id="sla-time">2m 14s</span>
+          </div>
+        </div>
+        <div class="conv-messages" id="agent-chat"></div>
+        <!-- AI Copilot -->
+        <div class="ai-copilot" id="ai-copilot" style="display:none;">
+          <div class="ai-copilot-label">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3l1.5 4.5L18 9l-4.5 1.5L12 15l-1.5-4.5L6 9l4.5-1.5L12 3z"/><path d="M5 19l1 3 1-3 3-1-3-1-1-3-1 3-3 1 3 1z" opacity=".6"/></svg>
+            AI Suggested Response
+          </div>
+          <div class="ai-draft" id="ai-draft-text"></div>
+          <div class="confidence-row">
+            <span class="confidence-label">Confidence</span>
+            <div class="confidence-bar-bg"><div class="confidence-bar-fill" id="copilot-confidence-bar"></div></div>
+            <span class="confidence-value" id="copilot-confidence-val">87%</span>
+          </div>
+          <div class="kb-ref" id="kb-ref-text">
+            <i data-lucide="book-open" style="width:12px;height:12px"></i>
+            <span>Matched: Shipping Policy FAQ</span>
+          </div>
+          <div class="copilot-actions">
+            <button class="btn-copilot-send">Send</button>
+            <button class="btn-copilot-edit">Edit</button>
+            <button class="btn-copilot-reject">Reject</button>
+          </div>
+        </div>
+      </div>
+      <!-- Customer 360 -->
+      <div class="customer-360" id="customer-360"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ── Control Bar ──────────────────────────────────── -->
+<div class="control-bar">
+  <div class="lang-toggle">
+    <button class="lang-btn active" data-lang="vi">Vietnamese</button>
+    <button class="lang-btn" data-lang="ja">日本語 (Keigo)</button>
+    <button class="lang-btn" data-lang="en">English</button>
+  </div>
+  <button class="replay-btn" id="replay-btn">
+    <i data-lucide="rotate-ccw" style="width:15px;height:15px"></i> Replay Demo
+  </button>
+</div>
+
+<!-- ── AI Transparency ─────────────────────────────── -->
+<section class="ai-transparency">
+  <div class="section-title">AI Transparency & Control</div>
+  <div class="section-subtitle">Every AI response is auditable. Humans stay in the loop.</div>
+  <div class="transparency-grid">
+    <div class="transparency-card">
+      <div class="tc-icon green"><i data-lucide="gauge" style="width:22px;height:22px"></i></div>
+      <div class="tc-title">Confidence Score</div>
+      <div class="tc-value" id="tc-confidence-val">87%</div>
+      <div class="tc-bar-bg">
+        <div class="tc-bar-fill green" id="tc-confidence-bar" style="width:0%"></div>
+      </div>
+      <div class="tc-desc">AI confidence level for the suggested response. High confidence enables auto-send.</div>
+    </div>
+    <div class="transparency-card">
+      <div class="tc-icon blue"><i data-lucide="book-marked" style="width:22px;height:22px"></i></div>
+      <div class="tc-title">Response Source</div>
+      <div class="tc-value" style="font-size:1.125rem;" id="tc-source">Shipping Policy FAQ</div>
+      <div class="tc-desc" id="tc-source-desc">AI matched this query to your knowledge base article with high relevance. Every response is traceable.</div>
+    </div>
+    <div class="transparency-card">
+      <div class="tc-icon amber"><i data-lucide="shield-alert" style="width:22px;height:22px"></i></div>
+      <div class="tc-title">Escalation Threshold</div>
+      <div class="tc-value">&lt; 75%</div>
+      <div class="tc-bar-bg" style="position:relative">
+        <div class="tc-bar-fill blue" id="tc-threshold-bar" style="width:0%"></div>
+        <div class="threshold-line"></div>
+        <div class="threshold-label">75% threshold</div>
+      </div>
+      <div class="tc-desc" style="margin-top:12px">Below 75% confidence, conversations auto-escalate to a human agent for review.</div>
+    </div>
+  </div>
+</section>
+
+<script>
+// ── Data for all 3 languages ───────────────────────────────────
+const langData = {
+  vi: {
+    channel: 'zalo', channelLabel: 'Zalo', channelClass: 'zalo',
+    customerName: 'Nguyen Minh Tu',
+    messages: [
+      { role: 'customer', text: 'Cho mình hỏi đơn hàng #VNS-2024-1847 đang ở đâu rồi ạ?' },
+      { role: 'ai', text: 'Chào bạn! Mình đã kiểm tra đơn hàng #VNS-2024-1847 của bạn rồi ạ.\n\n📦 Trạng thái: Đang vận chuyển\n🚚 Đơn vị: Giao Hàng Nhanh\n📍 Dự kiến: Ngày mai, 14/03/2026\n\nBạn có thể theo dõi tại: <a href="#">Track →</a>\nCòn gì mình hỗ trợ thêm không ạ?' },
+      { role: 'customer', text: 'Ship có nhanh hơn được không?' },
+      { role: 'typing' }
+    ],
+    aiDraft: 'Dạ, hiện đơn hàng đang được vận chuyển qua Giao Hàng Nhanh tiêu chuẩn. Mình có thể nâng cấp lên giao hàng hỏa tốc với phí thêm 25.000đ. Bạn muốn mình hỗ trợ nâng cấp không ạ?',
+    kbRef: 'Matched: Shipping Policy FAQ',
+    confidence: 87,
+    c360: {
+      name: 'Nguyen Minh Tu', initials: 'NT', bg: '#2563EB',
+      channel: 'Zalo', channelClass: 'zalo',
+      orders: 12, since: 'Jun 2024', csat: '4.8/5', convos: 3,
+      tags: [{ text: 'VIP', cls: 'vip' }, { text: 'Repeat', cls: 'repeat' }]
+    },
+    convList: [
+      { name: 'Nguyen Minh Tu', preview: 'Ship có nhanh hơn...', channel: 'zalo', time: '2m', active: true, unread: false, bg: '#2563EB', initials: 'NT' },
+      { name: 'Tran Hoang Nam', preview: 'Mình muốn đổi size áo...', channel: 'zalo', time: '5m', active: false, unread: true, bg: '#059669', initials: 'TN' },
+      { name: 'Le Thuy Linh', preview: 'Cho mình hỏi voucher...', channel: 'facebook', time: '8m', active: false, unread: true, bg: '#D97706', initials: 'LL' },
+      { name: 'Pham Duc Anh', preview: 'Đã nhận hàng, cảm ơn!', channel: 'chat', time: '15m', active: false, unread: false, bg: '#7C3AED', initials: 'PA' },
+      { name: 'Vo Thanh Hoa', preview: 'Sản phẩm này còn hàng...', channel: 'zalo', time: '22m', active: false, unread: false, bg: '#DC2626', initials: 'VH' },
+      { name: 'Bui Minh Khoa', preview: 'Mã giảm giá không dùng...', channel: 'facebook', time: '30m', active: false, unread: true, bg: '#0068FF', initials: 'BK' }
+    ],
+    source: 'Shipping Policy FAQ',
+    sourceDesc: 'AI matched this query to your knowledge base article with high relevance. Every response is traceable.'
+  },
+  ja: {
+    channel: 'line', channelLabel: 'LINE', channelClass: 'line',
+    customerName: '田中 美咲',
+    messages: [
+      { role: 'customer', text: '注文 #SKC-2024-0892 の状況を教えていただけますか？' },
+      { role: 'ai', text: 'お問い合わせいただきありがとうございます。\n注文 #SKC-2024-0892 の状況をお調べいたしました。\n\n📦 ステータス：配送中\n🚚 配送業者：ヤマト運輸\n📍 到着予定：明日、3月14日\n\n追跡はこちらからご確認いただけます：<a href="#">追跡 →</a>\n他にご不明な点がございましたら、お気軽にお問い合わせください。' },
+      { role: 'customer', text: '配送を早めることは可能でしょうか？' },
+      { role: 'typing' }
+    ],
+    aiDraft: 'お急ぎのところ恐れ入ります。現在ヤマト運輸の通常配送でお届け中でございます。速達便への変更も承っておりますが、追加料金550円が発生いたします。ご希望の場合はお手続きさせていただきます。',
+    kbRef: 'Matched: 配送ポリシーFAQ',
+    confidence: 91,
+    c360: {
+      name: '田中 美咲', initials: 'TM', bg: '#06C755',
+      channel: 'LINE', channelClass: 'line',
+      orders: 8, since: 'Sep 2024', csat: '4.9/5', convos: 2,
+      tags: [{ text: 'VIP', cls: 'vip' }, { text: 'Repeat', cls: 'repeat' }]
+    },
+    convList: [
+      { name: '田中 美咲', preview: '配送を早めること...', channel: 'line', time: '2m', active: true, unread: false, bg: '#06C755', initials: 'TM' },
+      { name: '佐藤 健太', preview: '予約変更をお願い...', channel: 'line', time: '7m', active: false, unread: true, bg: '#2563EB', initials: 'SK' },
+      { name: '山田 花子', preview: '商品の在庫はあり...', channel: 'line', time: '12m', active: false, unread: true, bg: '#D97706', initials: 'YH' },
+      { name: '伊藤 直樹', preview: '領収書の再発行を...', channel: 'chat', time: '18m', active: false, unread: false, bg: '#7C3AED', initials: 'IN' },
+      { name: '渡辺 桜', preview: 'クーポンが使えな...', channel: 'line', time: '25m', active: false, unread: false, bg: '#E91E8C', initials: 'WS' },
+      { name: '中村 翔太', preview: 'サイズ交換は可能...', channel: 'line', time: '35m', active: false, unread: true, bg: '#DC2626', initials: 'NS' }
+    ],
+    source: '配送ポリシーFAQ',
+    sourceDesc: 'AIがナレッジベースの配送ポリシー記事と高い関連性でマッチングしました。すべての回答はトレース可能です。'
+  },
+  en: {
+    channel: 'chat', channelLabel: 'Web Chat', channelClass: 'chat',
+    customerName: 'Sarah Mitchell',
+    messages: [
+      { role: 'customer', text: 'Hi, can you check the status of my order #ENG-2024-3021?' },
+      { role: 'ai', text: 'Hi Sarah! I\'ve looked up your order #ENG-2024-3021.\n\n📦 Status: In Transit\n🚚 Carrier: FedEx Express\n📍 Estimated Delivery: Tomorrow, Mar 14\n\nYou can track it here: <a href="#">Track →</a>\nIs there anything else I can help with?' },
+      { role: 'customer', text: 'Can I upgrade to faster shipping?' },
+      { role: 'typing' }
+    ],
+    aiDraft: 'Absolutely! Your order is currently being shipped via FedEx Standard. We can upgrade to FedEx Priority for an additional $8.99. Would you like me to process the upgrade?',
+    kbRef: 'Matched: Shipping Policy FAQ',
+    confidence: 92,
+    c360: {
+      name: 'Sarah Mitchell', initials: 'SM', bg: '#2563EB',
+      channel: 'Web Chat', channelClass: 'chat',
+      orders: 5, since: 'Jan 2025', csat: '4.6/5', convos: 1,
+      tags: [{ text: 'VIP', cls: 'vip' }, { text: 'Repeat', cls: 'repeat' }]
+    },
+    convList: [
+      { name: 'Sarah Mitchell', preview: 'Can I upgrade to faster...', channel: 'chat', time: '2m', active: true, unread: false, bg: '#2563EB', initials: 'SM' },
+      { name: 'James Chen', preview: 'I need to return my...', channel: 'chat', time: '6m', active: false, unread: true, bg: '#059669', initials: 'JC' },
+      { name: 'Maria Garcia', preview: 'Do you ship to Mexico?', channel: 'facebook', time: '10m', active: false, unread: true, bg: '#D97706', initials: 'MG' },
+      { name: 'David Kim', preview: 'Thanks, got my package!', channel: 'chat', time: '20m', active: false, unread: false, bg: '#7C3AED', initials: 'DK' },
+      { name: 'Emily Watson', preview: 'Promo code not working...', channel: 'facebook', time: '28m', active: false, unread: false, bg: '#DC2626', initials: 'EW' },
+      { name: 'Alex Johnson', preview: 'Wrong size received...', channel: 'chat', time: '40m', active: false, unread: true, bg: '#0068FF', initials: 'AJ' }
+    ],
+    source: 'Shipping Policy FAQ',
+    sourceDesc: 'AI matched this query to your knowledge base article with high relevance. Every response is traceable.'
+  }
+};
+
+let currentLang = 'vi';
+let animationTimer = null;
+let isAnimating = false;
+
+// ── Render functions ──────────────────────────────────────────
+
+function renderConvList(data) {
+  const el = document.getElementById('conv-list-items');
+  el.innerHTML = data.convList.map(c => `
+    <div class="conv-item ${c.active ? 'active' : ''}" data-name="${c.name}">
+      <div class="conv-avatar" style="background:${c.bg}">${c.initials}</div>
+      <div class="conv-info">
+        <div class="conv-name">${c.name} <span class="channel-badge ${c.channel}" style="font-size:0.5625rem;padding:1px 5px">${c.channel === 'line' ? 'LINE' : c.channel === 'zalo' ? 'Zalo' : c.channel === 'facebook' ? 'FB' : 'Chat'}</span></div>
+        <div class="conv-preview">${c.preview}</div>
+      </div>
+      <div class="conv-meta">
+        <span class="conv-time">${c.time}</span>
+        ${c.unread ? '<span class="unread-dot"></span>' : ''}
+      </div>
+    </div>
+  `).join('');
+}
+
+function renderC360(c360) {
+  document.getElementById('customer-360').innerHTML = `
+    <div class="c360-header">
+      <div class="c360-avatar" style="background:${c360.bg}">${c360.initials}</div>
+      <div class="c360-name">${c360.name}</div>
+      <div style="margin-top:4px"><span class="channel-badge ${c360.channelClass}">${c360.channel}</span></div>
+    </div>
+    <div>
+      <div class="c360-section-title">Details</div>
+      <div class="c360-row"><span class="label">Orders</span><span class="value">${c360.orders}</span></div>
+      <div class="c360-row"><span class="label">Since</span><span class="value">${c360.since}</span></div>
+      <div class="c360-row"><span class="label">CSAT</span><span class="value">${c360.csat}</span></div>
+      <div class="c360-row"><span class="label">Conversations</span><span class="value">${c360.convos}</span></div>
+    </div>
+    <div>
+      <div class="c360-section-title">Tags</div>
+      <div class="c360-tags">${c360.tags.map(t => `<span class="c360-tag ${t.cls}">${t.text}</span>`).join('')}</div>
+    </div>
+  `;
+}
+
+function renderChannelBadge(data) {
+  const badge = cls => `<span class="channel-badge ${data.channelClass}">${data.channelLabel}</span>`;
+  document.getElementById('customer-channel-badge').outerHTML = `<span class="channel-badge ${data.channelClass}" id="customer-channel-badge">${data.channelLabel}</span>`;
+  document.getElementById('agent-channel-badge').outerHTML = `<span class="channel-badge ${data.channelClass}" id="agent-channel-badge">${data.channelLabel}</span>`;
+  document.getElementById('agent-conv-name').textContent = data.customerName;
+}
+
+function createMsgHTML(msg, isAgent) {
+  if (msg.role === 'typing') {
+    return `<div class="${isAgent ? 'agent-msg ai' : 'msg ai'}"><div class="typing-indicator"><span></span><span></span><span></span></div></div>`;
+  }
+  const textFormatted = msg.text.replace(/\n/g, '<br>');
+  const cls = isAgent ? 'agent-msg' : 'msg';
+  return `<div class="${cls} ${msg.role === 'customer' ? 'customer' : 'ai'}"><div class="msg-bubble">${textFormatted}</div></div>`;
+}
+
+function clearChats() {
+  document.getElementById('customer-chat').innerHTML = '';
+  document.getElementById('agent-chat').innerHTML = '';
+  document.getElementById('ai-copilot').style.display = 'none';
+}
+
+// ── Animation sequence ────────────────────────────────────────
+
+function runDemoAnimation() {
+  if (isAnimating) return;
+  isAnimating = true;
+  clearChats();
+
+  const data = langData[currentLang];
+  const customerChat = document.getElementById('customer-chat');
+  const agentChat = document.getElementById('agent-chat');
+  const copilot = document.getElementById('ai-copilot');
+
+  let step = 0;
+  const messages = data.messages;
+  const timers = [];
+
+  function addMessage(index) {
+    const msg = messages[index];
+    if (!msg) { isAnimating = false; return; }
+
+    if (msg.role === 'typing') {
+      // Show typing on both sides
+      customerChat.insertAdjacentHTML('beforeend', createMsgHTML(msg, false));
+      agentChat.insertAdjacentHTML('beforeend', createMsgHTML(msg, true));
+      scrollChats();
+      // Show AI copilot after typing appears
+      timers.push(setTimeout(() => {
+        copilot.style.display = 'block';
+        document.getElementById('ai-draft-text').textContent = data.aiDraft;
+        document.getElementById('copilot-confidence-val').textContent = data.confidence + '%';
+        document.getElementById('kb-ref-text').innerHTML = `<i data-lucide="book-open" style="width:12px;height:12px"></i><span>${data.kbRef}</span>`;
+        lucide.createIcons();
+        // Animate confidence bar
+        timers.push(setTimeout(() => {
+          document.getElementById('copilot-confidence-bar').style.width = data.confidence + '%';
+        }, 100));
+        isAnimating = false;
+      }, 800));
+      return;
+    }
+
+    const delay = msg.role === 'ai' ? 1500 : 500;
+
+    // Show typing first for AI messages
+    if (msg.role === 'ai') {
+      customerChat.insertAdjacentHTML('beforeend', createMsgHTML({ role: 'typing' }, false));
+      agentChat.insertAdjacentHTML('beforeend', createMsgHTML({ role: 'typing' }, true));
+      scrollChats();
+
+      timers.push(setTimeout(() => {
+        // Remove typing indicators
+        const typings = document.querySelectorAll('.typing-indicator');
+        typings.forEach(t => t.parentElement.remove());
+
+        // Add actual message
+        customerChat.insertAdjacentHTML('beforeend', createMsgHTML(msg, false));
+        agentChat.insertAdjacentHTML('beforeend', createMsgHTML(msg, true));
+        scrollChats();
+
+        timers.push(setTimeout(() => addMessage(index + 1), 600));
+      }, delay));
+    } else {
+      customerChat.insertAdjacentHTML('beforeend', createMsgHTML(msg, false));
+      agentChat.insertAdjacentHTML('beforeend', createMsgHTML(msg, true));
+      scrollChats();
+
+      timers.push(setTimeout(() => addMessage(index + 1), 600));
+    }
+  }
+
+  function scrollChats() {
+    customerChat.scrollTop = customerChat.scrollHeight;
+    agentChat.scrollTop = agentChat.scrollHeight;
+  }
+
+  // Start with slight delay
+  timers.push(setTimeout(() => addMessage(0), 400));
+
+  // Store timers for cleanup
+  animationTimer = timers;
+}
+
+function stopAnimation() {
+  if (animationTimer && Array.isArray(animationTimer)) {
+    animationTimer.forEach(t => clearTimeout(t));
+  }
+  isAnimating = false;
+}
+
+// ── Switch language ───────────────────────────────────────────
+
+function switchLang(lang) {
+  if (lang === currentLang && !isAnimating) return;
+  stopAnimation();
+  currentLang = lang;
+
+  // Update button states
+  document.querySelectorAll('.lang-btn').forEach(b => {
+    b.classList.toggle('active', b.dataset.lang === lang);
+  });
+
+  const data = langData[lang];
+
+  // Render static parts
+  renderConvList(data);
+  renderC360(data.c360);
+  renderChannelBadge(data);
+
+  // Update transparency section
+  document.getElementById('tc-confidence-val').textContent = data.confidence + '%';
+  document.getElementById('tc-source').textContent = data.source;
+  document.getElementById('tc-source-desc').textContent = data.sourceDesc;
+
+  // Run animation
+  runDemoAnimation();
+
+  // Animate transparency bars after a short delay
+  setTimeout(() => {
+    document.getElementById('tc-confidence-bar').style.width = data.confidence + '%';
+    document.getElementById('tc-threshold-bar').style.width = data.confidence + '%';
+  }, 500);
+}
+
+// ── Mobile tabs ───────────────────────────────────────────────
+
+document.querySelectorAll('.mobile-tabs button').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.mobile-tabs button').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    const tab = btn.dataset.tab;
+    document.getElementById('pane-customer').classList.toggle('active-pane', tab === 'customer');
+    document.getElementById('pane-agent').classList.toggle('active-pane', tab === 'agent');
+  });
+});
+
+// ── Lang toggle ───────────────────────────────────────────────
+
+document.querySelectorAll('.lang-btn').forEach(btn => {
+  btn.addEventListener('click', () => switchLang(btn.dataset.lang));
+});
+
+// ── Replay ────────────────────────────────────────────────────
+
+document.getElementById('replay-btn').addEventListener('click', () => {
+  stopAnimation();
+  switchLang(currentLang);
+});
+
+// ── SLA timer ─────────────────────────────────────────────────
+
+let slaSeconds = 134; // 2m 14s
+setInterval(() => {
+  slaSeconds++;
+  const m = Math.floor(slaSeconds / 60);
+  const s = slaSeconds % 60;
+  document.getElementById('sla-time').textContent = `${m}m ${s.toString().padStart(2, '0')}s`;
+}, 1000);
+
+// ── Init ──────────────────────────────────────────────────────
+
+document.addEventListener('DOMContentLoaded', () => {
+  lucide.createIcons();
+  switchLang('vi');
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,1795 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dora — AI-Powered Customer Care Management Platform</title>
+  <meta name="description" content="Transform customer support with AI agents across LINE, Zalo, and every channel. One unified inbox. Built for Vietnam & Japan.">
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
+
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+
+  <style>
+    /* ============================================
+       CSS CUSTOM PROPERTIES (Design Tokens)
+       ============================================ */
+    :root {
+      /* Brand Colors */
+      --dora-primary: #2563EB;
+      --dora-primary-hover: #1D4ED8;
+      --dora-primary-light: #DBEAFE;
+      --dora-primary-50: #EFF6FF;
+      --dora-secondary: #7C3AED;
+      --dora-secondary-light: #EDE9FE;
+      --dora-accent: #059669;
+      --dora-accent-light: #D1FAE5;
+
+      /* Neutrals */
+      --bg-primary: #FFFFFF;
+      --bg-secondary: #F8FAFC;
+      --bg-tertiary: #F1F5F9;
+      --border-default: #E2E8F0;
+      --border-subtle: #F1F5F9;
+      --text-primary: #0F172A;
+      --text-secondary: #475569;
+      --text-tertiary: #94A3B8;
+      --text-inverse: #FFFFFF;
+
+      /* Channel Colors */
+      --color-line: #06C755;
+      --color-zalo: #0068FF;
+      --color-facebook: #1877F2;
+      --color-chat: #2563EB;
+
+      /* Client Colors */
+      --client-sakura-primary: #E91E8C;
+      --client-sakura-gradient: linear-gradient(135deg, #E91E8C 0%, #FF6B9D 100%);
+      --client-vnshop-primary: #2563EB;
+      --client-vnshop-gradient: linear-gradient(135deg, #2563EB 0%, #3B82F6 100%);
+      --client-ramen-primary: #DC2626;
+      --client-ramen-gradient: linear-gradient(135deg, #DC2626 0%, #EF4444 100%);
+
+      /* Typography */
+      --font-sans: 'Inter', 'Noto Sans JP', system-ui, -apple-system, sans-serif;
+      --font-mono: 'JetBrains Mono', 'Fira Code', monospace;
+
+      /* Spacing */
+      --section-padding-y: 5rem;
+      --section-padding-y-mobile: 3rem;
+      --container-max: 80rem;
+      --container-px: 1.5rem;
+
+      /* Radii */
+      --radius-sm: 0.375rem;
+      --radius-md: 0.5rem;
+      --radius-lg: 0.75rem;
+      --radius-xl: 1rem;
+      --radius-2xl: 1.25rem;
+      --radius-3xl: 1.5rem;
+      --radius-full: 9999px;
+
+      /* Shadows */
+      --shadow-xs: 0 1px 2px rgba(0,0,0,0.04);
+      --shadow-sm: 0 1px 3px rgba(0,0,0,0.06), 0 1px 2px rgba(0,0,0,0.04);
+      --shadow-md: 0 4px 6px -1px rgba(0,0,0,0.07), 0 2px 4px -2px rgba(0,0,0,0.05);
+      --shadow-lg: 0 10px 15px -3px rgba(0,0,0,0.08), 0 4px 6px -4px rgba(0,0,0,0.04);
+      --shadow-xl: 0 20px 25px -5px rgba(0,0,0,0.08), 0 8px 10px -6px rgba(0,0,0,0.04);
+      --shadow-primary: 0 4px 14px rgba(37,99,235,0.25);
+
+      /* Animation */
+      --duration-fast: 150ms;
+      --duration-normal: 200ms;
+      --duration-slow: 300ms;
+      --ease-default: cubic-bezier(0.4, 0, 0.2, 1);
+      --ease-out: cubic-bezier(0, 0, 0.2, 1);
+      --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+
+    /* ============================================
+       RESET & BASE
+       ============================================ */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html {
+      scroll-behavior: smooth;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    body {
+      font-family: var(--font-sans);
+      font-size: 1rem;
+      line-height: 1.5;
+      color: var(--text-primary);
+      background: var(--bg-primary);
+      overflow-x: hidden;
+    }
+
+    a { color: inherit; text-decoration: none; }
+    img { max-width: 100%; display: block; }
+
+    /* ============================================
+       UTILITY CLASSES
+       ============================================ */
+    .container {
+      max-width: var(--container-max);
+      margin: 0 auto;
+      padding-left: var(--container-px);
+      padding-right: var(--container-px);
+    }
+
+    /* Scroll-triggered animation base */
+    .reveal {
+      opacity: 0;
+      transform: translateY(20px);
+      transition: opacity 0.6s var(--ease-out), transform 0.6s var(--ease-out);
+    }
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* Stagger delays */
+    .delay-1 { transition-delay: 0.1s; }
+    .delay-2 { transition-delay: 0.2s; }
+    .delay-3 { transition-delay: 0.3s; }
+    .delay-4 { transition-delay: 0.4s; }
+    .delay-5 { transition-delay: 0.5s; }
+
+    /* Reduced motion */
+    @media (prefers-reduced-motion: reduce) {
+      .reveal { opacity: 1; transform: none; transition: none; }
+      * { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
+    }
+
+    /* ============================================
+       NAVIGATION
+       ============================================ */
+    .nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 100;
+      padding: 0 var(--container-px);
+      transition: background var(--duration-slow) var(--ease-default),
+                  box-shadow var(--duration-slow) var(--ease-default);
+    }
+    .nav.scrolled {
+      background: rgba(15, 23, 42, 0.85);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      box-shadow: 0 1px 0 rgba(255,255,255,0.06);
+    }
+    .nav-inner {
+      max-width: var(--container-max);
+      margin: 0 auto;
+      height: 64px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .nav-logo {
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: var(--text-inverse);
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    .nav-logo-dot {
+      width: 8px;
+      height: 8px;
+      background: var(--dora-primary);
+      border-radius: var(--radius-full);
+      display: inline-block;
+    }
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 2rem;
+      list-style: none;
+    }
+    .nav-links a {
+      font-size: 0.875rem;
+      font-weight: 500;
+      color: rgba(255,255,255,0.7);
+      transition: color var(--duration-fast) var(--ease-default);
+    }
+    .nav-links a:hover { color: var(--text-inverse); }
+    .nav-cta {
+      background: var(--dora-primary);
+      color: var(--text-inverse) !important;
+      padding: 0.5rem 1.125rem;
+      border-radius: var(--radius-full);
+      font-size: 0.875rem;
+      font-weight: 600;
+      transition: background var(--duration-fast) var(--ease-default),
+                  box-shadow var(--duration-fast) var(--ease-default);
+    }
+    .nav-cta:hover {
+      background: var(--dora-primary-hover);
+      box-shadow: var(--shadow-primary);
+    }
+
+    @media (max-width: 768px) {
+      .nav-links { display: none; }
+    }
+
+    /* ============================================
+       HERO SECTION
+       ============================================ */
+    .hero {
+      position: relative;
+      background: linear-gradient(145deg, #0F172A 0%, #1E293B 40%, #1E3A5F 70%, #1E40AF 100%);
+      padding: 10rem 0 6rem;
+      text-align: center;
+      overflow: hidden;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+    }
+
+    /* Subtle grid overlay */
+    .hero::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(255,255,255,0.02) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,0.02) 1px, transparent 1px);
+      background-size: 64px 64px;
+      pointer-events: none;
+    }
+
+    /* Radial glow */
+    .hero::after {
+      content: '';
+      position: absolute;
+      top: 20%;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 800px;
+      height: 600px;
+      background: radial-gradient(ellipse, rgba(37,99,235,0.15) 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 2;
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 0 var(--container-px);
+    }
+
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.375rem 1rem;
+      background: rgba(37,99,235,0.15);
+      border: 1px solid rgba(37,99,235,0.3);
+      border-radius: var(--radius-full);
+      color: #93C5FD;
+      font-size: 0.8125rem;
+      font-weight: 500;
+      margin-bottom: 2rem;
+    }
+    .hero-badge i { width: 16px; height: 16px; }
+
+    .hero-title {
+      font-size: clamp(3rem, 8vw, 4.5rem);
+      font-weight: 800;
+      line-height: 1.1;
+      color: var(--text-inverse);
+      margin-bottom: 1.5rem;
+      letter-spacing: -0.025em;
+    }
+    .hero-title .gradient-text {
+      background: linear-gradient(135deg, #60A5FA, #A78BFA, #60A5FA);
+      background-size: 200% auto;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      animation: shimmer 6s linear infinite;
+    }
+
+    @keyframes shimmer {
+      0% { background-position: 0% center; }
+      100% { background-position: 200% center; }
+    }
+
+    .hero-subtitle {
+      font-size: clamp(1.125rem, 2.5vw, 1.375rem);
+      color: rgba(255,255,255,0.8);
+      line-height: 1.5;
+      margin-bottom: 0.75rem;
+      font-weight: 400;
+    }
+    .hero-desc {
+      font-size: 1rem;
+      color: rgba(255,255,255,0.5);
+      margin-bottom: 2.5rem;
+      font-weight: 400;
+    }
+
+    .hero-ctas {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 1rem;
+      margin-bottom: 4rem;
+      flex-wrap: wrap;
+    }
+
+    .btn-primary {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.75rem 1.75rem;
+      background: var(--dora-primary);
+      color: var(--text-inverse);
+      border-radius: var(--radius-full);
+      font-size: 0.9375rem;
+      font-weight: 600;
+      border: none;
+      cursor: pointer;
+      transition: all var(--duration-normal) var(--ease-default);
+    }
+    .btn-primary:hover {
+      background: var(--dora-primary-hover);
+      box-shadow: var(--shadow-primary);
+      transform: translateY(-1px);
+    }
+
+    .btn-ghost {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.75rem 1.75rem;
+      background: transparent;
+      color: rgba(255,255,255,0.8);
+      border: 1px solid rgba(255,255,255,0.2);
+      border-radius: var(--radius-full);
+      font-size: 0.9375rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all var(--duration-normal) var(--ease-default);
+    }
+    .btn-ghost:hover {
+      background: rgba(255,255,255,0.08);
+      border-color: rgba(255,255,255,0.35);
+      color: var(--text-inverse);
+    }
+
+    /* Hero Stats */
+    .hero-stats {
+      display: flex;
+      justify-content: center;
+      gap: 1px;
+      background: rgba(255,255,255,0.08);
+      border-radius: var(--radius-2xl);
+      overflow: hidden;
+      max-width: 560px;
+      margin: 0 auto;
+    }
+    .hero-stat {
+      flex: 1;
+      padding: 1.25rem 1.5rem;
+      background: rgba(255,255,255,0.04);
+      text-align: center;
+    }
+    .hero-stat-value {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: var(--text-inverse);
+      font-variant-numeric: tabular-nums;
+    }
+    .hero-stat-label {
+      font-size: 0.75rem;
+      color: rgba(255,255,255,0.5);
+      margin-top: 0.25rem;
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    @media (max-width: 640px) {
+      .hero { padding: 8rem 0 4rem; min-height: auto; }
+      .hero-stats { flex-direction: column; max-width: 280px; }
+    }
+
+    /* ============================================
+       SECTION COMMON
+       ============================================ */
+    .section {
+      padding: var(--section-padding-y) 0;
+    }
+    .section-alt {
+      background: var(--bg-secondary);
+    }
+    .section-header {
+      text-align: center;
+      max-width: 640px;
+      margin: 0 auto 3.5rem;
+    }
+    .section-label {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.375rem;
+      font-size: 0.8125rem;
+      font-weight: 600;
+      color: var(--dora-primary);
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      margin-bottom: 0.75rem;
+    }
+    .section-title {
+      font-size: clamp(1.75rem, 4vw, 2.5rem);
+      font-weight: 700;
+      color: var(--text-primary);
+      line-height: 1.2;
+      letter-spacing: -0.02em;
+      margin-bottom: 1rem;
+    }
+    .section-desc {
+      font-size: 1.0625rem;
+      color: var(--text-secondary);
+      line-height: 1.6;
+    }
+
+    /* ============================================
+       INDUSTRY SELECTOR (DEMO TENANTS)
+       ============================================ */
+    .tenant-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.5rem;
+    }
+
+    @media (max-width: 1024px) {
+      .tenant-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+    @media (max-width: 640px) {
+      .tenant-grid { grid-template-columns: 1fr; }
+    }
+
+    .tenant-card {
+      background: var(--bg-primary);
+      border: 1px solid var(--border-default);
+      border-radius: var(--radius-2xl);
+      overflow: hidden;
+      transition: transform var(--duration-normal) var(--ease-default),
+                  box-shadow var(--duration-normal) var(--ease-default);
+    }
+    .tenant-card:hover {
+      transform: translateY(-4px);
+      box-shadow: var(--shadow-xl);
+    }
+
+    .tenant-header {
+      padding: 2rem 1.5rem;
+      color: var(--text-inverse);
+      position: relative;
+      overflow: hidden;
+    }
+    .tenant-header::after {
+      content: '';
+      position: absolute;
+      top: -30%;
+      right: -20%;
+      width: 160px;
+      height: 160px;
+      background: rgba(255,255,255,0.1);
+      border-radius: 50%;
+      pointer-events: none;
+    }
+    .tenant-icon {
+      width: 48px;
+      height: 48px;
+      background: rgba(255,255,255,0.2);
+      border-radius: var(--radius-lg);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 1rem;
+    }
+    .tenant-icon i { width: 24px; height: 24px; }
+    .tenant-name {
+      font-size: 1.375rem;
+      font-weight: 700;
+      margin-bottom: 0.25rem;
+    }
+    .tenant-name-jp {
+      font-size: 0.875rem;
+      font-weight: 400;
+      opacity: 0.85;
+    }
+    .tenant-market {
+      font-size: 0.8125rem;
+      opacity: 0.8;
+      margin-top: 0.5rem;
+      display: flex;
+      align-items: center;
+      gap: 0.375rem;
+    }
+
+    .tenant-body {
+      padding: 1.5rem;
+    }
+    .tenant-desc {
+      font-size: 0.9375rem;
+      color: var(--text-secondary);
+      margin-bottom: 1rem;
+      line-height: 1.5;
+    }
+
+    /* Channel Badges */
+    .channel-badges {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      margin-bottom: 1.25rem;
+    }
+    .channel-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.25rem;
+      padding: 0.25rem 0.625rem;
+      border-radius: var(--radius-full);
+      font-size: 0.75rem;
+      font-weight: 600;
+    }
+    .channel-badge i { width: 14px; height: 14px; }
+    .badge-line { background: #E6F9EE; color: #06C755; }
+    .badge-zalo { background: #E6F0FF; color: #0068FF; }
+    .badge-facebook { background: #E7F0FE; color: #1877F2; }
+    .badge-webchat { background: var(--dora-primary-light); color: var(--dora-primary); }
+
+    .tenant-explore-btn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      width: 100%;
+      padding: 0.6875rem;
+      border-radius: var(--radius-md);
+      font-size: 0.875rem;
+      font-weight: 600;
+      color: var(--text-inverse);
+      border: none;
+      cursor: pointer;
+      transition: all var(--duration-fast) var(--ease-default);
+      margin-bottom: 1.25rem;
+    }
+    .tenant-explore-btn:hover { opacity: 0.9; transform: translateY(-1px); }
+    .tenant-explore-btn i { width: 16px; height: 16px; }
+
+    /* Quick links grid */
+    .tenant-links {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 0.5rem;
+    }
+    .tenant-link {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.375rem;
+      padding: 0.625rem 0.25rem;
+      border-radius: var(--radius-md);
+      font-size: 0.6875rem;
+      font-weight: 500;
+      color: var(--text-secondary);
+      background: var(--bg-secondary);
+      transition: all var(--duration-fast) var(--ease-default);
+      text-align: center;
+    }
+    .tenant-link:hover {
+      background: var(--bg-tertiary);
+      color: var(--text-primary);
+    }
+    .tenant-link i { width: 16px; height: 16px; opacity: 0.7; }
+
+    /* ============================================
+       BENTO GRID (Features)
+       ============================================ */
+    .bento-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      grid-template-rows: auto auto;
+      gap: 1.25rem;
+    }
+
+    @media (max-width: 1024px) {
+      .bento-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+    @media (max-width: 640px) {
+      .bento-grid { grid-template-columns: 1fr; }
+    }
+
+    .bento-card {
+      background: var(--bg-primary);
+      border: 1px solid var(--border-default);
+      border-radius: var(--radius-2xl);
+      padding: 1.75rem;
+      transition: transform var(--duration-normal) var(--ease-default),
+                  box-shadow var(--duration-normal) var(--ease-default);
+      overflow: hidden;
+      position: relative;
+    }
+    .bento-card:hover {
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-lg);
+    }
+
+    .bento-large {
+      grid-column: span 2;
+      grid-row: span 2;
+    }
+    .bento-medium {
+      grid-column: span 2;
+    }
+
+    @media (max-width: 640px) {
+      .bento-large, .bento-medium { grid-column: span 1; grid-row: span 1; }
+    }
+
+    .bento-icon {
+      width: 40px;
+      height: 40px;
+      border-radius: var(--radius-lg);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 1rem;
+    }
+    .bento-icon i { width: 20px; height: 20px; }
+    .bento-icon-blue { background: var(--dora-primary-light); color: var(--dora-primary); }
+    .bento-icon-violet { background: var(--dora-secondary-light); color: var(--dora-secondary); }
+    .bento-icon-green { background: var(--dora-accent-light); color: var(--dora-accent); }
+    .bento-icon-pink { background: #FFF0F7; color: #E91E8C; }
+
+    .bento-title {
+      font-size: 1.125rem;
+      font-weight: 600;
+      color: var(--text-primary);
+      margin-bottom: 0.5rem;
+    }
+    .bento-desc {
+      font-size: 0.875rem;
+      color: var(--text-secondary);
+      line-height: 1.6;
+    }
+
+    /* AI Chat Mock inside bento-large */
+    .mock-chat {
+      margin-top: 1.5rem;
+      background: var(--bg-secondary);
+      border-radius: var(--radius-xl);
+      padding: 1rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+    }
+    .mock-bubble {
+      max-width: 85%;
+      padding: 0.625rem 0.875rem;
+      border-radius: 12px;
+      font-size: 0.8125rem;
+      line-height: 1.5;
+      animation: messageIn 0.4s var(--ease-out) both;
+    }
+    @keyframes messageIn {
+      from { opacity: 0; transform: translateY(6px) scale(0.97); }
+      to { opacity: 1; transform: translateY(0) scale(1); }
+    }
+    .mock-bubble-user {
+      background: var(--bg-tertiary);
+      color: var(--text-primary);
+      align-self: flex-start;
+      border-bottom-left-radius: 4px;
+    }
+    .mock-bubble-ai {
+      background: var(--dora-primary);
+      color: var(--text-inverse);
+      align-self: flex-end;
+      border-bottom-right-radius: 4px;
+    }
+    .mock-ai-label {
+      font-size: 0.6875rem;
+      font-weight: 600;
+      color: var(--dora-secondary);
+      margin-bottom: 0.125rem;
+      align-self: flex-end;
+      display: flex;
+      align-items: center;
+      gap: 0.25rem;
+    }
+
+    /* LINE icon mini mock */
+    .bento-line-preview {
+      margin-top: 1rem;
+      background: var(--bg-secondary);
+      border-radius: var(--radius-lg);
+      padding: 0.875rem;
+    }
+    .line-menu-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 0.375rem;
+    }
+    .line-menu-item {
+      background: #06C755;
+      color: white;
+      padding: 0.5rem 0.25rem;
+      border-radius: var(--radius-sm);
+      font-size: 0.625rem;
+      font-weight: 600;
+      text-align: center;
+    }
+
+    /* Mini chart */
+    .mini-chart {
+      margin-top: 1rem;
+      display: flex;
+      align-items: flex-end;
+      gap: 4px;
+      height: 60px;
+    }
+    .mini-bar {
+      flex: 1;
+      background: var(--dora-primary);
+      border-radius: 3px 3px 0 0;
+      opacity: 0.7;
+      transition: opacity var(--duration-fast);
+    }
+    .mini-bar:hover { opacity: 1; }
+
+    /* Keigo sample */
+    .keigo-sample {
+      margin-top: 1rem;
+      background: var(--bg-secondary);
+      border-radius: var(--radius-lg);
+      padding: 0.875rem;
+      font-size: 0.8125rem;
+      line-height: 1.7;
+      color: var(--text-secondary);
+      font-family: 'Noto Sans JP', var(--font-sans);
+    }
+    .keigo-sample strong {
+      color: var(--dora-secondary);
+      font-weight: 600;
+    }
+
+    /* Routing flow */
+    .routing-flow {
+      margin-top: 1rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      flex-wrap: wrap;
+    }
+    .routing-node {
+      padding: 0.375rem 0.75rem;
+      border-radius: var(--radius-full);
+      font-size: 0.75rem;
+      font-weight: 600;
+      white-space: nowrap;
+    }
+    .routing-arrow {
+      color: var(--text-tertiary);
+      font-size: 0.875rem;
+    }
+
+    /* ============================================
+       SPLIT-SCREEN PREVIEW
+       ============================================ */
+    .split-preview-section {
+      background: linear-gradient(180deg, var(--bg-secondary) 0%, var(--bg-primary) 100%);
+    }
+
+    .split-preview {
+      background: var(--bg-primary);
+      border: 1px solid var(--border-default);
+      border-radius: var(--radius-3xl);
+      overflow: hidden;
+      box-shadow: var(--shadow-xl);
+      max-width: 960px;
+      margin: 0 auto 2.5rem;
+    }
+    .split-preview-bar {
+      display: flex;
+      align-items: center;
+      padding: 0.75rem 1.25rem;
+      background: var(--bg-tertiary);
+      border-bottom: 1px solid var(--border-default);
+      gap: 0.5rem;
+    }
+    .window-dots {
+      display: flex;
+      gap: 6px;
+    }
+    .window-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+    }
+    .window-dot-red { background: #EF4444; }
+    .window-dot-yellow { background: #F59E0B; }
+    .window-dot-green { background: #22C55E; }
+    .split-preview-url {
+      flex: 1;
+      text-align: center;
+      font-size: 0.75rem;
+      color: var(--text-tertiary);
+      font-weight: 500;
+    }
+
+    .split-preview-content {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      min-height: 360px;
+    }
+
+    @media (max-width: 768px) {
+      .split-preview-content { grid-template-columns: 1fr; }
+    }
+
+    .split-pane {
+      padding: 1.5rem;
+      position: relative;
+    }
+    .split-pane-customer {
+      background: var(--bg-secondary);
+      border-right: 1px solid var(--border-default);
+    }
+    .split-pane-agent {
+      background: var(--bg-primary);
+    }
+    .split-label {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.375rem;
+      font-size: 0.6875rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      margin-bottom: 1rem;
+      padding: 0.25rem 0.625rem;
+      border-radius: var(--radius-full);
+    }
+    .split-label-customer {
+      background: var(--dora-accent-light);
+      color: var(--dora-accent);
+    }
+    .split-label-agent {
+      background: var(--dora-primary-light);
+      color: var(--dora-primary);
+    }
+
+    /* Mock chat in split pane */
+    .split-chat {
+      display: flex;
+      flex-direction: column;
+      gap: 0.625rem;
+    }
+    .split-bubble {
+      padding: 0.5rem 0.75rem;
+      border-radius: 10px;
+      font-size: 0.75rem;
+      line-height: 1.5;
+      max-width: 90%;
+    }
+    .split-bubble-user {
+      background: var(--bg-tertiary);
+      border: 1px solid var(--border-default);
+      align-self: flex-start;
+      border-bottom-left-radius: 3px;
+    }
+    .split-bubble-ai {
+      background: var(--dora-primary);
+      color: white;
+      align-self: flex-end;
+      border-bottom-right-radius: 3px;
+    }
+
+    /* Agent inbox mock */
+    .split-inbox-item {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      padding: 0.625rem 0.75rem;
+      border-radius: var(--radius-md);
+      margin-bottom: 0.375rem;
+      font-size: 0.75rem;
+    }
+    .split-inbox-item-active {
+      background: var(--dora-primary-50);
+      border: 1px solid var(--dora-primary-light);
+    }
+    .split-inbox-item-other {
+      background: var(--bg-secondary);
+    }
+    .inbox-avatar {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.625rem;
+      font-weight: 700;
+      color: white;
+      flex-shrink: 0;
+    }
+    .inbox-meta {
+      flex: 1;
+      min-width: 0;
+    }
+    .inbox-name {
+      font-weight: 600;
+      color: var(--text-primary);
+      font-size: 0.75rem;
+    }
+    .inbox-preview {
+      color: var(--text-tertiary);
+      font-size: 0.6875rem;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .inbox-ai-badge {
+      font-size: 0.5625rem;
+      font-weight: 700;
+      padding: 0.125rem 0.375rem;
+      border-radius: var(--radius-full);
+      background: var(--dora-secondary-light);
+      color: var(--dora-secondary);
+      white-space: nowrap;
+    }
+
+    /* Connection arrow between panes */
+    .split-connector {
+      position: absolute;
+      top: 50%;
+      right: -18px;
+      transform: translateY(-50%);
+      z-index: 5;
+      width: 36px;
+      height: 36px;
+      background: var(--dora-primary);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      box-shadow: var(--shadow-md);
+      animation: pulseConnector 2s ease-in-out infinite;
+    }
+    .split-connector i { width: 16px; height: 16px; }
+
+    @keyframes pulseConnector {
+      0%, 100% { box-shadow: 0 0 0 0 rgba(37,99,235,0.3); }
+      50% { box-shadow: 0 0 0 8px rgba(37,99,235,0); }
+    }
+
+    @media (max-width: 768px) {
+      .split-connector { display: none; }
+    }
+
+    .split-cta {
+      text-align: center;
+    }
+    .btn-outline {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.75rem 1.75rem;
+      border: 1px solid var(--border-default);
+      border-radius: var(--radius-full);
+      font-size: 0.9375rem;
+      font-weight: 600;
+      color: var(--text-primary);
+      background: var(--bg-primary);
+      cursor: pointer;
+      transition: all var(--duration-normal) var(--ease-default);
+    }
+    .btn-outline:hover {
+      border-color: var(--dora-primary);
+      color: var(--dora-primary);
+      box-shadow: var(--shadow-sm);
+    }
+
+    /* ============================================
+       SALES KIT
+       ============================================ */
+    .sales-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 1.25rem;
+    }
+    @media (max-width: 1024px) {
+      .sales-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+    @media (max-width: 640px) {
+      .sales-grid { grid-template-columns: 1fr; }
+    }
+
+    .sales-card {
+      background: var(--bg-primary);
+      border: 1px solid var(--border-default);
+      border-radius: var(--radius-xl);
+      padding: 1.75rem;
+      transition: transform var(--duration-normal) var(--ease-default),
+                  box-shadow var(--duration-normal) var(--ease-default);
+      cursor: pointer;
+    }
+    .sales-card:hover {
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-lg);
+    }
+    .sales-icon {
+      width: 44px;
+      height: 44px;
+      border-radius: var(--radius-lg);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 1rem;
+    }
+    .sales-icon i { width: 22px; height: 22px; }
+    .sales-title {
+      font-size: 1rem;
+      font-weight: 600;
+      color: var(--text-primary);
+      margin-bottom: 0.375rem;
+    }
+    .sales-desc {
+      font-size: 0.8125rem;
+      color: var(--text-secondary);
+      line-height: 1.5;
+    }
+    .sales-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.25rem;
+      font-size: 0.8125rem;
+      font-weight: 600;
+      color: var(--dora-primary);
+      margin-top: 0.875rem;
+      transition: gap var(--duration-fast);
+    }
+    .sales-link i { width: 14px; height: 14px; }
+    .sales-card:hover .sales-link { gap: 0.5rem; }
+
+    /* ============================================
+       FOOTER
+       ============================================ */
+    .footer {
+      background: #0F172A;
+      padding: 3rem 0;
+      color: rgba(255,255,255,0.5);
+    }
+    .footer-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 1.5rem;
+    }
+    .footer-brand {
+      font-size: 0.9375rem;
+      color: rgba(255,255,255,0.7);
+      font-weight: 500;
+    }
+    .footer-links {
+      display: flex;
+      gap: 1.5rem;
+      list-style: none;
+    }
+    .footer-links a {
+      font-size: 0.8125rem;
+      color: rgba(255,255,255,0.5);
+      transition: color var(--duration-fast);
+    }
+    .footer-links a:hover { color: rgba(255,255,255,0.9); }
+    .footer-copy {
+      width: 100%;
+      text-align: center;
+      font-size: 0.75rem;
+      margin-top: 1.5rem;
+      padding-top: 1.5rem;
+      border-top: 1px solid rgba(255,255,255,0.08);
+    }
+
+    @media (max-width: 640px) {
+      .footer-inner { flex-direction: column; text-align: center; }
+      .footer-links { justify-content: center; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ============================================
+       NAVIGATION
+       ============================================ -->
+  <nav class="nav" id="nav">
+    <div class="nav-inner">
+      <a href="#" class="nav-logo">
+        <span class="nav-logo-dot"></span>
+        Dora
+      </a>
+      <ul class="nav-links">
+        <li><a href="#demos">Demos</a></li>
+        <li><a href="#features">Features</a></li>
+        <li><a href="#preview">Preview</a></li>
+        <li><a href="#resources">Resources</a></li>
+        <li><a href="#demos" class="nav-cta">Explore Demo</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <!-- ============================================
+       HERO SECTION
+       ============================================ -->
+  <section class="hero" id="hero">
+    <div class="hero-content">
+      <div class="hero-badge reveal">
+        <i data-lucide="sparkles"></i>
+        AI-Powered Customer Care
+      </div>
+
+      <h1 class="hero-title reveal delay-1">
+        <span class="gradient-text">Dora</span>
+      </h1>
+
+      <p class="hero-subtitle reveal delay-2">
+        Transform customer support with AI agents across LINE, Zalo, and every channel
+      </p>
+
+      <p class="hero-desc reveal delay-3">
+        One unified inbox. AI that speaks keigo. Built for Vietnam &amp; Japan.
+      </p>
+
+      <div class="hero-ctas reveal delay-3">
+        <a href="#demos" class="btn-primary">
+          <i data-lucide="compass"></i>
+          Explore Demo
+        </a>
+        <button class="btn-ghost" onclick="document.getElementById('preview').scrollIntoView({behavior:'smooth'})">
+          <i data-lucide="play-circle"></i>
+          Watch Overview
+        </button>
+      </div>
+
+      <div class="hero-stats reveal delay-4">
+        <div class="hero-stat">
+          <div class="hero-stat-value" data-count="65" data-suffix="%">0%</div>
+          <div class="hero-stat-label">AI Resolution</div>
+        </div>
+        <div class="hero-stat">
+          <div class="hero-stat-value" data-prefix="< " data-count="100" data-suffix="ms">0ms</div>
+          <div class="hero-stat-label">Response</div>
+        </div>
+        <div class="hero-stat">
+          <div class="hero-stat-value" data-count="3">0</div>
+          <div class="hero-stat-label">Channels</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================
+       INDUSTRY SELECTOR
+       ============================================ -->
+  <section class="section" id="demos">
+    <div class="container">
+      <div class="section-header reveal">
+        <div class="section-label">
+          <i data-lucide="layout-grid" style="width:14px;height:14px"></i>
+          Demo Tenants
+        </div>
+        <h2 class="section-title">Choose Your Experience</h2>
+        <p class="section-desc">
+          Explore how Dora adapts to different industries, markets, and customer communication styles.
+        </p>
+      </div>
+
+      <div class="tenant-grid">
+
+        <!-- SAKURA CLINIC -->
+        <div class="tenant-card reveal delay-1">
+          <div class="tenant-header" style="background: var(--client-sakura-gradient);">
+            <div class="tenant-icon">
+              <i data-lucide="heart-pulse"></i>
+            </div>
+            <div class="tenant-name">Sakura Clinic</div>
+            <div class="tenant-name-jp">さくらクリニック</div>
+            <div class="tenant-market">
+              <i data-lucide="map-pin" style="width:12px;height:12px"></i>
+              Japan / Healthcare
+            </div>
+          </div>
+          <div class="tenant-body">
+            <p class="tenant-desc">クリニック向けカスタマーサポート — Appointment scheduling, medical inquiries, and patient care with polite Japanese.</p>
+            <div class="channel-badges">
+              <span class="channel-badge badge-line"><i data-lucide="message-circle"></i> LINE</span>
+              <span class="channel-badge badge-webchat"><i data-lucide="message-square"></i> Web Chat</span>
+            </div>
+            <a href="client-hub.html?client=sakura-clinic" class="tenant-explore-btn" style="background: var(--client-sakura-primary);">
+              <i data-lucide="arrow-right"></i>
+              Explore Sakura Clinic
+            </a>
+            <div class="tenant-links">
+              <a href="client-hub.html?client=sakura-clinic&view=customer" class="tenant-link">
+                <i data-lucide="user"></i> Customer
+              </a>
+              <a href="client-hub.html?client=sakura-clinic&view=agent" class="tenant-link">
+                <i data-lucide="headphones"></i> Agent
+              </a>
+              <a href="client-hub.html?client=sakura-clinic&view=ai" class="tenant-link">
+                <i data-lucide="bot"></i> AI Demo
+              </a>
+              <a href="client-hub.html?client=sakura-clinic&view=dashboard" class="tenant-link">
+                <i data-lucide="bar-chart-3"></i> Dashboard
+              </a>
+              <a href="client-hub.html?client=sakura-clinic&view=channels" class="tenant-link">
+                <i data-lucide="share-2"></i> Channels
+              </a>
+              <a href="client-hub.html?client=sakura-clinic&view=routing" class="tenant-link">
+                <i data-lucide="git-branch"></i> Routing
+              </a>
+            </div>
+          </div>
+        </div>
+
+        <!-- VN SHOP -->
+        <div class="tenant-card reveal delay-2">
+          <div class="tenant-header" style="background: var(--client-vnshop-gradient);">
+            <div class="tenant-icon">
+              <i data-lucide="shopping-bag"></i>
+            </div>
+            <div class="tenant-name">VN Shop</div>
+            <div class="tenant-name-jp" style="opacity:0.7;">E-commerce</div>
+            <div class="tenant-market">
+              <i data-lucide="map-pin" style="width:12px;height:12px"></i>
+              Vietnam / E-commerce
+            </div>
+          </div>
+          <div class="tenant-body">
+            <p class="tenant-desc">Hỗ trợ khách hàng cho e-commerce — Order tracking, returns, product inquiries with Vietnamese language support.</p>
+            <div class="channel-badges">
+              <span class="channel-badge badge-zalo"><i data-lucide="message-circle"></i> Zalo</span>
+              <span class="channel-badge badge-facebook"><i data-lucide="message-circle"></i> Facebook</span>
+              <span class="channel-badge badge-webchat"><i data-lucide="message-square"></i> Web Chat</span>
+            </div>
+            <a href="client-hub.html?client=vn-shop" class="tenant-explore-btn" style="background: var(--client-vnshop-primary);">
+              <i data-lucide="arrow-right"></i>
+              Explore VN Shop
+            </a>
+            <div class="tenant-links">
+              <a href="client-hub.html?client=vn-shop&view=customer" class="tenant-link">
+                <i data-lucide="user"></i> Customer
+              </a>
+              <a href="client-hub.html?client=vn-shop&view=agent" class="tenant-link">
+                <i data-lucide="headphones"></i> Agent
+              </a>
+              <a href="client-hub.html?client=vn-shop&view=ai" class="tenant-link">
+                <i data-lucide="bot"></i> AI Demo
+              </a>
+              <a href="client-hub.html?client=vn-shop&view=dashboard" class="tenant-link">
+                <i data-lucide="bar-chart-3"></i> Dashboard
+              </a>
+              <a href="client-hub.html?client=vn-shop&view=channels" class="tenant-link">
+                <i data-lucide="share-2"></i> Channels
+              </a>
+              <a href="client-hub.html?client=vn-shop&view=routing" class="tenant-link">
+                <i data-lucide="git-branch"></i> Routing
+              </a>
+            </div>
+          </div>
+        </div>
+
+        <!-- TOKYO RAMEN -->
+        <div class="tenant-card reveal delay-3">
+          <div class="tenant-header" style="background: var(--client-ramen-gradient);">
+            <div class="tenant-icon">
+              <i data-lucide="utensils"></i>
+            </div>
+            <div class="tenant-name">Tokyo Ramen</div>
+            <div class="tenant-name-jp">東京ラーメン本舗</div>
+            <div class="tenant-market">
+              <i data-lucide="map-pin" style="width:12px;height:12px"></i>
+              Japan / F&amp;B
+            </div>
+          </div>
+          <div class="tenant-body">
+            <p class="tenant-desc">レストラン予約・お問い合わせ — Reservations, menu inquiries, and loyalty programs with keigo communication.</p>
+            <div class="channel-badges">
+              <span class="channel-badge badge-line"><i data-lucide="message-circle"></i> LINE</span>
+              <span class="channel-badge badge-webchat"><i data-lucide="message-square"></i> Web Chat</span>
+            </div>
+            <a href="client-hub.html?client=tokyo-ramen" class="tenant-explore-btn" style="background: var(--client-ramen-primary);">
+              <i data-lucide="arrow-right"></i>
+              Explore Tokyo Ramen
+            </a>
+            <div class="tenant-links">
+              <a href="client-hub.html?client=tokyo-ramen&view=customer" class="tenant-link">
+                <i data-lucide="user"></i> Customer
+              </a>
+              <a href="client-hub.html?client=tokyo-ramen&view=agent" class="tenant-link">
+                <i data-lucide="headphones"></i> Agent
+              </a>
+              <a href="client-hub.html?client=tokyo-ramen&view=ai" class="tenant-link">
+                <i data-lucide="bot"></i> AI Demo
+              </a>
+              <a href="client-hub.html?client=tokyo-ramen&view=dashboard" class="tenant-link">
+                <i data-lucide="bar-chart-3"></i> Dashboard
+              </a>
+              <a href="client-hub.html?client=tokyo-ramen&view=channels" class="tenant-link">
+                <i data-lucide="share-2"></i> Channels
+              </a>
+              <a href="client-hub.html?client=tokyo-ramen&view=routing" class="tenant-link">
+                <i data-lucide="git-branch"></i> Routing
+              </a>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================
+       KEY FEATURES — BENTO GRID
+       ============================================ -->
+  <section class="section section-alt" id="features">
+    <div class="container">
+      <div class="section-header reveal">
+        <div class="section-label">
+          <i data-lucide="layers" style="width:14px;height:14px"></i>
+          Platform
+        </div>
+        <h2 class="section-title">Everything you need for exceptional support</h2>
+        <p class="section-desc">
+          From AI-powered auto-responses to deep channel integrations, Dora covers every touchpoint.
+        </p>
+      </div>
+
+      <div class="bento-grid">
+
+        <!-- Large Card: AI-First Support (spans 2 cols, 2 rows) -->
+        <div class="bento-card bento-large reveal delay-1">
+          <div class="bento-icon bento-icon-violet">
+            <i data-lucide="bot"></i>
+          </div>
+          <h3 class="bento-title">AI-First Support</h3>
+          <p class="bento-desc">
+            AI agents handle 65% of customer queries automatically with contextual, brand-aware responses. Human agents step in only when needed.
+          </p>
+          <div class="mock-chat">
+            <div class="mock-bubble mock-bubble-user">
+              I ordered 3 days ago but haven't received tracking info yet. Order #VN-2847
+            </div>
+            <div class="mock-ai-label">
+              <i data-lucide="sparkles" style="width:10px;height:10px"></i>
+              Dora AI
+            </div>
+            <div class="mock-bubble mock-bubble-ai">
+              I found your order #VN-2847. It shipped today via Viettel Post and should arrive by March 15. Here's your tracking link: vtpost.vn/track/VN2847. Would you like me to send SMS updates?
+            </div>
+            <div class="mock-bubble mock-bubble-user">
+              Yes please, send to my number on file
+            </div>
+            <div class="mock-bubble mock-bubble-ai">
+              Done! You'll receive SMS updates at ***-456. Is there anything else I can help with?
+            </div>
+          </div>
+        </div>
+
+        <!-- Small Card: Omnichannel Inbox -->
+        <div class="bento-card reveal delay-2">
+          <div class="bento-icon bento-icon-blue">
+            <i data-lucide="inbox"></i>
+          </div>
+          <h3 class="bento-title">Omnichannel Inbox</h3>
+          <p class="bento-desc">
+            Every message from LINE, Zalo, Facebook, email, and web chat flows into one unified inbox.
+          </p>
+          <div class="channel-badges" style="margin-top:1rem;">
+            <span class="channel-badge badge-line">LINE</span>
+            <span class="channel-badge badge-zalo">Zalo</span>
+            <span class="channel-badge badge-facebook">FB</span>
+            <span class="channel-badge badge-webchat">Web</span>
+          </div>
+        </div>
+
+        <!-- Small Card: LINE Integration -->
+        <div class="bento-card reveal delay-3">
+          <div class="bento-icon bento-icon-green">
+            <i data-lucide="message-circle"></i>
+          </div>
+          <h3 class="bento-title">LINE Integration</h3>
+          <p class="bento-desc">
+            Rich Menus, Flex Messages, and quick replies built for Japan's #1 messaging platform.
+          </p>
+          <div class="bento-line-preview">
+            <div class="line-menu-grid">
+              <div class="line-menu-item">Booking</div>
+              <div class="line-menu-item">FAQ</div>
+              <div class="line-menu-item">Hours</div>
+              <div class="line-menu-item">Menu</div>
+              <div class="line-menu-item">Contact</div>
+              <div class="line-menu-item">Points</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Medium Card: Smart Routing (spans 2 cols) -->
+        <div class="bento-card bento-medium reveal delay-4">
+          <div class="bento-icon bento-icon-blue">
+            <i data-lucide="git-branch"></i>
+          </div>
+          <h3 class="bento-title">Smart Routing</h3>
+          <p class="bento-desc">
+            Intelligent ticket routing based on language, topic, sentiment, and agent expertise. Escalate to the right person, every time.
+          </p>
+          <div class="routing-flow">
+            <span class="routing-node" style="background:#DBEAFE;color:#2563EB;">Incoming</span>
+            <span class="routing-arrow">&rarr;</span>
+            <span class="routing-node" style="background:#EDE9FE;color:#7C3AED;">AI Classify</span>
+            <span class="routing-arrow">&rarr;</span>
+            <span class="routing-node" style="background:#FEF3C7;color:#D97706;">Sentiment</span>
+            <span class="routing-arrow">&rarr;</span>
+            <span class="routing-node" style="background:#D1FAE5;color:#059669;">Best Agent</span>
+            <span class="routing-arrow">&rarr;</span>
+            <span class="routing-node" style="background:#F1F5F9;color:#475569;">Resolved</span>
+          </div>
+        </div>
+
+        <!-- Small Card: Real-time Analytics -->
+        <div class="bento-card reveal delay-4">
+          <div class="bento-icon bento-icon-blue">
+            <i data-lucide="bar-chart-3"></i>
+          </div>
+          <h3 class="bento-title">Real-time Analytics</h3>
+          <p class="bento-desc">
+            CSAT, resolution time, AI accuracy, and agent performance at a glance.
+          </p>
+          <div class="mini-chart">
+            <div class="mini-bar" style="height:45%"></div>
+            <div class="mini-bar" style="height:60%"></div>
+            <div class="mini-bar" style="height:35%"></div>
+            <div class="mini-bar" style="height:80%"></div>
+            <div class="mini-bar" style="height:55%"></div>
+            <div class="mini-bar" style="height:70%"></div>
+            <div class="mini-bar" style="height:90%"></div>
+            <div class="mini-bar" style="height:65%"></div>
+            <div class="mini-bar" style="height:75%"></div>
+            <div class="mini-bar" style="height:85%"></div>
+          </div>
+        </div>
+
+        <!-- Small Card: Keigo AI -->
+        <div class="bento-card reveal delay-5">
+          <div class="bento-icon bento-icon-pink">
+            <i data-lucide="languages"></i>
+          </div>
+          <h3 class="bento-title">Keigo AI <span style="font-weight:400;color:var(--text-tertiary);">(敬語)</span></h3>
+          <p class="bento-desc">
+            AI that understands and produces polite Japanese honorifics naturally.
+          </p>
+          <div class="keigo-sample">
+            <strong>お客様</strong>、お問い合わせいただき<br>
+            誠にありがとう<strong>ございます</strong>。<br>
+            ご予約を<strong>承りました</strong>。
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================
+       SPLIT-SCREEN PREVIEW
+       ============================================ -->
+  <section class="section split-preview-section" id="preview">
+    <div class="container">
+      <div class="section-header reveal">
+        <div class="section-label">
+          <i data-lucide="monitor" style="width:14px;height:14px"></i>
+          Live Preview
+        </div>
+        <h2 class="section-title">See it in action</h2>
+        <p class="section-desc">
+          Watch how a customer message flows through AI processing and appears in the agent inbox in real time.
+        </p>
+      </div>
+
+      <div class="split-preview reveal delay-1">
+        <div class="split-preview-bar">
+          <div class="window-dots">
+            <span class="window-dot window-dot-red"></span>
+            <span class="window-dot window-dot-yellow"></span>
+            <span class="window-dot window-dot-green"></span>
+          </div>
+          <div class="split-preview-url">dora-demo.app/ai-demo?client=vn-shop</div>
+        </div>
+
+        <div class="split-preview-content">
+          <!-- Customer Pane -->
+          <div class="split-pane split-pane-customer">
+            <span class="split-label split-label-customer">
+              <i data-lucide="user" style="width:11px;height:11px"></i>
+              Customer View
+            </span>
+            <div class="split-chat">
+              <div class="split-bubble split-bubble-user">
+                Cho mình hỏi đơn hàng #VN-1234 giao tới đâu rồi?
+              </div>
+              <div class="split-bubble split-bubble-ai">
+                Chào bạn! Đơn hàng #VN-1234 đang được vận chuyển và dự kiến giao vào ngày 15/03. Bạn có muốn mình gửi link theo dõi không?
+              </div>
+              <div class="split-bubble split-bubble-user">
+                Gửi cho mình nhé, cảm ơn!
+              </div>
+            </div>
+
+            <!-- Connector arrow -->
+            <div class="split-connector">
+              <i data-lucide="arrow-right"></i>
+            </div>
+          </div>
+
+          <!-- Agent Pane -->
+          <div class="split-pane split-pane-agent">
+            <span class="split-label split-label-agent">
+              <i data-lucide="headphones" style="width:11px;height:11px"></i>
+              Agent View
+            </span>
+            <div>
+              <div class="split-inbox-item split-inbox-item-active">
+                <div class="inbox-avatar" style="background:var(--client-vnshop-primary);">NM</div>
+                <div class="inbox-meta">
+                  <div class="inbox-name">Nguyen Minh</div>
+                  <div class="inbox-preview">Cho mình hỏi đơn hàng #VN-1234...</div>
+                </div>
+                <span class="inbox-ai-badge">AI Handled</span>
+              </div>
+              <div class="split-inbox-item split-inbox-item-other">
+                <div class="inbox-avatar" style="background:var(--client-sakura-primary);">TY</div>
+                <div class="inbox-meta">
+                  <div class="inbox-name">Tanaka Yuki</div>
+                  <div class="inbox-preview">予約の変更をお願いします</div>
+                </div>
+                <span class="inbox-ai-badge">Escalated</span>
+              </div>
+              <div class="split-inbox-item split-inbox-item-other">
+                <div class="inbox-avatar" style="background:var(--client-ramen-primary);">SK</div>
+                <div class="inbox-meta">
+                  <div class="inbox-name">Suzuki Ken</div>
+                  <div class="inbox-preview">ラーメンのアレルギー情報...</div>
+                </div>
+                <span class="inbox-ai-badge">AI Draft</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="split-cta reveal delay-2">
+        <a href="client-hub.html?client=vn-shop&view=ai" class="btn-outline">
+          Try the Interactive Demo
+          <i data-lucide="arrow-right" style="width:16px;height:16px"></i>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================
+       SALES KIT
+       ============================================ -->
+  <section class="section" id="resources">
+    <div class="container">
+      <div class="section-header reveal">
+        <div class="section-label">
+          <i data-lucide="briefcase" style="width:14px;height:14px"></i>
+          Sales Kit
+        </div>
+        <h2 class="section-title">Resources for your pitch</h2>
+        <p class="section-desc">
+          Everything you need to present Dora to prospects and close deals.
+        </p>
+      </div>
+
+      <div class="sales-grid">
+        <a href="pitch-deck.html" class="sales-card reveal delay-1">
+          <div class="sales-icon" style="background:var(--dora-primary-light);color:var(--dora-primary);">
+            <i data-lucide="presentation"></i>
+          </div>
+          <h3 class="sales-title">Pitch Deck</h3>
+          <p class="sales-desc">Investor-ready presentation covering market opportunity, product vision, and traction.</p>
+          <span class="sales-link">View deck <i data-lucide="arrow-right"></i></span>
+        </a>
+
+        <a href="roi-calculator.html" class="sales-card reveal delay-2">
+          <div class="sales-icon" style="background:var(--dora-accent-light);color:var(--dora-accent);">
+            <i data-lucide="calculator"></i>
+          </div>
+          <h3 class="sales-title">ROI Calculator</h3>
+          <p class="sales-desc">Interactive tool showing cost savings and efficiency gains from deploying Dora AI.</p>
+          <span class="sales-link">Calculate ROI <i data-lucide="arrow-right"></i></span>
+        </a>
+
+        <a href="comparison.html" class="sales-card reveal delay-3">
+          <div class="sales-icon" style="background:var(--dora-secondary-light);color:var(--dora-secondary);">
+            <i data-lucide="scale"></i>
+          </div>
+          <h3 class="sales-title">Comparison</h3>
+          <p class="sales-desc">See how Dora stacks up against Zendesk, Freshdesk, and regional alternatives.</p>
+          <span class="sales-link">Compare <i data-lucide="arrow-right"></i></span>
+        </a>
+
+        <a href="case-studies.html" class="sales-card reveal delay-4">
+          <div class="sales-icon" style="background:#FEF3C7;color:#D97706;">
+            <i data-lucide="file-text"></i>
+          </div>
+          <h3 class="sales-title">Case Studies</h3>
+          <p class="sales-desc">Real results from healthcare, e-commerce, and F&B clients across Vietnam and Japan.</p>
+          <span class="sales-link">Read stories <i data-lucide="arrow-right"></i></span>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================
+       FOOTER
+       ============================================ -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-inner">
+        <div class="footer-brand">
+          Dora &mdash; AI-Powered Customer Care for Asia
+        </div>
+        <ul class="footer-links">
+          <li><a href="pitch-deck.html">Pitch Deck</a></li>
+          <li><a href="roi-calculator.html">ROI Calculator</a></li>
+          <li><a href="mailto:hello@dora.ai">Contact</a></li>
+        </ul>
+        <div class="footer-copy">
+          &copy; 2026 Dora. All rights reserved.
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ============================================
+       JAVASCRIPT
+       ============================================ -->
+  <script>
+    // Initialize Lucide icons
+    document.addEventListener('DOMContentLoaded', () => {
+      lucide.createIcons();
+      initScrollReveal();
+      initNavScroll();
+      initCountUp();
+    });
+
+    /* ----------------------------------------
+       Scroll-triggered reveal animations
+       using IntersectionObserver
+       ---------------------------------------- */
+    function initScrollReveal() {
+      const reveals = document.querySelectorAll('.reveal');
+      if (!reveals.length) return;
+
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('visible');
+            observer.unobserve(entry.target);
+          }
+        });
+      }, {
+        threshold: 0.1,
+        rootMargin: '0px 0px -40px 0px'
+      });
+
+      reveals.forEach(el => observer.observe(el));
+    }
+
+    /* ----------------------------------------
+       Navigation background on scroll
+       ---------------------------------------- */
+    function initNavScroll() {
+      const nav = document.getElementById('nav');
+      let ticking = false;
+
+      function updateNav() {
+        if (window.scrollY > 50) {
+          nav.classList.add('scrolled');
+        } else {
+          nav.classList.remove('scrolled');
+        }
+        ticking = false;
+      }
+
+      window.addEventListener('scroll', () => {
+        if (!ticking) {
+          requestAnimationFrame(updateNav);
+          ticking = true;
+        }
+      }, { passive: true });
+
+      // Set initial state
+      updateNav();
+    }
+
+    /* ----------------------------------------
+       Count-up animation for hero stats
+       ---------------------------------------- */
+    function initCountUp() {
+      const statValues = document.querySelectorAll('.hero-stat-value[data-count]');
+      if (!statValues.length) return;
+
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            animateCount(entry.target);
+            observer.unobserve(entry.target);
+          }
+        });
+      }, { threshold: 0.5 });
+
+      statValues.forEach(el => observer.observe(el));
+    }
+
+    function animateCount(el) {
+      const target = parseInt(el.dataset.count, 10);
+      const prefix = el.dataset.prefix || '';
+      const suffix = el.dataset.suffix || '';
+      const duration = 1200;
+      const startTime = performance.now();
+
+      function update(currentTime) {
+        const elapsed = currentTime - startTime;
+        const progress = Math.min(elapsed / duration, 1);
+
+        // Ease-out cubic
+        const eased = 1 - Math.pow(1 - progress, 3);
+        const current = Math.round(eased * target);
+
+        el.textContent = prefix + current + suffix;
+
+        if (progress < 1) {
+          requestAnimationFrame(update);
+        }
+      }
+
+      requestAnimationFrame(update);
+    }
+
+    /* ----------------------------------------
+       Smooth scroll for anchor links
+       ---------------------------------------- */
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+      anchor.addEventListener('click', function(e) {
+        const href = this.getAttribute('href');
+        if (href === '#') return;
+        e.preventDefault();
+        const target = document.querySelector(href);
+        if (target) {
+          target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+      });
+    });
+  </script>
+</body>
+</html>

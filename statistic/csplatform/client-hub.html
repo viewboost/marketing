@@ -1,0 +1,1463 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dora — Client Hub</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Noto+Sans+JP:wght@400;500;600;700&display=swap" rel="stylesheet">
+<script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+<style>
+/* ============================================
+   CSS CUSTOM PROPERTIES (Design Tokens)
+   ============================================ */
+:root {
+  --dora-primary: #2563EB;
+  --dora-primary-hover: #1D4ED8;
+  --dora-primary-light: #DBEAFE;
+  --dora-primary-50: #EFF6FF;
+  --dora-secondary: #7C3AED;
+  --dora-secondary-light: #EDE9FE;
+  --dora-accent: #059669;
+  --dora-accent-light: #D1FAE5;
+  --bg-primary: #FFFFFF;
+  --bg-secondary: #F8FAFC;
+  --bg-tertiary: #F1F5F9;
+  --border-default: #E2E8F0;
+  --border-subtle: #F1F5F9;
+  --text-primary: #0F172A;
+  --text-secondary: #475569;
+  --text-tertiary: #94A3B8;
+  --text-inverse: #FFFFFF;
+  --color-line: #06C755;
+  --color-zalo: #0068FF;
+  --color-facebook: #1877F2;
+  --color-chat: #2563EB;
+  --color-success: #059669;
+  --color-warning: #D97706;
+  --color-error: #DC2626;
+  --font-sans: 'Inter', 'Noto Sans JP', system-ui, -apple-system, sans-serif;
+  --radius-sm: 0.375rem;
+  --radius-md: 0.5rem;
+  --radius-lg: 0.75rem;
+  --radius-xl: 1rem;
+  --radius-2xl: 1.25rem;
+  --radius-3xl: 1.5rem;
+  --radius-full: 9999px;
+  --shadow-xs: 0 1px 2px rgba(0,0,0,0.04);
+  --shadow-sm: 0 1px 3px rgba(0,0,0,0.06), 0 1px 2px rgba(0,0,0,0.04);
+  --shadow-md: 0 4px 6px -1px rgba(0,0,0,0.07), 0 2px 4px -2px rgba(0,0,0,0.05);
+  --shadow-lg: 0 10px 15px -3px rgba(0,0,0,0.08), 0 4px 6px -4px rgba(0,0,0,0.04);
+  --shadow-xl: 0 20px 25px -5px rgba(0,0,0,0.08), 0 8px 10px -6px rgba(0,0,0,0.04);
+  --ease-default: cubic-bezier(0.4, 0, 0.2, 1);
+  --ease-out: cubic-bezier(0, 0, 0.2, 1);
+  --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+
+  /* Dynamic client theming — overridden by JS */
+  --client-primary: #2563EB;
+  --client-gradient: linear-gradient(135deg, #2563EB 0%, #3B82F6 100%);
+  --client-primary-light: #DBEAFE;
+  --client-primary-50: #EFF6FF;
+}
+
+/* ============================================
+   RESET & BASE
+   ============================================ */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html {
+  scroll-behavior: smooth;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  font-family: var(--font-sans);
+  font-size: 0.9375rem;
+  line-height: 1.6;
+  color: var(--text-primary);
+  background: var(--bg-secondary);
+  overflow-x: hidden;
+  min-height: 100vh;
+}
+
+a { color: inherit; text-decoration: none; }
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* ============================================
+   TOP NAV (Glassmorphic, Sticky)
+   ============================================ */
+.top-nav {
+  position: sticky; top: 0; z-index: 100;
+  display: flex; align-items: center; justify-content: space-between;
+  height: 64px; padding: 0 24px;
+  background: rgba(255,255,255,0.88);
+  backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--border-default);
+}
+
+.nav-left { display: flex; align-items: center; gap: 16px; }
+
+.logo {
+  font-size: 1.25rem; font-weight: 800;
+  color: var(--dora-primary); letter-spacing: -0.02em;
+  text-decoration: none; display: flex; align-items: center; gap: 8px;
+}
+.logo-dot {
+  width: 8px; height: 8px; border-radius: 50%;
+  background: var(--dora-primary);
+}
+
+.breadcrumb {
+  display: flex; align-items: center; gap: 6px;
+  font-size: 0.875rem; color: var(--text-tertiary);
+}
+.breadcrumb a { color: var(--text-secondary); transition: color 150ms; }
+.breadcrumb a:hover { color: var(--dora-primary); }
+.breadcrumb .sep { color: var(--text-tertiary); user-select: none; }
+.breadcrumb .current { color: var(--text-primary); font-weight: 600; }
+
+.nav-right { display: flex; align-items: center; gap: 4px; }
+.nav-link {
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 6px 14px; border-radius: var(--radius-md);
+  font-size: 0.8125rem; font-weight: 500;
+  color: var(--text-secondary); transition: all 150ms var(--ease-default);
+}
+.nav-link:hover { background: var(--bg-tertiary); color: var(--text-primary); }
+.nav-link.active { background: var(--dora-primary-50); color: var(--dora-primary); }
+
+/* ============================================
+   CLIENT HEADER (Branded gradient)
+   ============================================ */
+.client-header {
+  background: var(--client-gradient);
+  padding: 40px 24px 32px;
+  color: var(--text-inverse);
+  position: relative;
+  overflow: hidden;
+}
+.client-header::before {
+  content: '';
+  position: absolute; inset: 0;
+  background: radial-gradient(ellipse at 80% 20%, rgba(255,255,255,0.15) 0%, transparent 60%);
+  pointer-events: none;
+}
+.client-header-inner {
+  max-width: 80rem; margin: 0 auto;
+  display: flex; align-items: flex-start; gap: 20px;
+  position: relative; z-index: 1;
+}
+
+.client-icon-wrap {
+  width: 64px; height: 64px; border-radius: var(--radius-xl);
+  background: rgba(255,255,255,0.2);
+  backdrop-filter: blur(8px);
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+}
+.client-icon-wrap i { width: 28px; height: 28px; }
+
+.client-info { flex: 1; }
+.client-name {
+  font-size: 1.75rem; font-weight: 800; letter-spacing: -0.02em;
+  line-height: 1.2; margin-bottom: 4px;
+}
+.client-name-jp {
+  font-size: 0.9375rem; font-weight: 400; opacity: 0.85;
+  margin-bottom: 10px;
+}
+.client-meta { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin-bottom: 12px; }
+.market-tag {
+  display: inline-flex; align-items: center; gap: 4px;
+  padding: 3px 10px; border-radius: var(--radius-full);
+  background: rgba(255,255,255,0.2); backdrop-filter: blur(4px);
+  font-size: 0.75rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.04em;
+}
+.channel-badge {
+  display: inline-flex; align-items: center; gap: 4px;
+  padding: 3px 10px; border-radius: var(--radius-full);
+  background: rgba(255,255,255,0.15);
+  font-size: 0.75rem; font-weight: 500;
+}
+.channel-dot {
+  width: 6px; height: 6px; border-radius: 50%;
+}
+.client-desc {
+  font-size: 0.875rem; opacity: 0.9; max-width: 600px; line-height: 1.5;
+}
+
+/* ============================================
+   VIEW TABS (Sticky, horizontal scroll)
+   ============================================ */
+.view-tabs-wrap {
+  position: sticky; top: 64px; z-index: 90;
+  background: var(--bg-primary);
+  border-bottom: 1px solid var(--border-default);
+}
+.view-tabs {
+  max-width: 80rem; margin: 0 auto;
+  display: flex; gap: 0; padding: 0 24px;
+  overflow-x: auto; scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+.view-tabs::-webkit-scrollbar { display: none; }
+
+.view-tab {
+  display: flex; align-items: center; gap: 7px;
+  padding: 14px 18px; font-size: 0.8125rem; font-weight: 500;
+  color: var(--text-tertiary); border: none; background: none;
+  cursor: pointer; white-space: nowrap; position: relative;
+  transition: color 200ms var(--ease-default);
+  border-bottom: 2px solid transparent;
+  font-family: var(--font-sans);
+}
+.view-tab:hover { color: var(--text-secondary); }
+.view-tab.active {
+  color: var(--client-primary);
+  border-bottom-color: var(--client-primary);
+  font-weight: 600;
+}
+.view-tab i { width: 16px; height: 16px; }
+
+/* ============================================
+   VIEW CONTENT AREA
+   ============================================ */
+.view-content {
+  max-width: 80rem; margin: 0 auto;
+  padding: 24px;
+  min-height: calc(100vh - 300px);
+}
+.view-panel {
+  display: none;
+  animation: fadeSlideIn 300ms var(--ease-out) forwards;
+}
+.view-panel.active { display: block; }
+
+@keyframes fadeSlideIn {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* ============================================
+   SHARED CARD STYLES
+   ============================================ */
+.card {
+  background: var(--bg-primary);
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-xl);
+  box-shadow: var(--shadow-sm);
+  overflow: hidden;
+}
+.card-header {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 16px 20px;
+  border-bottom: 1px solid var(--border-subtle);
+}
+.card-title {
+  font-size: 0.875rem; font-weight: 600; color: var(--text-primary);
+  display: flex; align-items: center; gap: 8px;
+}
+.card-body { padding: 20px; }
+
+.badge {
+  display: inline-flex; align-items: center; gap: 4px;
+  padding: 2px 8px; border-radius: var(--radius-full);
+  font-size: 0.6875rem; font-weight: 600;
+}
+.badge-success { background: var(--dora-accent-light); color: var(--dora-accent); }
+.badge-warning { background: #FEF3C7; color: var(--color-warning); }
+.badge-error { background: #FEE2E2; color: var(--color-error); }
+.badge-info { background: var(--dora-primary-light); color: var(--dora-primary); }
+.badge-gray { background: var(--bg-tertiary); color: var(--text-tertiary); }
+
+.link-arrow {
+  display: inline-flex; align-items: center; gap: 6px;
+  font-size: 0.8125rem; font-weight: 600;
+  color: var(--client-primary);
+  transition: gap 200ms var(--ease-default);
+}
+.link-arrow:hover { gap: 10px; }
+
+/* ============================================
+   CUSTOMER VIEW
+   ============================================ */
+.chat-widget {
+  max-width: 420px; margin: 0 auto;
+  border-radius: var(--radius-2xl);
+  box-shadow: var(--shadow-xl);
+  overflow: hidden; background: var(--bg-primary);
+}
+.chat-widget-header {
+  background: var(--client-gradient);
+  color: var(--text-inverse);
+  padding: 16px 20px;
+  display: flex; align-items: center; gap: 12px;
+}
+.chat-widget-avatar {
+  width: 40px; height: 40px; border-radius: 50%;
+  background: rgba(255,255,255,0.2);
+  display: flex; align-items: center; justify-content: center;
+}
+.chat-widget-info h3 { font-size: 0.9375rem; font-weight: 600; }
+.chat-widget-info span { font-size: 0.75rem; opacity: 0.85; display: flex; align-items: center; gap: 4px; }
+.chat-widget-status { width: 8px; height: 8px; border-radius: 50%; background: #4ade80; }
+
+.chat-messages {
+  padding: 20px; display: flex; flex-direction: column; gap: 12px;
+  min-height: 360px; max-height: 420px; overflow-y: auto;
+  background: var(--bg-secondary);
+}
+.chat-msg {
+  max-width: 80%; padding: 10px 14px;
+  border-radius: var(--radius-lg);
+  font-size: 0.8125rem; line-height: 1.5;
+}
+.chat-msg.bot {
+  align-self: flex-start;
+  background: var(--bg-primary);
+  border: 1px solid var(--border-default);
+  border-bottom-left-radius: 4px;
+}
+.chat-msg.user {
+  align-self: flex-end;
+  background: var(--client-primary);
+  color: var(--text-inverse);
+  border-bottom-right-radius: 4px;
+}
+.chat-msg-time {
+  font-size: 0.6875rem; color: var(--text-tertiary);
+  margin-top: 4px;
+}
+.chat-msg.user .chat-msg-time { color: rgba(255,255,255,0.7); }
+
+.chat-input-area {
+  display: flex; align-items: center; gap: 8px;
+  padding: 12px 16px; border-top: 1px solid var(--border-default);
+  background: var(--bg-primary);
+}
+.chat-input {
+  flex: 1; padding: 10px 14px; border-radius: var(--radius-full);
+  border: 1px solid var(--border-default); background: var(--bg-tertiary);
+  font-size: 0.8125rem; font-family: var(--font-sans);
+  outline: none; transition: border-color 150ms;
+}
+.chat-input:focus { border-color: var(--client-primary); }
+.chat-send-btn {
+  width: 36px; height: 36px; border-radius: 50%;
+  background: var(--client-primary); color: white;
+  border: none; cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  transition: transform 150ms var(--ease-spring);
+}
+.chat-send-btn:hover { transform: scale(1.08); }
+
+.chat-channel-indicator {
+  text-align: center; margin-top: 16px;
+  font-size: 0.75rem; color: var(--text-tertiary);
+  display: flex; align-items: center; justify-content: center; gap: 6px;
+}
+.chat-channel-indicator .ch-dot {
+  width: 8px; height: 8px; border-radius: 50%;
+}
+
+/* ============================================
+   AGENT VIEW
+   ============================================ */
+.agent-layout {
+  display: grid; grid-template-columns: 320px 1fr; gap: 0;
+  border-radius: var(--radius-xl); overflow: hidden;
+  border: 1px solid var(--border-default);
+  background: var(--bg-primary);
+  box-shadow: var(--shadow-md);
+  min-height: 520px;
+}
+
+.agent-list {
+  border-right: 1px solid var(--border-default);
+  overflow-y: auto;
+}
+.agent-list-header {
+  padding: 16px; border-bottom: 1px solid var(--border-default);
+  font-size: 0.8125rem; font-weight: 600;
+  display: flex; align-items: center; justify-content: space-between;
+}
+.agent-list-count {
+  background: var(--client-primary); color: white;
+  padding: 1px 8px; border-radius: var(--radius-full);
+  font-size: 0.6875rem;
+}
+
+.conv-item {
+  display: flex; gap: 12px; padding: 14px 16px;
+  border-bottom: 1px solid var(--border-subtle);
+  cursor: pointer; transition: background 150ms;
+}
+.conv-item:hover { background: var(--bg-secondary); }
+.conv-item.active { background: var(--client-primary-50); border-left: 3px solid var(--client-primary); }
+
+.conv-avatar {
+  width: 40px; height: 40px; border-radius: 50%;
+  background: var(--bg-tertiary);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 0.8125rem; font-weight: 600; color: var(--text-secondary);
+  flex-shrink: 0;
+}
+.conv-details { flex: 1; min-width: 0; }
+.conv-name {
+  font-size: 0.8125rem; font-weight: 600;
+  display: flex; align-items: center; justify-content: space-between; gap: 8px;
+}
+.conv-name-text { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.conv-time { font-size: 0.6875rem; color: var(--text-tertiary); white-space: nowrap; }
+.conv-preview {
+  font-size: 0.75rem; color: var(--text-tertiary);
+  overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+  margin-top: 2px;
+}
+.conv-meta { display: flex; align-items: center; gap: 6px; margin-top: 4px; }
+.conv-channel {
+  font-size: 0.625rem; font-weight: 600; padding: 1px 6px;
+  border-radius: var(--radius-sm); color: white;
+}
+
+.agent-detail { display: flex; flex-direction: column; }
+.agent-detail-header {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 14px 20px; border-bottom: 1px solid var(--border-default);
+}
+.agent-detail-user { display: flex; align-items: center; gap: 10px; }
+.agent-detail-user h3 { font-size: 0.9375rem; font-weight: 600; }
+.agent-detail-user span { font-size: 0.75rem; color: var(--text-tertiary); }
+
+.agent-messages {
+  flex: 1; padding: 20px; overflow-y: auto;
+  display: flex; flex-direction: column; gap: 12px;
+  background: var(--bg-secondary);
+}
+
+.agent-copilot {
+  border-top: 1px solid var(--border-default);
+  padding: 12px 16px;
+  background: var(--client-primary-50);
+}
+.copilot-label {
+  font-size: 0.6875rem; font-weight: 700; text-transform: uppercase;
+  letter-spacing: 0.05em; color: var(--client-primary);
+  margin-bottom: 6px; display: flex; align-items: center; gap: 6px;
+}
+.copilot-suggestion {
+  font-size: 0.8125rem; color: var(--text-secondary);
+  background: var(--bg-primary); border: 1px dashed var(--client-primary);
+  border-radius: var(--radius-md); padding: 10px 14px;
+  cursor: pointer; transition: background 150ms;
+}
+.copilot-suggestion:hover { background: var(--client-primary-50); }
+
+/* ============================================
+   AI DEMO VIEW
+   ============================================ */
+.ai-split {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 24px;
+}
+
+.ai-confidence {
+  display: flex; align-items: center; gap: 12px;
+  padding: 12px 16px; background: var(--dora-accent-light);
+  border-radius: var(--radius-lg); margin-bottom: 16px;
+}
+.confidence-bar-track {
+  flex: 1; height: 8px; background: rgba(0,0,0,0.08);
+  border-radius: var(--radius-full); overflow: hidden;
+}
+.confidence-bar-fill {
+  height: 100%; border-radius: var(--radius-full);
+  background: var(--dora-accent);
+  transition: width 600ms var(--ease-out);
+}
+.confidence-value {
+  font-size: 0.875rem; font-weight: 700; color: var(--dora-accent);
+  white-space: nowrap;
+}
+
+.ai-response-box {
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-lg);
+  padding: 16px; font-size: 0.8125rem; line-height: 1.6;
+  color: var(--text-secondary);
+}
+.ai-label {
+  display: inline-flex; align-items: center; gap: 4px;
+  font-size: 0.6875rem; font-weight: 700;
+  text-transform: uppercase; letter-spacing: 0.05em;
+  color: var(--dora-secondary); margin-bottom: 8px;
+}
+
+/* ============================================
+   DASHBOARD VIEW
+   ============================================ */
+.metrics-grid {
+  display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px;
+  margin-bottom: 24px;
+}
+.metric-card {
+  background: var(--bg-primary);
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-xl);
+  padding: 20px; box-shadow: var(--shadow-sm);
+}
+.metric-label {
+  font-size: 0.75rem; font-weight: 500; color: var(--text-tertiary);
+  margin-bottom: 4px; display: flex; align-items: center; gap: 6px;
+}
+.metric-value {
+  font-size: 1.75rem; font-weight: 800; color: var(--text-primary);
+  letter-spacing: -0.02em;
+}
+.metric-change {
+  font-size: 0.75rem; font-weight: 600; margin-top: 4px;
+  display: flex; align-items: center; gap: 4px;
+}
+.metric-up { color: var(--dora-accent); }
+.metric-down { color: var(--color-error); }
+
+/* CSS-only bar chart */
+.chart-card { padding: 20px; }
+.chart-title {
+  font-size: 0.875rem; font-weight: 600; margin-bottom: 20px;
+  display: flex; align-items: center; justify-content: space-between;
+}
+.bar-chart {
+  display: flex; align-items: flex-end; gap: 8px;
+  height: 180px; padding-bottom: 28px; position: relative;
+  border-bottom: 1px solid var(--border-default);
+}
+.bar-col {
+  flex: 1; display: flex; flex-direction: column;
+  align-items: center; gap: 6px; height: 100%;
+  justify-content: flex-end;
+}
+.bar {
+  width: 100%; max-width: 40px; border-radius: var(--radius-sm) var(--radius-sm) 0 0;
+  background: var(--client-primary);
+  opacity: 0.8; transition: opacity 200ms, height 600ms var(--ease-out);
+  min-height: 4px;
+}
+.bar:hover { opacity: 1; }
+.bar-label {
+  font-size: 0.625rem; color: var(--text-tertiary);
+  position: absolute; bottom: 4px;
+}
+
+/* ============================================
+   CHANNELS VIEW
+   ============================================ */
+.channels-grid {
+  display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 16px;
+}
+.channel-card {
+  background: var(--bg-primary);
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-xl);
+  padding: 24px; box-shadow: var(--shadow-sm);
+  display: flex; flex-direction: column; gap: 12px;
+  transition: box-shadow 200ms var(--ease-default), transform 200ms var(--ease-default);
+}
+.channel-card:hover { box-shadow: var(--shadow-md); transform: translateY(-2px); }
+.channel-card.unavailable { opacity: 0.5; }
+.channel-card.unavailable:hover { box-shadow: var(--shadow-sm); transform: none; }
+
+.channel-icon-wrap {
+  width: 48px; height: 48px; border-radius: var(--radius-lg);
+  display: flex; align-items: center; justify-content: center;
+  color: white; font-weight: 700;
+}
+.channel-card-name { font-size: 1rem; font-weight: 700; }
+.channel-card-status {
+  display: inline-flex; align-items: center; gap: 6px;
+  font-size: 0.75rem; font-weight: 600;
+}
+.channel-card-status .status-dot {
+  width: 8px; height: 8px; border-radius: 50%;
+}
+.channel-card-status.connected .status-dot { background: var(--color-success); }
+.channel-card-status.connected { color: var(--color-success); }
+.channel-card-status.unavailable .status-dot { background: var(--text-tertiary); }
+.channel-card-status.unavailable { color: var(--text-tertiary); }
+.channel-msg-count {
+  font-size: 0.8125rem; color: var(--text-secondary);
+  display: flex; align-items: center; gap: 6px;
+}
+
+/* ============================================
+   ROUTING VIEW
+   ============================================ */
+.routing-flow {
+  display: flex; align-items: center; gap: 0;
+  overflow-x: auto; padding: 24px 0;
+  justify-content: center; flex-wrap: wrap;
+}
+
+.flow-node {
+  background: var(--bg-primary);
+  border: 2px solid var(--border-default);
+  border-radius: var(--radius-xl);
+  padding: 16px 24px;
+  text-align: center;
+  min-width: 140px;
+  transition: border-color 200ms, box-shadow 200ms;
+  position: relative;
+}
+.flow-node:hover { border-color: var(--client-primary); box-shadow: var(--shadow-md); }
+.flow-node-icon {
+  width: 40px; height: 40px; border-radius: 50%;
+  margin: 0 auto 8px;
+  display: flex; align-items: center; justify-content: center;
+}
+.flow-node-label { font-size: 0.8125rem; font-weight: 600; }
+.flow-node-desc { font-size: 0.6875rem; color: var(--text-tertiary); margin-top: 4px; }
+
+.flow-node.start .flow-node-icon { background: var(--dora-primary-light); color: var(--dora-primary); }
+.flow-node.process .flow-node-icon { background: var(--dora-secondary-light); color: var(--dora-secondary); }
+.flow-node.decision .flow-node-icon { background: #FEF3C7; color: var(--color-warning); }
+.flow-node.end .flow-node-icon { background: var(--dora-accent-light); color: var(--dora-accent); }
+
+.flow-arrow {
+  display: flex; align-items: center; justify-content: center;
+  padding: 0 8px; color: var(--text-tertiary);
+  flex-shrink: 0;
+}
+
+.routing-rules {
+  margin-top: 24px;
+  display: grid; grid-template-columns: 1fr 1fr; gap: 16px;
+}
+.rule-card {
+  background: var(--bg-primary);
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-xl);
+  padding: 20px; box-shadow: var(--shadow-sm);
+}
+.rule-card h4 {
+  font-size: 0.875rem; font-weight: 600; margin-bottom: 12px;
+  display: flex; align-items: center; gap: 8px;
+}
+.rule-item {
+  display: flex; align-items: flex-start; gap: 8px;
+  padding: 8px 0; font-size: 0.8125rem; color: var(--text-secondary);
+}
+.rule-item + .rule-item { border-top: 1px solid var(--border-subtle); }
+.rule-dot {
+  width: 6px; height: 6px; border-radius: 50%;
+  background: var(--client-primary);
+  margin-top: 6px; flex-shrink: 0;
+}
+
+/* ============================================
+   RESPONSIVE
+   ============================================ */
+@media (max-width: 1024px) {
+  .agent-layout { grid-template-columns: 1fr; }
+  .agent-detail { display: none; }
+  .agent-layout.detail-open .agent-list { display: none; }
+  .agent-layout.detail-open .agent-detail { display: flex; }
+  .ai-split { grid-template-columns: 1fr; }
+  .routing-rules { grid-template-columns: 1fr; }
+}
+
+@media (max-width: 768px) {
+  .top-nav { padding: 0 16px; }
+  .breadcrumb { display: none; }
+  .nav-right { gap: 2px; }
+  .nav-link span { display: none; }
+
+  .client-header { padding: 24px 16px; }
+  .client-header-inner { flex-direction: column; gap: 12px; }
+  .client-icon-wrap { width: 48px; height: 48px; }
+  .client-name { font-size: 1.375rem; }
+
+  .view-tabs { padding: 0 16px; }
+  .view-tab { padding: 12px 14px; font-size: 0.75rem; }
+  .view-tab span { display: none; }
+
+  .view-content { padding: 16px; }
+  .metrics-grid { grid-template-columns: repeat(2, 1fr); gap: 10px; }
+  .metric-value { font-size: 1.25rem; }
+  .channels-grid { grid-template-columns: 1fr; }
+
+  .routing-flow { flex-direction: column; }
+  .flow-arrow { transform: rotate(90deg); }
+}
+
+@media (max-width: 480px) {
+  .metrics-grid { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+
+<!-- ============================================
+     TOP NAV
+     ============================================ -->
+<nav class="top-nav">
+  <div class="nav-left">
+    <a href="index.html" class="logo"><span class="logo-dot"></span>Dora</a>
+    <div class="breadcrumb">
+      <a href="index.html">Demo Hub</a>
+      <span class="sep">/</span>
+      <span class="current" id="breadcrumb-client">Client</span>
+    </div>
+  </div>
+  <div class="nav-right">
+    <a href="agent.html" class="nav-link"><i data-lucide="headphones" style="width:16px;height:16px"></i><span>Agent</span></a>
+    <a href="ai-demo.html" class="nav-link"><i data-lucide="bot" style="width:16px;height:16px"></i><span>AI Demo</span></a>
+    <a href="admin.html" class="nav-link"><i data-lucide="bar-chart-3" style="width:16px;height:16px"></i><span>Dashboard</span></a>
+  </div>
+</nav>
+
+<!-- ============================================
+     CLIENT HEADER (populated by JS)
+     ============================================ -->
+<header class="client-header" id="client-header">
+  <div class="client-header-inner" id="client-header-inner">
+    <!-- Filled dynamically -->
+  </div>
+</header>
+
+<!-- ============================================
+     VIEW TABS
+     ============================================ -->
+<div class="view-tabs-wrap">
+  <div class="view-tabs" id="view-tabs">
+    <button class="view-tab" data-view="customer"><i data-lucide="user"></i><span>Customer</span></button>
+    <button class="view-tab" data-view="agent"><i data-lucide="headphones"></i><span>Agent</span></button>
+    <button class="view-tab" data-view="ai"><i data-lucide="bot"></i><span>AI Demo</span></button>
+    <button class="view-tab" data-view="dashboard"><i data-lucide="bar-chart-3"></i><span>Dashboard</span></button>
+    <button class="view-tab" data-view="channels"><i data-lucide="share-2"></i><span>Channels</span></button>
+    <button class="view-tab" data-view="routing"><i data-lucide="git-branch"></i><span>Routing</span></button>
+  </div>
+</div>
+
+<!-- ============================================
+     VIEW CONTENT PANELS
+     ============================================ -->
+<main class="view-content">
+  <div class="view-panel" id="view-customer"></div>
+  <div class="view-panel" id="view-agent"></div>
+  <div class="view-panel" id="view-ai"></div>
+  <div class="view-panel" id="view-dashboard"></div>
+  <div class="view-panel" id="view-channels"></div>
+  <div class="view-panel" id="view-routing"></div>
+</main>
+
+<script>
+/* ============================================
+   CLIENT DATA
+   ============================================ */
+const CLIENTS = {
+  'sakura-clinic': {
+    name: 'Sakura Clinic',
+    nameJp: 'さくらクリニック',
+    market: 'Japan',
+    industry: 'Healthcare',
+    icon: 'heart-pulse',
+    primary: '#E91E8C',
+    primaryLight: '#FCE7F3',
+    primary50: '#FDF2F8',
+    gradient: 'linear-gradient(135deg, #E91E8C 0%, #FF6B9D 100%)',
+    channels: [
+      { name: 'LINE', color: '#06C755', connected: true },
+      { name: 'Web Chat', color: '#2563EB', connected: true },
+      { name: 'Zalo', color: '#0068FF', connected: false },
+      { name: 'Facebook', color: '#1877F2', connected: false }
+    ],
+    description: 'クリニック向けカスタマーサポート — Appointment scheduling, medical inquiries, and patient care with polite Japanese (keigo).',
+    lang: 'ja',
+    conversations: [
+      {
+        name: '田中 美咲',
+        avatar: 'TM',
+        channel: 'LINE',
+        channelColor: '#06C755',
+        time: '2分前',
+        preview: '予約の変更をお願いしたいのですが...',
+        messages: [
+          { role: 'bot', text: 'さくらクリニックへようこそ。ご用件をお伺いいたします。どのようなご相談でございますか？', time: '14:20' },
+          { role: 'user', text: '来週の月曜日に予約を変更したいのですが、可能でしょうか？', time: '14:21' },
+          { role: 'bot', text: 'かしこまりました。来週月曜日（3月16日）のご予約変更を承ります。ご希望のお時間帯はございますか？午前と午後、どちらがよろしいでしょうか。', time: '14:21' },
+          { role: 'user', text: '午前中の10時頃がいいのですが。', time: '14:22' },
+          { role: 'bot', text: '10:00のお時間をお取りできます。田中美咲様、3月16日（月）10:00に変更いたしますね。担当医は山田先生でよろしいでしょうか？', time: '14:22' }
+        ]
+      },
+      {
+        name: '佐藤 健一',
+        avatar: 'SK',
+        channel: 'Web Chat',
+        channelColor: '#2563EB',
+        time: '15分前',
+        preview: '健康診断の結果について確認させてください',
+        messages: [
+          { role: 'bot', text: 'お問い合わせありがとうございます。さくらクリニックでございます。', time: '13:50' },
+          { role: 'user', text: '先日受けた健康診断の結果はいつ頃届きますか？', time: '13:52' },
+          { role: 'bot', text: '健康診断の結果は、通常2週間ほどでお届けしております。受診日をお教えいただけますでしょうか？', time: '13:52' }
+        ]
+      },
+      {
+        name: '鈴木 愛子',
+        avatar: 'SA',
+        channel: 'LINE',
+        channelColor: '#06C755',
+        time: '32分前',
+        preview: '皮膚科の診察について教えてください',
+        messages: []
+      },
+      {
+        name: '山本 太郎',
+        avatar: 'YT',
+        channel: 'Web Chat',
+        channelColor: '#2563EB',
+        time: '1時間前',
+        preview: '処方箋の再発行をお願いしたいです',
+        messages: []
+      },
+      {
+        name: '高橋 花子',
+        avatar: 'TH',
+        channel: 'LINE',
+        channelColor: '#06C755',
+        time: '2時間前',
+        preview: 'インフルエンザの予防接種は受けられますか？',
+        messages: []
+      }
+    ],
+    aiResponse: {
+      query: '来週の予約を変更したいです',
+      response: 'かしこまりました。予約変更のご依頼を承ります。\n\n現在のご予約状況を確認いたしましたところ、来週月曜日の午前枠に空きがございます。\n\nご希望の日時をお選びください：\n• 3月16日（月）10:00 / 11:00\n• 3月17日（火）9:30 / 14:00\n• 3月18日（水）10:30\n\nどのお時間がよろしいでしょうか？',
+      confidence: 94
+    },
+    metrics: {
+      tickets: { value: '1,284', change: '+12%', up: true, label: '今月のチケット' },
+      resolved: { value: '96.2%', change: '+2.1%', up: true, label: '解決率' },
+      avgTime: { value: '2.4分', change: '-18%', up: true, label: '平均応答時間' },
+      csat: { value: '4.8', change: '+0.3', up: true, label: '顧客満足度' }
+    },
+    channelStats: { LINE: 847, 'Web Chat': 437 },
+    routingRules: [
+      { label: '敬語チェック', desc: 'AI応答の敬語レベルを確認し、です/ます調を維持' },
+      { label: 'LINE優先ルーティング', desc: 'LINE経由のお問い合わせを優先対応キューへ' },
+      { label: '医療用語フィルター', desc: '医療関連の質問は専門スタッフへエスカレーション' },
+      { label: '予約管理統合', desc: '予約変更・キャンセルはカレンダーシステムと連携' }
+    ]
+  },
+
+  'vn-shop': {
+    name: 'VN Shop',
+    nameJp: '',
+    market: 'Vietnam',
+    industry: 'E-commerce',
+    icon: 'shopping-bag',
+    primary: '#2563EB',
+    primaryLight: '#DBEAFE',
+    primary50: '#EFF6FF',
+    gradient: 'linear-gradient(135deg, #2563EB 0%, #3B82F6 100%)',
+    channels: [
+      { name: 'Zalo', color: '#0068FF', connected: true },
+      { name: 'Facebook', color: '#1877F2', connected: true },
+      { name: 'Web Chat', color: '#2563EB', connected: true },
+      { name: 'LINE', color: '#06C755', connected: false }
+    ],
+    description: 'Hỗ trợ khách hàng cho e-commerce — Order tracking, returns, product inquiries with Vietnamese language support.',
+    lang: 'vi',
+    conversations: [
+      {
+        name: 'Nguyễn Thị Mai',
+        avatar: 'NM',
+        channel: 'Zalo',
+        channelColor: '#0068FF',
+        time: '1 phút trước',
+        preview: 'Em muốn kiểm tra đơn hàng #VN20268...',
+        messages: [
+          { role: 'bot', text: 'Chào chị! Em là trợ lý ảo của VN Shop. Chị cần hỗ trợ gì ạ?', time: '15:30' },
+          { role: 'user', text: 'Em muốn kiểm tra đơn hàng #VN20268. Sao chưa thấy giao vậy ạ?', time: '15:31' },
+          { role: 'bot', text: 'Dạ, em kiểm tra ngay cho chị nhé! Đơn hàng #VN20268 hiện đang trong quá trình vận chuyển. Dự kiến giao vào ngày mai (14/03) trong khung giờ 9:00 - 12:00. Chị có cần thay đổi địa chỉ nhận hàng không ạ?', time: '15:31' },
+          { role: 'user', text: 'Vậy được rồi ạ. Mà cho em hỏi thêm, đơn này có bao gồm áo khoác size M không?', time: '15:32' },
+          { role: 'bot', text: 'Dạ có ạ! Đơn hàng của chị gồm:\n• Áo khoác gió unisex - Size M - Màu đen\n• Quần jogger - Size L\n• Tất cả đều đã được đóng gói cẩn thận. Chị yên tâm nhé!', time: '15:32' }
+        ]
+      },
+      {
+        name: 'Trần Văn Hùng',
+        avatar: 'TH',
+        channel: 'Facebook',
+        channelColor: '#1877F2',
+        time: '8 phút trước',
+        preview: 'Mình muốn đổi trả sản phẩm...',
+        messages: [
+          { role: 'bot', text: 'Xin chào! Cảm ơn bạn đã liên hệ VN Shop. Mình có thể giúp gì cho bạn?', time: '15:20' },
+          { role: 'user', text: 'Mình muốn đổi trả áo thun size S sang size M được không?', time: '15:22' },
+          { role: 'bot', text: 'Dạ được ạ! Bạn vui lòng cung cấp mã đơn hàng để mình kiểm tra chính sách đổi trả nhé. Sản phẩm chưa qua sử dụng và còn nguyên tem mác thì mình hỗ trợ đổi miễn phí trong vòng 7 ngày ạ.', time: '15:22' }
+        ]
+      },
+      {
+        name: 'Lê Hoàng Anh',
+        avatar: 'LA',
+        channel: 'Web Chat',
+        channelColor: '#2563EB',
+        time: '20 phút trước',
+        preview: 'Có mã giảm giá nào cho khách hàng mới không?',
+        messages: []
+      },
+      {
+        name: 'Phạm Minh Tuấn',
+        avatar: 'PT',
+        channel: 'Zalo',
+        channelColor: '#0068FF',
+        time: '45 phút trước',
+        preview: 'Thanh toán bị lỗi, tiền đã trừ nhưng chưa nhận đơn',
+        messages: []
+      },
+      {
+        name: 'Đỗ Thị Hương',
+        avatar: 'DH',
+        channel: 'Facebook',
+        channelColor: '#1877F2',
+        time: '1 giờ trước',
+        preview: 'Sản phẩm mới về có ship tỉnh không ạ?',
+        messages: []
+      }
+    ],
+    aiResponse: {
+      query: 'Kiểm tra đơn hàng #VN20268',
+      response: 'Dạ, em đã kiểm tra đơn hàng #VN20268 cho chị rồi ạ!\n\nTrạng thái: Đang vận chuyển\nĐơn vị vận chuyển: Giao Hàng Nhanh\nDự kiến giao: 14/03/2026 (9:00 - 12:00)\n\nChi tiết đơn hàng:\n• Áo khoác gió unisex - Size M - 450.000đ\n• Quần jogger - Size L - 320.000đ\nTổng: 770.000đ (Đã thanh toán)\n\nChị có cần hỗ trợ thêm gì không ạ?',
+      confidence: 97
+    },
+    metrics: {
+      tickets: { value: '3,847', change: '+24%', up: true, label: 'Tổng ticket tháng này' },
+      resolved: { value: '94.1%', change: '+3.5%', up: true, label: 'Tỷ lệ giải quyết' },
+      avgTime: { value: '1.8 phút', change: '-22%', up: true, label: 'Thời gian phản hồi' },
+      csat: { value: '4.6', change: '+0.2', up: true, label: 'Đánh giá khách hàng' }
+    },
+    channelStats: { Zalo: 1523, Facebook: 1284, 'Web Chat': 1040 },
+    routingRules: [
+      { label: 'Phân loại tiếng Việt', desc: 'Nhận diện ngôn ngữ và phương ngữ Bắc/Trung/Nam' },
+      { label: 'Zalo/Facebook Router', desc: 'Phân luồng tin nhắn từ Zalo và Facebook Messenger' },
+      { label: 'Thanh toán & Hoàn tiền', desc: 'Vấn đề thanh toán tự động chuyển đến bộ phận tài chính' },
+      { label: 'Đơn hàng VIP', desc: 'Khách hàng VIP được ưu tiên xử lý trong 30 giây' }
+    ]
+  },
+
+  'tokyo-ramen': {
+    name: 'Tokyo Ramen',
+    nameJp: '東京ラーメン本舗',
+    market: 'Japan',
+    industry: 'F&B',
+    icon: 'utensils',
+    primary: '#DC2626',
+    primaryLight: '#FEE2E2',
+    primary50: '#FEF2F2',
+    gradient: 'linear-gradient(135deg, #DC2626 0%, #EF4444 100%)',
+    channels: [
+      { name: 'LINE', color: '#06C755', connected: true },
+      { name: 'Web Chat', color: '#2563EB', connected: true },
+      { name: 'Zalo', color: '#0068FF', connected: false },
+      { name: 'Facebook', color: '#1877F2', connected: false }
+    ],
+    description: 'レストラン予約・お問い合わせ — Reservations, menu inquiries, and loyalty programs with keigo communication.',
+    lang: 'ja',
+    conversations: [
+      {
+        name: '中村 大輔',
+        avatar: 'ND',
+        channel: 'LINE',
+        channelColor: '#06C755',
+        time: '3分前',
+        preview: '今晩の予約をお願いしたいのですが...',
+        messages: [
+          { role: 'bot', text: '東京ラーメン本舗へようこそ！ご予約・お問い合わせを承ります。何名様でご利用でしょうか？', time: '18:30' },
+          { role: 'user', text: '今晩19時に4名で予約できますか？', time: '18:31' },
+          { role: 'bot', text: 'かしこまりました。本日19:00、4名様のご予約でございますね。カウンター席とテーブル席がございますが、どちらをご希望でしょうか？', time: '18:31' },
+          { role: 'user', text: 'テーブル席でお願いします。子供用の椅子も1つお願いできますか？', time: '18:32' },
+          { role: 'bot', text: '承知いたしました。テーブル席を1席、お子様用のお椅子を1脚ご用意いたします。中村大輔様、本日19:00にお待ちしております。\n\nなお、当店の人気メニュー「特製とんこつラーメン」は本日限定10食となっております。ぜひお試しくださいませ！', time: '18:32' }
+        ]
+      },
+      {
+        name: '小林 さゆり',
+        avatar: 'KS',
+        channel: 'Web Chat',
+        channelColor: '#2563EB',
+        time: '12分前',
+        preview: 'アレルギー対応メニューはありますか？',
+        messages: [
+          { role: 'bot', text: 'いらっしゃいませ！東京ラーメン本舗でございます。ご質問を承ります。', time: '18:15' },
+          { role: 'user', text: '卵アレルギーがあるのですが、対応メニューはありますか？', time: '18:18' },
+          { role: 'bot', text: 'ご安心ください。卵不使用のメニューをご用意しております：\n• 醤油ラーメン（卵抜き）\n• 味噌ラーメン（卵抜き）\n• 野菜つけ麺\nスタッフにもお伝えいただければ、細心の注意を払って調理いたします。', time: '18:18' }
+        ]
+      },
+      {
+        name: '渡辺 誠',
+        avatar: 'WM',
+        channel: 'LINE',
+        channelColor: '#06C755',
+        time: '28分前',
+        preview: 'ポイントカードの残高を確認したいです',
+        messages: []
+      },
+      {
+        name: '伊藤 真理',
+        avatar: 'IM',
+        channel: 'LINE',
+        channelColor: '#06C755',
+        time: '45分前',
+        preview: 'テイクアウトの注文をお願いします',
+        messages: []
+      }
+    ],
+    aiResponse: {
+      query: '今晩4名で予約できますか？',
+      response: 'はい、本日のご予約を承ります！\n\n空席状況を確認いたしました：\n• 19:00 — テーブル席 2卓空き\n• 19:30 — カウンター席 4席空き\n• 20:00 — テーブル席 3卓空き\n\nお名前とご希望のお時間をお教えいただけますでしょうか。\n\n本日のおすすめ：\n🍜 限定「特製とんこつラーメン」残り10食\n🍺 生ビール半額キャンペーン実施中！',
+      confidence: 91
+    },
+    metrics: {
+      tickets: { value: '892', change: '+8%', up: true, label: '今月のお問い合わせ' },
+      resolved: { value: '97.8%', change: '+1.2%', up: true, label: '解決率' },
+      avgTime: { value: '1.6分', change: '-25%', up: true, label: '平均応答時間' },
+      csat: { value: '4.9', change: '+0.1', up: true, label: '顧客満足度' }
+    },
+    channelStats: { LINE: 634, 'Web Chat': 258 },
+    routingRules: [
+      { label: '敬語レベル確認', desc: 'すべての応答がです/ます調の丁寧語であることを確認' },
+      { label: 'LINE予約ハンドラー', desc: 'LINEからの予約リクエストを予約管理システムに連携' },
+      { label: 'アレルギー対応', desc: 'アレルギー関連の質問は即座にスタッフへ通知' },
+      { label: 'ロイヤルティプログラム', desc: 'ポイント照会はCRMシステムと自動連携' }
+    ]
+  }
+};
+
+/* ============================================
+   STATE & INIT
+   ============================================ */
+let currentClient = null;
+let currentView = 'customer';
+
+function getParams() {
+  const p = new URLSearchParams(window.location.search);
+  return {
+    client: p.get('client') || 'sakura-clinic',
+    view: p.get('view') || 'customer'
+  };
+}
+
+function init() {
+  const { client, view } = getParams();
+  currentClient = CLIENTS[client] || CLIENTS['sakura-clinic'];
+  currentView = view;
+
+  applyClientTheme();
+  renderClientHeader();
+  renderAllViews();
+  setActiveTab(currentView);
+  bindTabs();
+  lucide.createIcons();
+}
+
+/* ============================================
+   CLIENT THEMING
+   ============================================ */
+function applyClientTheme() {
+  const root = document.documentElement;
+  root.style.setProperty('--client-primary', currentClient.primary);
+  root.style.setProperty('--client-gradient', currentClient.gradient);
+  root.style.setProperty('--client-primary-light', currentClient.primaryLight);
+  root.style.setProperty('--client-primary-50', currentClient.primary50);
+  document.getElementById('client-header').style.background = currentClient.gradient;
+  document.title = `Dora — ${currentClient.name} Hub`;
+}
+
+/* ============================================
+   CLIENT HEADER
+   ============================================ */
+function renderClientHeader() {
+  document.getElementById('breadcrumb-client').textContent = currentClient.name;
+
+  const channelBadges = currentClient.channels
+    .filter(c => c.connected)
+    .map(c => `<span class="channel-badge"><span class="channel-dot" style="background:${c.color}"></span>${c.name}</span>`)
+    .join('');
+
+  const jpName = currentClient.nameJp
+    ? `<div class="client-name-jp">${currentClient.nameJp}</div>`
+    : '';
+
+  document.getElementById('client-header-inner').innerHTML = `
+    <div class="client-icon-wrap">
+      <i data-lucide="${currentClient.icon}"></i>
+    </div>
+    <div class="client-info">
+      <h1 class="client-name">${currentClient.name}</h1>
+      ${jpName}
+      <div class="client-meta">
+        <span class="market-tag"><i data-lucide="globe" style="width:12px;height:12px"></i>${currentClient.market} / ${currentClient.industry}</span>
+        ${channelBadges}
+      </div>
+      <p class="client-desc">${currentClient.description}</p>
+    </div>
+  `;
+}
+
+/* ============================================
+   VIEW TAB SWITCHING
+   ============================================ */
+function setActiveTab(view) {
+  document.querySelectorAll('.view-tab').forEach(t => t.classList.remove('active'));
+  document.querySelector(`.view-tab[data-view="${view}"]`)?.classList.add('active');
+
+  document.querySelectorAll('.view-panel').forEach(p => p.classList.remove('active'));
+  const panel = document.getElementById(`view-${view}`);
+  if (panel) {
+    panel.classList.remove('active');
+    // Force re-trigger animation
+    void panel.offsetWidth;
+    panel.classList.add('active');
+  }
+}
+
+function bindTabs() {
+  document.querySelectorAll('.view-tab').forEach(tab => {
+    tab.addEventListener('click', () => {
+      const view = tab.dataset.view;
+      currentView = view;
+      setActiveTab(view);
+      const params = new URLSearchParams(window.location.search);
+      params.set('view', view);
+      history.replaceState(null, '', `?${params.toString()}`);
+      lucide.createIcons();
+    });
+  });
+}
+
+/* ============================================
+   RENDER ALL VIEW CONTENT
+   ============================================ */
+function renderAllViews() {
+  renderCustomerView();
+  renderAgentView();
+  renderAIView();
+  renderDashboardView();
+  renderChannelsView();
+  renderRoutingView();
+}
+
+/* ---------- CUSTOMER VIEW ---------- */
+function renderCustomerView() {
+  const conv = currentClient.conversations[0];
+  const channelDotColor = conv.channelColor;
+  const msgs = conv.messages.map(m => `
+    <div class="chat-msg ${m.role === 'user' ? 'user' : 'bot'}">
+      ${m.text.replace(/\n/g, '<br>')}
+      <div class="chat-msg-time">${m.time}</div>
+    </div>
+  `).join('');
+
+  const placeholder = currentClient.lang === 'ja' ? 'メッセージを入力...' : 'Nhập tin nhắn...';
+
+  document.getElementById('view-customer').innerHTML = `
+    <div class="chat-widget">
+      <div class="chat-widget-header">
+        <div class="chat-widget-avatar"><i data-lucide="${currentClient.icon}" style="width:20px;height:20px"></i></div>
+        <div class="chat-widget-info">
+          <h3>${currentClient.name}</h3>
+          <span><span class="chat-widget-status"></span>オンライン</span>
+        </div>
+      </div>
+      <div class="chat-messages">${msgs}</div>
+      <div class="chat-input-area">
+        <input class="chat-input" type="text" placeholder="${placeholder}" disabled>
+        <button class="chat-send-btn"><i data-lucide="send" style="width:16px;height:16px"></i></button>
+      </div>
+    </div>
+    <div class="chat-channel-indicator">
+      <span class="ch-dot" style="background:${channelDotColor}"></span>
+      ${conv.channel} channel demo
+    </div>
+  `;
+}
+
+/* ---------- AGENT VIEW ---------- */
+function renderAgentView() {
+  const convs = currentClient.conversations;
+  const activeConv = convs[0];
+
+  const listItems = convs.map((c, i) => `
+    <div class="conv-item ${i === 0 ? 'active' : ''}">
+      <div class="conv-avatar">${c.avatar}</div>
+      <div class="conv-details">
+        <div class="conv-name">
+          <span class="conv-name-text">${c.name}</span>
+          <span class="conv-time">${c.time}</span>
+        </div>
+        <div class="conv-preview">${c.preview}</div>
+        <div class="conv-meta">
+          <span class="conv-channel" style="background:${c.channelColor}">${c.channel}</span>
+        </div>
+      </div>
+    </div>
+  `).join('');
+
+  const detailMsgs = activeConv.messages.map(m => `
+    <div class="chat-msg ${m.role === 'user' ? 'user' : 'bot'}">
+      ${m.text.replace(/\n/g, '<br>')}
+      <div class="chat-msg-time">${m.time}</div>
+    </div>
+  `).join('');
+
+  const copilotText = currentClient.lang === 'ja'
+    ? '次の返信候補：「かしこまりました。ご予約を確定いたしました。当日お待ちしております。」'
+    : 'Gợi ý trả lời: "Dạ, em đã xác nhận đơn hàng cho chị rồi ạ. Chị kiểm tra lại email nhé!"';
+
+  document.getElementById('view-agent').innerHTML = `
+    <div class="agent-layout">
+      <div class="agent-list">
+        <div class="agent-list-header">
+          <span>Conversations</span>
+          <span class="agent-list-count">${convs.length}</span>
+        </div>
+        ${listItems}
+      </div>
+      <div class="agent-detail">
+        <div class="agent-detail-header">
+          <div class="agent-detail-user">
+            <div class="conv-avatar">${activeConv.avatar}</div>
+            <div>
+              <h3>${activeConv.name}</h3>
+              <span>${activeConv.channel} · ${activeConv.time}</span>
+            </div>
+          </div>
+          <span class="badge badge-success">Active</span>
+        </div>
+        <div class="agent-messages">${detailMsgs}</div>
+        <div class="agent-copilot">
+          <div class="copilot-label"><i data-lucide="sparkles" style="width:14px;height:14px"></i>AI Copilot</div>
+          <div class="copilot-suggestion">${copilotText}</div>
+        </div>
+      </div>
+    </div>
+  `;
+}
+
+/* ---------- AI DEMO VIEW ---------- */
+function renderAIView() {
+  const ai = currentClient.aiResponse;
+  const inputLabel = currentClient.lang === 'ja' ? 'お客様のお問い合わせ' : 'Câu hỏi của khách hàng';
+  const responseLabel = currentClient.lang === 'ja' ? 'AI応答' : 'Phản hồi AI';
+
+  document.getElementById('view-ai').innerHTML = `
+    <div class="ai-confidence">
+      <span style="font-size:0.8125rem;font-weight:600;color:var(--text-secondary)">AI Confidence</span>
+      <div class="confidence-bar-track">
+        <div class="confidence-bar-fill" style="width:${ai.confidence}%"></div>
+      </div>
+      <span class="confidence-value">${ai.confidence}%</span>
+    </div>
+    <div class="ai-split">
+      <div class="card">
+        <div class="card-header">
+          <span class="card-title"><i data-lucide="message-circle" style="width:16px;height:16px"></i>${inputLabel}</span>
+        </div>
+        <div class="card-body">
+          <div class="ai-response-box">${ai.query}</div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-header">
+          <span class="card-title"><i data-lucide="bot" style="width:16px;height:16px"></i>${responseLabel}</span>
+          <span class="ai-label"><i data-lucide="sparkles" style="width:12px;height:12px"></i>AI Generated</span>
+        </div>
+        <div class="card-body">
+          <div class="ai-response-box">${ai.response.replace(/\n/g, '<br>')}</div>
+        </div>
+      </div>
+    </div>
+    <div style="text-align:center;margin-top:24px">
+      <a href="ai-demo.html" class="link-arrow">Open Full AI Demo <i data-lucide="arrow-right" style="width:16px;height:16px"></i></a>
+    </div>
+  `;
+}
+
+/* ---------- DASHBOARD VIEW ---------- */
+function renderDashboardView() {
+  const m = currentClient.metrics;
+  const icons = ['ticket', 'check-circle-2', 'clock', 'star'];
+  const keys = ['tickets', 'resolved', 'avgTime', 'csat'];
+
+  const metricCards = keys.map((k, i) => `
+    <div class="metric-card">
+      <div class="metric-label"><i data-lucide="${icons[i]}" style="width:14px;height:14px"></i>${m[k].label}</div>
+      <div class="metric-value">${m[k].value}</div>
+      <div class="metric-change ${m[k].up ? 'metric-up' : 'metric-down'}">
+        <i data-lucide="${m[k].up ? 'trending-up' : 'trending-down'}" style="width:14px;height:14px"></i>
+        ${m[k].change}
+      </div>
+    </div>
+  `).join('');
+
+  const days = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
+  const values = [65, 82, 74, 91, 87, 45, 38];
+  const maxVal = Math.max(...values);
+  const bars = days.map((d, i) => `
+    <div class="bar-col">
+      <div class="bar" style="height:${(values[i] / maxVal) * 100}%"></div>
+      <span class="bar-label">${d}</span>
+    </div>
+  `).join('');
+
+  const chartTitle = currentClient.lang === 'ja' ? '週間チケット推移' : 'Ticket theo tuần';
+
+  document.getElementById('view-dashboard').innerHTML = `
+    <div class="metrics-grid">${metricCards}</div>
+    <div class="card chart-card">
+      <div class="chart-title">
+        <span>${chartTitle}</span>
+        <span class="badge badge-info">This week</span>
+      </div>
+      <div class="bar-chart">${bars}</div>
+    </div>
+    <div style="text-align:center;margin-top:24px">
+      <a href="admin.html" class="link-arrow">Open Full Dashboard <i data-lucide="arrow-right" style="width:16px;height:16px"></i></a>
+    </div>
+  `;
+}
+
+/* ---------- CHANNELS VIEW ---------- */
+function renderChannelsView() {
+  const channelIcons = {
+    'LINE': 'message-circle',
+    'Web Chat': 'monitor',
+    'Zalo': 'message-square',
+    'Facebook': 'facebook'
+  };
+  const cards = currentClient.channels.map(ch => {
+    const stats = currentClient.channelStats[ch.name];
+    const statusClass = ch.connected ? 'connected' : 'unavailable';
+    const statusText = ch.connected ? 'Connected' : 'Not Available';
+    const cardClass = ch.connected ? '' : 'unavailable';
+    const msgLine = stats
+      ? `<div class="channel-msg-count"><i data-lucide="mail" style="width:14px;height:14px"></i>${stats.toLocaleString()} messages this month</div>`
+      : `<div class="channel-msg-count" style="color:var(--text-tertiary)">--</div>`;
+
+    return `
+      <div class="channel-card ${cardClass}">
+        <div class="channel-icon-wrap" style="background:${ch.color}">
+          <i data-lucide="${channelIcons[ch.name] || 'message-circle'}" style="width:24px;height:24px"></i>
+        </div>
+        <div class="channel-card-name">${ch.name}</div>
+        <div class="channel-card-status ${statusClass}">
+          <span class="status-dot"></span>${statusText}
+        </div>
+        ${msgLine}
+      </div>
+    `;
+  }).join('');
+
+  document.getElementById('view-channels').innerHTML = `
+    <div class="channels-grid">${cards}</div>
+  `;
+}
+
+/* ---------- ROUTING VIEW ---------- */
+function renderRoutingView() {
+  const flowNodes = [
+    { icon: 'ticket', label: 'New Ticket', desc: 'Incoming inquiry', cls: 'start' },
+    { icon: 'languages', label: 'Language Detection', desc: currentClient.lang === 'ja' ? 'Japanese (JP)' : 'Vietnamese (VN)', cls: 'process' },
+    { icon: 'share-2', label: 'Channel Router', desc: currentClient.channels.filter(c=>c.connected).map(c=>c.name).join(' / '), cls: 'process' },
+    { icon: 'brain', label: 'AI / Human', desc: 'Assignment logic', cls: 'decision' },
+    { icon: 'check-circle-2', label: 'Resolution', desc: 'Ticket resolved', cls: 'end' }
+  ];
+
+  const flowHTML = flowNodes.map((n, i) => {
+    const arrow = i < flowNodes.length - 1
+      ? '<div class="flow-arrow"><i data-lucide="chevron-right" style="width:20px;height:20px"></i></div>'
+      : '';
+    return `
+      <div class="flow-node ${n.cls}">
+        <div class="flow-node-icon"><i data-lucide="${n.icon}" style="width:20px;height:20px"></i></div>
+        <div class="flow-node-label">${n.label}</div>
+        <div class="flow-node-desc">${n.desc}</div>
+      </div>
+      ${arrow}
+    `;
+  }).join('');
+
+  const rulesTitle = currentClient.lang === 'ja' ? 'ルーティングルール' : 'Quy tắc định tuyến';
+  const customTitle = currentClient.lang === 'ja' ? 'カスタムルール' : 'Quy tắc tùy chỉnh';
+
+  const ruleItems = currentClient.routingRules.map(r => `
+    <div class="rule-item">
+      <span class="rule-dot"></span>
+      <div><strong>${r.label}</strong><br><span style="color:var(--text-tertiary)">${r.desc}</span></div>
+    </div>
+  `).join('');
+
+  const half = Math.ceil(currentClient.routingRules.length / 2);
+  const rules1 = currentClient.routingRules.slice(0, half).map(r => `
+    <div class="rule-item">
+      <span class="rule-dot"></span>
+      <div><strong>${r.label}</strong><br><span style="color:var(--text-tertiary)">${r.desc}</span></div>
+    </div>
+  `).join('');
+  const rules2 = currentClient.routingRules.slice(half).map(r => `
+    <div class="rule-item">
+      <span class="rule-dot"></span>
+      <div><strong>${r.label}</strong><br><span style="color:var(--text-tertiary)">${r.desc}</span></div>
+    </div>
+  `).join('');
+
+  document.getElementById('view-routing').innerHTML = `
+    <div class="card" style="margin-bottom:24px">
+      <div class="card-header">
+        <span class="card-title"><i data-lucide="git-branch" style="width:16px;height:16px"></i>Ticket Routing Flow</span>
+      </div>
+      <div class="card-body">
+        <div class="routing-flow">${flowHTML}</div>
+      </div>
+    </div>
+    <div class="routing-rules">
+      <div class="rule-card">
+        <h4><i data-lucide="shield-check" style="width:16px;height:16px"></i>${rulesTitle}</h4>
+        ${rules1}
+      </div>
+      <div class="rule-card">
+        <h4><i data-lucide="settings" style="width:16px;height:16px"></i>${customTitle}</h4>
+        ${rules2}
+      </div>
+    </div>
+  `;
+}
+
+/* ============================================
+   BOOT
+   ============================================ */
+document.addEventListener('DOMContentLoaded', init);
+
+/* Handle browser back/forward */
+window.addEventListener('popstate', () => {
+  const { client, view } = getParams();
+  currentClient = CLIENTS[client] || CLIENTS['sakura-clinic'];
+  currentView = view;
+  applyClientTheme();
+  renderClientHeader();
+  renderAllViews();
+  setActiveTab(currentView);
+  lucide.createIcons();
+});
+</script>
+</body>
+</html>
