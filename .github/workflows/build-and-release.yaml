@@ -155,7 +155,7 @@ jobs:
             echo "📦 Branch: ${{ github.ref_name }}"
 
             echo "🔄 Deploying Marketing Service..."
-            cd $HOME/home/maketing && docker compose pull && docker compose up -d
+            cd $HOME/maketing && docker compose pull && docker compose up -d
             echo "✅ Auto deployment completed successfully"
 
   # Summary job
