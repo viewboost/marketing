@@ -11,10 +11,25 @@ const PORT = process.env.PORT || 3000;
 app.use(express.static(path.join(__dirname, 'statistic')));
 
 /**
- * Route mặc định - trả về landing page
+ * Catch-all: serve index.html for directory-like paths
+ * Handles paths like /csplatform, /csplatform/, etc.
  */
-app.get('/', (req, res) => {
-  res.sendFile(path.join(__dirname, 'statistic', 'index.html'));
+app.get('*', (req, res) => {
+  const reqPath = req.path.replace(/\/$/, '') || '/';
+  const filePath = path.join(__dirname, 'statistic', reqPath);
+  const indexPath = path.join(filePath, 'index.html');
+  const htmlPath = filePath + '.html';
+
+  // Try: directory/index.html, then path.html, then root index.html
+  res.sendFile(indexPath, (err) => {
+    if (err) {
+      res.sendFile(htmlPath, (err2) => {
+        if (err2) {
+          res.sendFile(path.join(__dirname, 'statistic', 'index.html'));
+        }
+      });
+    }
+  });
 });
 
 /**
