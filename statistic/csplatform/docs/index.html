@@ -9,6 +9,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Noto+Sans+JP:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
 <script src="_embedded.js"></script>
 <style>
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -246,6 +247,27 @@ body {
 }
 .md-content a:hover { text-decoration: underline; }
 
+/* ── Mermaid Diagrams ───────────────────── */
+.mermaid-diagram {
+  margin: 1.5rem 0;
+  padding: 20px;
+  background: var(--bg-primary);
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-lg);
+  overflow-x: auto;
+  text-align: center;
+}
+.mermaid-diagram svg {
+  max-width: 100%;
+  height: auto;
+}
+.mermaid-error {
+  font-size: 0.8125rem;
+  color: var(--text-tertiary);
+  font-style: italic;
+  margin-bottom: 8px;
+}
+
 /* ── Loading state ───────────────────────── */
 .loading {
   display: flex; align-items: center; justify-content: center;
@@ -375,6 +397,44 @@ const docs = {
 };
 
 let currentDoc = null;
+let mermaidId = 0;
+
+// Init mermaid with Dora theme
+mermaid.initialize({
+  startOnLoad: false,
+  theme: 'base',
+  themeVariables: {
+    primaryColor: '#DBEAFE',
+    primaryTextColor: '#0F172A',
+    primaryBorderColor: '#2563EB',
+    lineColor: '#94A3B8',
+    secondaryColor: '#EDE9FE',
+    tertiaryColor: '#F1F5F9',
+    fontFamily: 'Inter, system-ui, sans-serif',
+    fontSize: '13px'
+  },
+  flowchart: { curve: 'basis', useMaxWidth: true },
+  sequence: { useMaxWidth: true },
+  er: { useMaxWidth: true }
+});
+
+async function renderMermaidBlocks() {
+  const codeBlocks = document.querySelectorAll('.md-content pre code.language-mermaid');
+  for (const code of codeBlocks) {
+    const pre = code.parentElement;
+    const container = document.createElement('div');
+    container.className = 'mermaid-diagram';
+    const id = 'mermaid-' + (mermaidId++);
+    try {
+      const { svg } = await mermaid.render(id, code.textContent.trim());
+      container.innerHTML = svg;
+    } catch (e) {
+      // If rendering fails, show the code as-is with an error note
+      container.innerHTML = '<div class="mermaid-error">Diagram could not be rendered</div>' + pre.outerHTML;
+    }
+    pre.replaceWith(container);
+  }
+}
 
 async function loadDoc(key) {
   if (currentDoc === key) return;
@@ -414,6 +474,9 @@ async function loadDoc(key) {
     // Render markdown
     const html = marked.parse(md);
     contentEl.innerHTML = '<div class="md-content">' + html + '</div>';
+
+    // Render mermaid diagrams
+    await renderMermaidBlocks();
 
     // Build table of contents
     buildTOC();
