@@ -327,6 +327,7 @@ body {
   <select id="mobile-select" onchange="loadDoc(this.value)">
     <option value="project-overview">Tổng quan dự án</option>
     <option value="architecture">Kiến trúc hệ thống</option>
+    <option value="estimation">Timeline & Estimation</option>
   </select>
 </div>
 
@@ -362,6 +363,19 @@ body {
           </div>
         </div>
       </li>
+      <li class="doc-item" data-doc="estimation" onclick="loadDoc('estimation')">
+        <div class="doc-icon" style="background:#FEF3C7;color:#D97706;">
+          <i data-lucide="calendar-clock"></i>
+        </div>
+        <div class="doc-info">
+          <div class="doc-name">Timeline & Estimation</div>
+          <div class="doc-desc">Gantt chart, effort breakdown, milestones, risk register — team 4 nguoi</div>
+          <div class="doc-meta">
+            <span class="doc-badge" style="background:#FEF3C7;color:#D97706;">Planning</span>
+            <span>13/03/2026</span>
+          </div>
+        </div>
+      </li>
     </ul>
   </aside>
 
@@ -393,6 +407,11 @@ const docs = {
     file: 'architecture.md',
     title: 'Kiến trúc hệ thống',
     icon: 'cpu'
+  },
+  'estimation': {
+    file: 'estimation.md',
+    title: 'Timeline & Estimation',
+    icon: 'calendar-clock'
   }
 };
 
